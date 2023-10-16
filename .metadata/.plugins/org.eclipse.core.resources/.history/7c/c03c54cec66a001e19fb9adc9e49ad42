@@ -1,0 +1,5 @@
+package com.clinica.pacientes.domain.dto;
+
+public class PatientDTOOutput {
+
+}

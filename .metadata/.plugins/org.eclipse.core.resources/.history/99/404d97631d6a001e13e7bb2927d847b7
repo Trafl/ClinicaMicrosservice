@@ -1,0 +1,8 @@
+package com.clinica.cadastro.domain.dto.input;
+
+public class Snippet {
+	public static void main(String[] args) {
+		MedicalAppointment 
+	}
+}
+

@@ -1,0 +1,22 @@
+package com.clinica.cadastro.domain.dto;
+
+import java.util.Date;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class UserDTOInput {
+
+	@NotBlank
+	private String firstName;
+	
+	@NotBlank
+	private String lastName;
+	
+	@NotNull
+	private Date birthday;
+}

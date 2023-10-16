@@ -1,0 +1,7 @@
+CREATE TABLE user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    birthday DATE,
+    role ENUM('ROLE_PATIENT', 'ROLE_DOCTOR', 'ROLE_ADMIN') NOT NULL
+);

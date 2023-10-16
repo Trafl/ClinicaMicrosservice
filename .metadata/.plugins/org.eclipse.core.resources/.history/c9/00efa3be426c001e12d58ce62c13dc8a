@@ -1,0 +1,77 @@
+package com.clinica.procedimentos.controller.exeptionhandler;
+
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.clinica.procedimentos.domain.exception.EntityNotFoundException;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+//@RestControllerAdvice
+public class GlobalExeption extends ResponseEntityExceptionHandler {
+	
+	@Data
+	@AllArgsConstructor
+	public class CustomErrorResponse {
+	    private String message;
+	    private List<String> details;
+
+	   
+	}
+
+ //   @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<CustomErrorResponse> handleValidationExceptions(
+            MethodArgumentNotValidException ex, WebRequest request) {
+
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> error.getDefaultMessage())
+                .collect(Collectors.toList());
+
+        CustomErrorResponse response = new CustomErrorResponse("Validation Failed", errors);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+	
+    
+    
+	
+	@ExceptionHandler(BindException.class)
+	ProblemDetail handlerhttpMessageNotReadableException(BindException e) {
+		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+		
+		problem.setTitle("Parametros invalidos");
+		problem.setType(URI.create("https://clinicas.com/errors/parametros-invalidos"));
+		
+		return problem;
+		
+		
+	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	ProblemDetail handlerhttpMessageNotReadableException(EntityNotFoundException e) {
+		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+		
+		problem.setTitle("Procedimento não registrado");
+		problem.setType(URI.create("https://clinicas.com/errors/entity-not-found"));
+		
+		return problem;
+		
+		
+	}
+}

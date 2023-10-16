@@ -1,0 +1,16 @@
+package com.clinica.procedimentos.domain.dto;
+
+import java.math.BigDecimal;
+
+import lombok.Data;
+
+@Data
+public class ProcedureDTOOutput {
+	
+	private String name;
+	
+	private String description;
+	
+	private BigDecimal value;
+	
+}

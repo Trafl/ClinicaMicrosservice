@@ -1,0 +1,50 @@
+package com.clinica.cadastro.domain.service;
+
+import java.util.List;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+
+import com.clinica.cadastro.domain.exception.UserInUseException;
+import com.clinica.cadastro.domain.exception.UserNotFoundException;
+import com.clinica.cadastro.domain.model.User;
+import com.clinica.cadastro.domain.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class ProcedureService {
+
+	final private UserRepository repository;
+	
+	public User findById(Long userId) {
+		return repository.findById(userId)
+				.orElseThrow(() -> new UserNotFoundException(userId));
+	}
+	
+	public List<User> findAll(){
+		return repository.findAll();
+	}
+	
+	@Transactional
+	public User createUser(User user) {
+		return repository.save(user);
+	}
+		
+	@Transactional
+	public void deleteUserById(Long userId) {
+		try {
+			repository.deleteById(userId);
+			repository.flush();
+			
+		}catch(EmptyResultDataAccessException e) {
+			throw new UserNotFoundException(userId);
+		
+		}catch(DataIntegrityViolationException e) {
+			throw new UserInUseException(userId);
+		}
+	}
+}

@@ -1,0 +1,5 @@
+package com.clinica.procedimentos.controller.api.swagger;
+
+public class ProcedureControllerSwagger {
+
+}

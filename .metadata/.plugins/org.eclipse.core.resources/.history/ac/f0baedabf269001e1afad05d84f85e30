@@ -1,0 +1,5 @@
+package com.clinica.cadastro.model;
+
+public class User {
+
+}

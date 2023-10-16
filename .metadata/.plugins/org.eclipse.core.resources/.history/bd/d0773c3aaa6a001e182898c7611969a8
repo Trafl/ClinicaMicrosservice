@@ -1,0 +1,5 @@
+package com.clinica.procedimentos.domain.model;
+
+public class Procedure {
+
+}
