@@ -1,0 +1,5 @@
+package com.clinica.medicos.controller.api.swagger;
+
+public interface DoctorControllerSwagger {
+
+}

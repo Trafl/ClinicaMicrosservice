@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinica.medicos.controller.api.swagger.DoctorControllerSwagger;
 import com.clinica.medicos.controller.modelmapper.DoctorMapper;
 import com.clinica.medicos.domain.dto.DoctorDTOInput;
 import com.clinica.medicos.domain.dto.DoctorDTOOutput;
@@ -26,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/medicos")
 @RequiredArgsConstructor
-public class DoctorController {
+public class DoctorController implements DoctorControllerSwagger {
 
 	final private DoctorService doctorService;
 	
@@ -75,6 +76,4 @@ public class DoctorController {
 	public void deleteDoctorById(@PathVariable Long doctorId){
 		doctorService.deleteDoctorById(doctorId);
 	}
-	
-	
 }

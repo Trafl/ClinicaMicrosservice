@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinica.pacientes.controller.api.swagger.PatientControllerSwagger;
 import com.clinica.pacientes.controller.modelmapper.PatientMapper;
 import com.clinica.pacientes.domain.dto.PatientDTOInput;
 import com.clinica.pacientes.domain.dto.PatientDTOOutput;
@@ -26,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/pacientes")
 @RequiredArgsConstructor
-public class PatientController {
+public class PatientController implements PatientControllerSwagger {
 
 	final private PatientService patientService;
 	

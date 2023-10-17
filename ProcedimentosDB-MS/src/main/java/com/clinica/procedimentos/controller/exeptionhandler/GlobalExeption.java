@@ -28,26 +28,30 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
-            Map<String, String> errors = new HashMap<>();
-            ex.getBindingResult().getAllErrors().forEach((error) -> {
-
-              String fieldName = ((FieldError) error).getField();
-              String message = error.getDefaultMessage();
-              errors.put(fieldName, message);
-            });
-
             ProblemDetail problem = ProblemDetail.forStatus(HttpStatusCode.valueOf(400));
             problem.setType(URI.create("https://clinicas.com/errors/argument-not-valid"));
             problem.setTitle("Erro na validação dos campos informados");
             problem.setDetail("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.");
             problem.setProperty("timestamp", Instant.now());
-           
+
+            Map<String, String> errors = getErrorFields(ex);
             errors.forEach((fieldName, message) -> {
                 problem.setProperty(fieldName, message);
             });
             
           return new ResponseEntity<Object>(problem, status);
       }
+
+	private Map<String, String> getErrorFields(MethodArgumentNotValidException ex) {
+		Map<String, String> errors = new HashMap<>();
+		ex.getBindingResult().getAllErrors().forEach((error) -> {
+
+		  String fieldName = ((FieldError) error).getField();
+		  String message = error.getDefaultMessage();
+		  errors.put(fieldName, message);
+		});
+		return errors;
+	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)
 	ProblemDetail handlerhttpMessageNotReadableException(EntityNotFoundException e) {

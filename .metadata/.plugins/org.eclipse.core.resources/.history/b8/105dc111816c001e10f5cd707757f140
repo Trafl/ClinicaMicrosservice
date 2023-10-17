@@ -1,0 +1,21 @@
+package com.clinica.medicos.controller.api.swagger;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+
+import com.clinica.medicos.domain.dto.DoctorDTOInput;
+import com.clinica.medicos.domain.dto.DoctorDTOOutput;
+
+public interface DoctorControllerSwagger {
+
+	public ResponseEntity<List<DoctorDTOOutput>> findAllDoctors();
+	
+	public ResponseEntity<DoctorDTOOutput> findDoctorById( Long doctorId);
+	
+	public ResponseEntity<DoctorDTOOutput> createDoctor( DoctorDTOInput dtoInput);
+
+	public ResponseEntity<DoctorDTOOutput> updateDoctor(Long doctorId, DoctorDTOInput dtoInput);
+	
+	public void deleteDoctorById( Long doctorId);
+}
