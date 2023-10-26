@@ -13,8 +13,9 @@ Focado no agendamento de consultas, organização dos pacientes e controle finan
 - OpenApi
 - SpringDoc
 - Spring Gateway
-- Spring netflix eureka
-- RabbitMQ
+- Spring netflix Eureka
+- Spring Cloud OpenFeign
+- Apache Kafka
 
 # Documentação
 Cada microsserviço tem a sua propria documentação no padrão Swagger para o melhor entendimento sobre cada End-point.
@@ -32,10 +33,10 @@ Cada microsserviço tem a sua propria documentação no padrão Swagger para o m
 - MedicosDB-MS: responsavel pelo CRUD das informações relacionadas aos medicos.
   
  ## Serviços de Negócios: 
-- Agendar-MS: responsavel por consultar as API's de armazenamento, coletar informações e criar uma entidade Consulta
+- Agendar-MS: responsavel por fazer uma chamada sincrona as API's de armazenamento, coletar informações e criar uma entidade Consulta
 
 - Financeiro-MS: responsavel por gerenciar os valores de entrada exemplo: consultas, saida exemplo: materiais comprados
 calcular ambos e retornar um relatorio das despesas
 
  ## Serviços de Mensagens:
- - RabbitMq: Sistema de mensageria assincrono para fazer a comunicação entre os microsserviços 
+ - Apache Kafka: Sistema de mensageria assincrono para fazer a comunicação entre os microsserviços 
