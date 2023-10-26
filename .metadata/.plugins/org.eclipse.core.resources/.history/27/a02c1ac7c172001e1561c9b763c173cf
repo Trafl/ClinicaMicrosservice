@@ -1,0 +1,43 @@
+package com.clinica.cadastro.controller.modelMapper;
+
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
+
+import com.clinica.cadastro.domain.dto.input.MedicalAppointmentDTOInput;
+import com.clinica.cadastro.domain.model.MedicalAppointment;
+import com.clinica.medicos.domain.dto.DoctorDTOInput;
+import com.clinica.medicos.domain.dto.DoctorDTOOutput;
+import com.clinica.medicos.domain.dto.DoctorKafkaDTOOutput;
+import com.clinica.medicos.domain.model.Doctor;
+
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class AppointmentMapper {
+
+	final private ModelMapper mapper;
+	
+	public MedicalAppointment toEntity(MedicalAppointmentDTOInput appointmentInput) {
+		return mapper.map(appointmentInput, MedicalAppointment.class);
+	}
+	
+	public DoctorDTOOutput toDTO (Doctor doctor) {
+		return mapper.map(doctor, DoctorDTOOutput.class);
+	}
+	
+	public DoctorKafkaDTOOutput toDTOKafka (Doctor doctor) {
+		return mapper.map(doctor, DoctorKafkaDTOOutput.class);
+	}
+	
+	public void copyToDomain(DoctorDTOInput doctorInput, Doctor doctor) {
+		mapper.map(doctorInput, doctor);
+	}
+	
+	public List<DoctorDTOOutput> toDTOCollection(List<Doctor> doctorList){
+		return doctorList.stream()
+				.map((doctor) -> toDTO(doctor)).toList();
+	}
+}

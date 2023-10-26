@@ -1,0 +1,5 @@
+package com.clinica.medicos.core.kafka;
+
+public class KafkaConfig {
+
+}

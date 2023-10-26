@@ -1,10 +1,12 @@
 eclipse.preferences.version=1
-org.springframework.ide.eclipse.boot.wizard.PopularityTracker.cloud-eureka=4
+org.springframework.ide.eclipse.boot.wizard.PopularityTracker.cloud-eureka=5
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.cloud-eureka-server=1
+org.springframework.ide.eclipse.boot.wizard.PopularityTracker.cloud-feign=4
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.cloud-gateway=1
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.data-jpa=4
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.devtools=4
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.flyway=4
+org.springframework.ide.eclipse.boot.wizard.PopularityTracker.kafka=2
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.lombok=4
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.mysql=4
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.validation=4

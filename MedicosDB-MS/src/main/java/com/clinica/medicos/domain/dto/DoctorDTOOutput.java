@@ -11,11 +11,8 @@ public class DoctorDTOOutput {
 	@Schema(example = "1")
 	private Long id;
 
-	@Schema(example = "Leonard")
-	private String firstName;
-	
-	@Schema(example = "Silva")
-	private String lastName;
+	@Schema(example = "Leonard Silva")
+	private String name;
 	
 	@Schema(example = "CRM/RJ123456")
 	private String crm;

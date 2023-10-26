@@ -1,0 +1,13 @@
+package com.clinica.cadastro.domain.model;
+
+import jakarta.persistence.Embeddable;
+
+@Embeddable
+public class Patient {
+
+	private Long patient_id;
+	
+	private String patient_name;
+	
+	private String patient_email;
+}

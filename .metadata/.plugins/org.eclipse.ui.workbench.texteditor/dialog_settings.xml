@@ -4,8 +4,9 @@
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="patientList"/>
+		<item key="selection" value="Doc"/>
 		<list key="findhistory">
+			<item value="doc"/>
 			<item value="PatientList"/>
 			<item value="Doctor"/>
 			<item value="PatientId"/>
@@ -14,6 +15,7 @@
 			<item value="handlerExceptionResolver"/>
 		</list>
 		<list key="replacehistory">
+			<item value="pat"/>
 			<item value="patientList"/>
 			<item value="Patient"/>
 			<item value="patientId"/>

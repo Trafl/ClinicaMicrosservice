@@ -1,5 +1,0 @@
-package com.clinica.cadastro.domain.repository;
-
-public interface AppointmentRepository {
-
-}

@@ -1,5 +1,0 @@
-package com.clinica.pacientes.controller.api.swagger;
-
-public interface PatientControllerSwagger {
-
-}

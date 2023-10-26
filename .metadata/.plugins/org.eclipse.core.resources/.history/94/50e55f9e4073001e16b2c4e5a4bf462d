@@ -1,0 +1,19 @@
+package com.clinica.cadastro.domain.dto.output;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class DoctorOutput {
+
+	private Long id;
+
+	private String firstName;
+
+	private String lastName;
+
+	private String crm;
+
+	private String specialty;
+}

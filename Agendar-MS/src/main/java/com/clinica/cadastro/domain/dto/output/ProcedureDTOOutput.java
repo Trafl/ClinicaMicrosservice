@@ -9,8 +9,6 @@ public class ProcedureDTOOutput {
 	
 	private String name;
 	
-	private String description;
-	
 	private BigDecimal value;
 	
 }

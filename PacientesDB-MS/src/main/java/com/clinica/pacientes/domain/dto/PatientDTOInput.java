@@ -1,6 +1,6 @@
 package com.clinica.pacientes.domain.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -15,15 +15,11 @@ public class PatientDTOInput {
 
 	@NotBlank
 	@Schema(example = "Marcos")
-	private String firstName;
-	
-	@NotBlank
-	@Schema(example = "Antonio")
-	private String lastName;
+	private String name;
 	
 	@NotNull
 	@Schema(example = "1980-05-15T00:00:00Z")
-	private Date birthday;
+	private LocalDate birthday;
 	
 	@NotBlank
 	@Schema(example = "Masculino")

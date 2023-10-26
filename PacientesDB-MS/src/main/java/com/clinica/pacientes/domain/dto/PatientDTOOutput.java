@@ -1,6 +1,6 @@
 package com.clinica.pacientes.domain.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -14,13 +14,10 @@ public class PatientDTOOutput {
 	private Long id;
 	
 	@Schema(example = "Marcos")
-	private String firstName;
-	
-	@Schema(example = "Antonio")
-	private String lastName;
-	
+	private String name;
+		
 	@Schema(example = "1980-05-15T00:00:00Z")
-	private Date birthday;
+	private LocalDate birthday;
 	
 	@Schema(example = "Masculino")
 	private String gender;

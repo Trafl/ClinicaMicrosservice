@@ -1,22 +1,25 @@
 package com.clinica.cadastro.domain.dto.output;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
-import lombok.Data;
+import com.clinica.cadastro.domain.model.AppointmentStatus;
 
-@Data
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class MedicalAppointmentOutPut {
 	
 	private Long id;
 	
-	private UserDTOOutput doctor;
+	private DoctorOutput doctor;
 	
-	private UserDTOOutput patient;
-	
-	private Date time;
+	private PatienteOutPut patient;
 	
 	private ProcedureDTOOutput procedure;
 	
-	private Boolean open = true;
+	private OffsetDateTime date;
 	
+	private AppointmentStatus status;
 }

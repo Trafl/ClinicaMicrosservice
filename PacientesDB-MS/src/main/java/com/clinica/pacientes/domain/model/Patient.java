@@ -1,6 +1,6 @@
 package com.clinica.pacientes.domain.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,11 +18,9 @@ public class Patient {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String firstName;
+	private String name;
 	
-	private String lastName;
-	
-	private Date birthday;
+	private LocalDate birthday;
 	
 	private String gender;
 

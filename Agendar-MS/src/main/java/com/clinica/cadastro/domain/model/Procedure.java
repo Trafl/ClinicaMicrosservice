@@ -2,26 +2,17 @@ package com.clinica.cadastro.domain.model;
 
 import java.math.BigDecimal;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.Embeddable;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name = "_procedure")
+@Embeddable
 public class Procedure {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long procedure_id;
 	
-	private String name;
+	private String procedure_name;
 	
-	private String description;
-	
-	private BigDecimal value;
+	private BigDecimal procedure_value;
 	
 }

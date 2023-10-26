@@ -1,8 +1,7 @@
 CREATE TABLE doctor (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
+    name VARCHAR(255),
     cpf VARCHAR(14) NOT NULL,
     crm VARCHAR(255) NOT NULL,
     specialty VARCHAR(255) NOT NULL

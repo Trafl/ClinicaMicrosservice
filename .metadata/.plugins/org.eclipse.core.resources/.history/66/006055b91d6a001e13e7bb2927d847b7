@@ -1,5 +1,0 @@
-package com.clinica.cadastro.domain.dto.input;
-
-public class ProcedureInput_id {
-
-}

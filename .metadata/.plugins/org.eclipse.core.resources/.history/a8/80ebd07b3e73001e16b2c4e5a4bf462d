@@ -1,0 +1,8 @@
+package com.clinica.cadastro.domain.service.feign;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(url = "")
+public interface DoctorService {
+
+}

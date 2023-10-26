@@ -1,0 +1,65 @@
+package com.clinica.cadastro.domain.service;
+
+import java.util.List;
+
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+import com.clinica.cadastro.domain.exception.EntityNotFoundException;
+import com.clinica.cadastro.domain.model.MedicalAppointment;
+import com.clinica.cadastro.domain.repository.AppointmentRepository;
+import com.clinica.cadastro.domain.service.feign.DoctorService;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class MedicalAppointmentService {
+	
+	private final DoctorService doctorService;
+		
+	private final KafkaTemplate<String, Object> kafkaTemplate;
+	
+	private final AppointmentRepository appointmentRepository;
+	
+	public List<MedicalAppointment> findAll() {
+		return appointmentRepository.findAll();
+	}
+	
+	public MedicalAppointment findAppointmentById(Long appointmentId) {
+		return appointmentRepository.findById(appointmentId)
+				.orElseThrow(() -> new EntityNotFoundException(
+						String.format("Consulta de id %s não foi encontrado", appointmentId)));
+	}
+	
+	public MedicalAppointment createAppointment(MedicalAppointment appointment) {
+		
+		kafkaTemplate.send("appointment-to-doctor", appointment.getDoctor().getDoctor_id());
+		
+	//	kafkaTemplate.send("appointment-to-patient", appointment.getPatient().getPatient_id());
+		
+	//	kafkaTemplate.send("appointment-to-procedure", appointment.getProcedure().getProcedure_id());
+		
+		
+		
+		return appointment;
+	}
+	
+	@Transactional
+	public void deleteUserById(Long appointmentId) {
+		try {
+			appointmentRepository.deleteById(appointmentId);
+			appointmentRepository.flush();
+			
+		}catch(EmptyResultDataAccessException e) {
+			throw new EntityNotFoundException(
+					String.format("Consulta de id %s não foi encontrado.", appointmentId));
+	}
+	
+	DoctorOutput getDoctor(Long doctorId){
+		return doctorService.getDoctor(doctorId);
+	}
+ }
+}

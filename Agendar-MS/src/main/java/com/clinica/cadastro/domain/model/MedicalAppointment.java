@@ -1,12 +1,14 @@
 package com.clinica.cadastro.domain.model;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -19,29 +21,33 @@ public class MedicalAppointment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne
-	private User doctor;
+	@Embedded
+	private Doctor doctor;
 	
-	@OneToOne
-	private User patient;
+	@Embedded
+	private Patient patient;
 	
-	private Date time;
-	
-	@OneToOne
+	@Embedded
 	private Procedure procedure;
 	
-	private Boolean open = true;
+	private OffsetDateTime date;
 	
-	public Boolean isOpen() {
-		if(this.open) {
-			return true;
+	private OffsetDateTime createdDate = OffsetDateTime.now();
+	
+	private OffsetDateTime closeAppointment;
+	
+	@Enumerated(EnumType.STRING)
+	private AppointmentStatus status = AppointmentStatus.CREATED;
+	
+	public void finishAppointment() {
+		if(status.equals(AppointmentStatus.CREATED)) {
+			this.status = AppointmentStatus.FINISHED;
+			this.closeAppointment = OffsetDateTime.now();
 		}
-		return false;
 	}
 	
-	public void closeProcedure() {
-		if(this.open) {
-			this.open = false;
-		}
+	public void canceledAppointment() {
+		this.status = AppointmentStatus.CANCELED;
+		this.closeAppointment = OffsetDateTime.now();	
 	}
 }

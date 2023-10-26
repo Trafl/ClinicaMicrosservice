@@ -1,0 +1,24 @@
+package com.clinica.cadastro.domain.dto.input;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
+public class MedicalAppointmentDTOInput {
+	
+	@NotNull
+	private Long doctor_id;
+	
+	@NotNull
+	private Long patient_id;
+	
+	@NotNull
+	private Long procedure_id;
+	
+	@NotNull
+	private LocalDateTime date;
+	
+}

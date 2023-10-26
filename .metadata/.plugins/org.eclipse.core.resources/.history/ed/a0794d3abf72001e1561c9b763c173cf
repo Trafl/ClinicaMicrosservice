@@ -1,0 +1,9 @@
+package com.clinica.cadastro.controller.api;
+
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructo
+public class Listener {
+
+}

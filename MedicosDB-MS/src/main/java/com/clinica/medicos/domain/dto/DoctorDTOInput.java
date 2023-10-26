@@ -14,13 +14,9 @@ import lombok.Setter;
 public class DoctorDTOInput {
 	
 	@NotBlank
-	@Schema(example = "Leonard")
-	private String firstName;
+	@Schema(example = "Leonard Silva")
+	private String name;
 	
-	@NotBlank
-	@Schema(example = "Silva")
-	private String lastName;
-
 	@NotBlank
 	@Email
 	@Schema(example = "silva@email.com")

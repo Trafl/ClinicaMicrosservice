@@ -1,7 +1,0 @@
-package com.clinica.cadastro.domain.model;
-
-public enum JobRole {
-
-	PATIENT,
-	DOCTOR
-}

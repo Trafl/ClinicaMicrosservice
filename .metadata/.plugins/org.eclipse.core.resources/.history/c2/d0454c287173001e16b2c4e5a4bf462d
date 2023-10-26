@@ -1,0 +1,36 @@
+package com.clinica.cadastro.controller.api;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.clinica.cadastro.controller.modelMapper.AppointmentMapper;
+import com.clinica.cadastro.domain.dto.input.MedicalAppointmentDTOInput;
+import com.clinica.cadastro.domain.dto.output.MedicalAppointmentOutPut;
+import com.clinica.cadastro.domain.model.MedicalAppointment;
+import com.clinica.cadastro.domain.service.MedicalAppointmentService;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/consulta")
+@RequiredArgsConstructor
+public class AppointmentController {
+	
+	final private MedicalAppointmentService medicalAppointmentService;
+	
+	final private AppointmentMapper mapper;
+	
+	@PostMapping
+	public ResponseEntity<MedicalAppointmentOutPut> createAppointmente (@RequestBody MedicalAppointmentDTOInput appointmentDto){
+		
+		var appointment =  medicalAppointmentService.createAppointment(appointmentDto);
+		
+		MedicalAppointmentOutPut appointmentOut = mapper.toDTO(appointment);
+		
+		return ResponseEntity.ok(appointmentOut);
+	}
+	
+}
