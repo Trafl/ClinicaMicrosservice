@@ -1,6 +1,7 @@
 package com.clinica.cadastro.controller.exceptionhandler;
 
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +73,17 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 		problem.setType(URI.create("https://clinicas.com/errors/business-error"));
 		problem.setProperty("timestamp", Instant.now());
 		return problem;
-		
-		
+	}
+	
+	@ExceptionHandler(UnknownHostException.class)
+	ProblemDetail handlerUnknownHostExceptionException(UnknownHostException e) {
+		var detail = String.format("Não não foi possivel achar conexão, o serviço %s esta indisponivel", e.getMessage());
+
+		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, detail);
+				
+		problem.setTitle("Não não foi possivel achar conexão");
+		problem.setType(URI.create("https://clinicas.com/errors/internal-error"));
+		problem.setProperty("timestamp", Instant.now());
+		return problem;
 	}
 }

@@ -7,10 +7,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import com.clinica.cadastro.controller.modelMapper.AppointmentMapper;
 import com.clinica.cadastro.domain.dto.feign.DoctorFeign;
 import com.clinica.cadastro.domain.dto.feign.PatienteFeign;
 import com.clinica.cadastro.domain.dto.feign.ProcedureFeign;
 import com.clinica.cadastro.domain.dto.input.MedicalAppointmentDTOInput;
+import com.clinica.cadastro.domain.dto.output.MedicalAppointmentDtoFinancial;
 import com.clinica.cadastro.domain.exception.EntityNotFoundException;
 import com.clinica.cadastro.domain.model.AppointmentStatus;
 import com.clinica.cadastro.domain.model.Doctor;
@@ -29,13 +31,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MedicalAppointmentService {
 	
+	private final AppointmentMapper appointmentMapper;
+	
 	private final ProcedureService procedureService;
 	
 	private final PatientService patientService;
 	
 	private final DoctorService doctorService;
 		
-	private final KafkaTemplate<String, Object> kafkaTemplate;
+	private final KafkaTemplate<String, MedicalAppointmentDtoFinancial> kafkaTemplate;
 	
 	private final AppointmentRepository appointmentRepository;
 	
@@ -159,6 +163,10 @@ public class MedicalAppointmentService {
 	public MedicalAppointment finishAppointment(Long appointmentId) {
 		var appointment = findAppointmentById(appointmentId);
 		appointment.finishAppointment();
+		
+		var DtoFinancial = appointmentMapper.toDTOFinancial(appointment);
+		
+		kafkaTemplate.send("agendamento-to-financeiro", DtoFinancial);
 		
 		return appointment;
 				

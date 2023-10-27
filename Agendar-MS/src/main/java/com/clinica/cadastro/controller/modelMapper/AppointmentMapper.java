@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import com.clinica.cadastro.domain.dto.input.MedicalAppointmentDTOInput;
+import com.clinica.cadastro.domain.dto.output.MedicalAppointmentDtoFinancial;
 import com.clinica.cadastro.domain.dto.output.MedicalAppointmentOutPut;
 import com.clinica.cadastro.domain.model.MedicalAppointment;
 
@@ -26,7 +27,12 @@ public class AppointmentMapper {
 		return mapper.map(appointment, MedicalAppointmentOutPut.class);
 	}
 	
+	public MedicalAppointmentDtoFinancial toDTOFinancial (MedicalAppointment appointment) {
+		return mapper.map(appointment, MedicalAppointmentDtoFinancial.class);
+	}
+	
 	public List<MedicalAppointmentOutPut> toDtoCollection(Collection<MedicalAppointment> list){
 		return list.stream().map(appointment -> toDTO(appointment)).toList();
 	}
+	
 }

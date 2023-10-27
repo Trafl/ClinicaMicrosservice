@@ -34,7 +34,9 @@ public class MedicalAppointment {
 	
 	private OffsetDateTime createdDate = OffsetDateTime.now();
 	
-	private OffsetDateTime closeAppointment;
+	private OffsetDateTime finishedAppointment;
+	
+	private OffsetDateTime cancelAppointment;
 	
 	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status = AppointmentStatus.CREATED;
@@ -42,12 +44,12 @@ public class MedicalAppointment {
 	public void finishAppointment() {
 		if(status.equals(AppointmentStatus.CREATED)) {
 			this.status = AppointmentStatus.FINISHED;
-			this.closeAppointment = OffsetDateTime.now();
+			this.finishedAppointment = OffsetDateTime.now();
 		}
 	}
 	
 	public void canceledAppointment() {
 		this.status = AppointmentStatus.CANCELED;
-		this.closeAppointment = OffsetDateTime.now();	
+		this.cancelAppointment = OffsetDateTime.now();	
 	}
 }

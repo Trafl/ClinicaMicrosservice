@@ -1,0 +1,25 @@
+package com.clinica.cadastro.controller.api.swagger;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+
+import com.clinica.cadastro.domain.dto.input.MedicalAppointmentDTOInput;
+import com.clinica.cadastro.domain.dto.output.MedicalAppointmentOutPut;
+
+public interface AppointmentControllerSwagger {
+
+	public ResponseEntity<List<MedicalAppointmentOutPut>> getAllAppointment();
+	
+	public ResponseEntity<List<MedicalAppointmentOutPut>> getFinishedAppointment();
+	
+	public ResponseEntity<List<MedicalAppointmentOutPut>> getCancelAppointment();
+	
+	public ResponseEntity<MedicalAppointmentOutPut> getAppointmentById(Long appointmentId);
+	
+	public ResponseEntity<MedicalAppointmentOutPut> createAppointment(MedicalAppointmentDTOInput appointmentDto);
+	
+	public ResponseEntity<MedicalAppointmentOutPut> cancelAppointment(Long appointmentId );
+	
+	public ResponseEntity<MedicalAppointmentOutPut> finishAppointment(Long appointmentId );
+}

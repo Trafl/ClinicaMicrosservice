@@ -22,3 +22,11 @@
 1698349606046	Extract method 'extractData'
 1698349727490	Extract method 'fillData'
 1698353247951	Delete element
+1698427243044	Delete element
+1698429810403	Copy compilation unit
+1698431735494	Extract method 'doctorToDto'
+1698431756129	Extract method 'patientToDto'
+1698431774237	Extract method 'procedureToDto'
+1698431800700	Extract method 'appointmentToDto'
+1698431830767	Extract method 'appointmentToFinancial'
+1698432363805	Rename resource 'V001__tabela-consultas-medicas'

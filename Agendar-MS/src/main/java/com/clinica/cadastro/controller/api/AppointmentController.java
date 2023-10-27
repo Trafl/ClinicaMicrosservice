@@ -2,6 +2,7 @@ package com.clinica.cadastro.controller.api;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinica.cadastro.controller.api.swagger.AppointmentControllerSwagger;
 import com.clinica.cadastro.controller.modelMapper.AppointmentMapper;
 import com.clinica.cadastro.domain.dto.input.MedicalAppointmentDTOInput;
 import com.clinica.cadastro.domain.dto.output.MedicalAppointmentOutPut;
@@ -24,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/consultas")
 @RequiredArgsConstructor
-public class AppointmentController {
+public class AppointmentController implements AppointmentControllerSwagger {
 	
 	final private MedicalAppointmentService medicalAppointmentService;
 	
@@ -74,18 +77,14 @@ public class AppointmentController {
 	}
 	
 	@PutMapping("/{appointmentId}/cancelar")
-	public ResponseEntity<MedicalAppointmentOutPut> cancelAppointment(@PathVariable Long appointmentId ){
-		var appointment = medicalAppointmentService.cancelAppointment(appointmentId);
-		var appointmentDto = mapper.toDTO(appointment);
-		
-		return ResponseEntity.ok(appointmentDto);
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void  cancelAppointment(@PathVariable Long appointmentId ){
+		medicalAppointmentService.cancelAppointment(appointmentId);
 	}
 	
 	@PutMapping("/{appointmentId}/finalizar")
-	public ResponseEntity<MedicalAppointmentOutPut> finishAppointment(@PathVariable Long appointmentId ){
-		var appointment = medicalAppointmentService.finishAppointment(appointmentId);
-		var appointmentDto = mapper.toDTO(appointment);
-		
-		return ResponseEntity.ok(appointmentDto);
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void finishAppointment(@PathVariable Long appointmentId ){
+		medicalAppointmentService.finishAppointment(appointmentId);
 	}
 }
