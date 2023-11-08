@@ -1,8 +1,7 @@
-# ClinicaMicrosservice
-Projeto criado com o intuito de melhorar a administração de uma clinica medica. 
-Focado no agendamento de consultas, organização dos pacientes e controle financeiro.
+# Clinic microservice
+Welcome to the medical practice management microservice. This microservice was developed to organize and centralize essential information for a medical clinic. Below you will find an overview of the main components and functionalities of this project.
 
-# Tecnologias Utilizadas 
+## Technologies Used
 - Java 17
 - Spring Boot
 - Spring Data JPA
@@ -10,33 +9,34 @@ Focado no agendamento de consultas, organização dos pacientes e controle finan
 - Flyway
 - Lombok
 - MySQL
-- OpenApi
 - SpringDoc
 - Spring Gateway
-- Spring netflix Eureka
+- Spring Netflix Eureka
 - Spring Cloud OpenFeign
 - Apache Kafka
 
-# Documentação
-Cada microsserviço tem a sua propria documentação no padrão Swagger para o melhor entendimento sobre cada End-point.
+## Documentation
+Each microservice has its own documentation in the Swagger standard for a better understanding of each End-point.
+Access "http://localhost:8081/" and open the Eureka graphical interface to find out which port each application is running on.
+After that, replace the connected port in http://localhost:"youPort" and add "/swagger-ui/index.html#/".
 
-# Arquitetura
- ## Serviços de Gateway:
-- GateWayServer-MS: GateWay que unifica os pontos de entrada da API, utiliza o SpringGateWay.
+## Architecture
+ ### Gateway Services:
+- GateWayServer-MS: GateWay that unifies API entry points uses SpringGateWay
 
- ## Serviços de Descoberta: 
-- EurekaServer-MS: Serviço utilizado para que as API's se encontrem na rede, utilza o Spring netflix Eureka.
+ ### Discovery Services: 
+- EurekaServer-MS: Service used for APIs to be found on the network, uses Spring Netflix Eureka.
 
- ## Serviços de Armazenamento de Dados:
-- PacientesDB-MS: responsavel pelo CRUD das informações relacionadas aos pacientes.
-- ProcedimentosDB-MS: responsavel pelo CRUD das informações relacionadas aos procedimentos.
-- MedicosDB-MS: responsavel pelo CRUD das informações relacionadas aos medicos.
+ ### Data Storage Services:
+- PacientesDB-MS: responsible for CRUD of information related to patients.
+- ProcedimentosDB-MS: responsible for CRUD of information related to procedures.
+- MedicosDB-MS: responsible for CRUD of information related to doctors.
   
- ## Serviços de Negócios: 
-- Agendar-MS: responsavel por fazer uma chamada sincrona as API's de armazenamento, coletar informações e criar uma entidade Consulta
+ ### Business Services: 
+- Agendar-MS: responsible for making a synchronous call to the storage API's, collecting information and creating a Medical appointment entity.
+- Financeiro-MS: Responsible for managing input values, example: medical appointments, output, example: purchased materials,
+calculate both and return an expense report.
 
-- Financeiro-MS: responsavel por gerenciar os valores de entrada exemplo: consultas, saida exemplo: materiais comprados
-calcular ambos e retornar um relatorio das despesas
-
- ## Serviços de Mensagens:
- - Apache Kafka: Sistema de mensageria assincrono para fazer a comunicação entre os microsserviços 
+ ### Messaging Services:
+ - Apache Kafka: Asynchronous messaging system to communicate between microservices.
+ - Spring Cloud OpenFeign: Used to make synchronous calls within the project to query data services.
