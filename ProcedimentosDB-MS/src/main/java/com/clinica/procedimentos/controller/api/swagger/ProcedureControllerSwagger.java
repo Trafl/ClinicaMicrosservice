@@ -13,57 +13,57 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Procedimentos", description = "Gerenciador de procedimentos")
+@Tag(name = "Procedures", description = "Procedure Manager")
 public interface ProcedureControllerSwagger {
 
-	@Operation(summary = "Lista os procedimentos", description = "Lista os procedimentos registrados no banco de dados.")
+	@Operation(summary = "List the procedures", description = "Lists the procedures registered in the database.")
 	public ResponseEntity<List<ProcedureDTOOutput>> findAllProcedures();
 	
 
-	 @Operation(summary = "Busca um procedimento por ID", description = "Busca um procedimento registrado no banco de dados.",
+	 @Operation(summary = "Search for a procedure by ID", description = "Searches for a procedure registered in the database.",
 			 responses = {
 					 @ApiResponse(responseCode = "200"),
 					 	  
-					 @ApiResponse(responseCode = "400", description = "ID de procedimentos invalido",
+					 @ApiResponse(responseCode = "400", description = "Invalid procedure ID",
 					 	  content = @Content(schema = @Schema(ref = "ProblemDetail"))),
 					 	  
-				 	 @ApiResponse(responseCode = "404", description = "Procedimento não encontrado",
+				 	 @ApiResponse(responseCode = "404", description = "Procedure not found",
 				 	 content = @Content(schema = @Schema(ref = "ProblemDetail")))
 			})
 	public ResponseEntity<ProcedureDTOOutput> findProcedureById(Long procedureId);
 	
 
-	@Operation(summary = "Registra um procedimento", description = "Registra um procedimento no banco de dados.",
+	@Operation(summary = "Register a procedure", description = "Registers a procedure in the database.",
 			responses = {
-					@ApiResponse(responseCode = "400", description = "Erro na validação dos campos informados",
+					@ApiResponse(responseCode = "400", description = "Error validating the fields entered",
 						 	  content = @Content(schema = @Schema(ref = "ProblemDetail")))
 			})
 	public ResponseEntity<ProcedureDTOOutput> createProcedure(ProcedureDTOInput dtoInput);
 	
 
-	@Operation(summary = "Atualizar um procedimento", description = "Atualiza um procedimento no banco de dados.",
+	@Operation(summary = "Update a procedure", description = "Updates a procedure in the database.",
 			 responses = {
 					  @ApiResponse(responseCode = "200"),
 				 	  
-					  @ApiResponse(responseCode = "400", description = "Erro na validação dos campos informados",
+					  @ApiResponse(responseCode = "400", description = "Error validating the fields entered",
 				 	  content = @Content(schema = @Schema(ref = "ProblemDetail"))),
 				 	  
-				 	  @ApiResponse(responseCode = "404", description = "Procedimento não encontrado",
+				 	  @ApiResponse(responseCode = "404", description = "Procedure not found",
 				 	  content = @Content(schema = @Schema(ref = "ProblemDetail")))
 		})
 	public ResponseEntity<ProcedureDTOOutput> updateProcedure(Long procedureId, ProcedureDTOInput dtoInput);
 	
-	 @Operation(summary = "Deleta um procedimento", description = "Deleta um procedimento no banco de dados.",
+	 @Operation(summary = "Deletes a procedure", description = "Deletes a procedure in the database.",
 			 responses = {
 					 @ApiResponse(responseCode = "204"),
 				 	  
-					 @ApiResponse(responseCode = "400", description = "Erro na validação dos campos informados ",
+					 @ApiResponse(responseCode = "400", description = "Error validating the fields entered",
 				 	  content = @Content(schema = @Schema(ref = "ProblemDetail"))),
 				 	  
-				 	  @ApiResponse(responseCode = "404", description = "Procedimentos não encontrado",
+				 	  @ApiResponse(responseCode = "404", description = "Procedures not found",
 				 	  content = @Content(schema = @Schema(ref = "ProblemDetail"))),
 				 	  
-				 	 @ApiResponse(responseCode = "500", description = "Erro interno de sistema",
+				 	 @ApiResponse(responseCode = "500", description = "Internal system error",
 				 	  content = @Content(schema = @Schema(ref = "ProblemDetail")))
 					})
 	public void deleteProcedureById(Long procedureId);

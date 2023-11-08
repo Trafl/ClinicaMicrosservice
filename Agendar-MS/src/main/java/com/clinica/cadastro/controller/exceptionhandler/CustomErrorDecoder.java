@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.clinica.cadastro.domain.exception.BusinessException;
 import com.clinica.cadastro.domain.exception.EntityNotFoundException;
 
+import feign.FeignException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 
@@ -13,13 +14,12 @@ public class CustomErrorDecoder implements ErrorDecoder {
 
 	@Override
 	public Exception decode(String methodKey, Response response) {
-		 if (response.status() == 400) {
-	            return new BusinessException("Requisição inválida");
-	        } else if (response.status() == 404) {
-	            return new EntityNotFoundException("Entidade não encontrada");
-	        }
-		return null;
-	       	
+		if (response.status() == 400) {
+			return new BusinessException("Requisição inválida");
+		} else if (response.status() == 404) {
+			return new EntityNotFoundException("Entidade não encontrada");
+		}
+		return FeignException.errorStatus(methodKey, response);
 	}
 
 }

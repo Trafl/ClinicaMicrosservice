@@ -1,0 +1,8 @@
+package com.clinica.cadastro.domain.exception;
+
+public class Snippet {
+	public static void main(String[] args) {
+		RemoteServiceException
+	}
+}
+

@@ -1,5 +1,0 @@
-package com.clinica.cadastro.domain.dto.feign;
-
-public class PatienteFeign {
-
-}

@@ -17,16 +17,16 @@ public class SpringDocConfig {
 	public OpenAPI openAPI() {
 		return new OpenAPI()
 				.info(new Info()
-						.title("ProcedimentosDB-MS")
+						.title("ProceduresDB-MS")
 						.version("v1")
-						.description("Microsservice responsavel pelo armazenamento e consultas sobre os procedimentos"))
+						.description("Microservice responsible for storage and consultation on procedures"))
 						.components(new Components()
                     .addSchemas("ProblemDetail", new Schema<ProblemDetail>()
                             .type("object")
                             .addProperty("type", new StringSchema().example("https://clinicas.com/errors/entity-not-found"))
-                            .addProperty("title", new StringSchema().example("Procedimento não registrado"))
+                            .addProperty("title", new StringSchema().example("Unregistered procedure"))
                             .addProperty("status", new StringSchema().example(404))
-                            .addProperty("detail", new StringSchema().example("Procedimento de id 5 não foi encontrado"))
+                            .addProperty("detail", new StringSchema().example("Procedure id 5 was not found"))
                             .addProperty("timestamp", new StringSchema().example("2023-10-16T19:32:54.253417400Z"))
 							));			
 	}

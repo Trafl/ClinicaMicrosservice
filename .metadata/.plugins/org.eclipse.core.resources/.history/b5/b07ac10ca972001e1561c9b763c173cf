@@ -1,5 +1,0 @@
-package com.clinica.cadastro.core.kafka;
-
-public class KafkaConfig {
-
-}

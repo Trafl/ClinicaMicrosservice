@@ -1,5 +1,0 @@
-package com.clinica.cadastro.domain.dto.output;
-
-public record DoctorOutput(Long id, String firstName, String lastName,  String crm, String specialty  ) {
-	 
-}

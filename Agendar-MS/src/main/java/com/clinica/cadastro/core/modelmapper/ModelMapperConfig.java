@@ -10,10 +10,10 @@ import com.clinica.cadastro.domain.dto.output.MedicalAppointmentDtoFinancial;
 import com.clinica.cadastro.domain.dto.output.MedicalAppointmentOutPut;
 import com.clinica.cadastro.domain.dto.output.PatienteOutPut;
 import com.clinica.cadastro.domain.dto.output.ProcedureDTOOutput;
-import com.clinica.cadastro.domain.model.Doctor;
 import com.clinica.cadastro.domain.model.MedicalAppointment;
-import com.clinica.cadastro.domain.model.Patient;
-import com.clinica.cadastro.domain.model.Procedure;
+import com.clinica.cadastro.domain.model.feign.Doctor;
+import com.clinica.cadastro.domain.model.feign.Patient;
+import com.clinica.cadastro.domain.model.feign.Procedure;
 
 @Configuration
 public class ModelMapperConfig {

@@ -33,6 +33,6 @@ public class DoctorDTOInput {
 	private String crm;
 	
 	@NotBlank
-	@Schema(example = "Fisioterapeuta")
+	@Schema(example = "Physiotherapist")
 	private String specialty;
 }

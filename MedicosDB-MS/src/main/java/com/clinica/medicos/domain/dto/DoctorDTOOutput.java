@@ -17,6 +17,6 @@ public class DoctorDTOOutput {
 	@Schema(example = "CRM/RJ123456")
 	private String crm;
 	
-	@Schema(example = "Fisioterapeuta")
+	@Schema(example = "Physiotherapist")
 	private String specialty;
 }

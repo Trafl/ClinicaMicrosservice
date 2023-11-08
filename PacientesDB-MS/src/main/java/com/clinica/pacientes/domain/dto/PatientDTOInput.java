@@ -22,7 +22,7 @@ public class PatientDTOInput {
 	private LocalDate birthday;
 	
 	@NotBlank
-	@Schema(example = "Masculino")
+	@Schema(example = "Masculine")
 	private String gender;
 
 	@NotBlank

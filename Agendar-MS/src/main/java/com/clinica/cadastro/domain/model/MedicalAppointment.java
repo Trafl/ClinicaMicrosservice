@@ -2,6 +2,10 @@ package com.clinica.cadastro.domain.model;
 
 import java.time.OffsetDateTime;
 
+import com.clinica.cadastro.domain.model.feign.Doctor;
+import com.clinica.cadastro.domain.model.feign.Patient;
+import com.clinica.cadastro.domain.model.feign.Procedure;
+
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -1,5 +1,0 @@
-package com.clinica.medicos.controller.api;
-
-public class AppointmentListener {
-
-}

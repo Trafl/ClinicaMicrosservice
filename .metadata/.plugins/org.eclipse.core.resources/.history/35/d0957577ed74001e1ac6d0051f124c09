@@ -1,5 +1,0 @@
-package com.clinica.cadastro.controller.api.swagger;
-
-public interface AppointmentControllerSwagger {
-
-}

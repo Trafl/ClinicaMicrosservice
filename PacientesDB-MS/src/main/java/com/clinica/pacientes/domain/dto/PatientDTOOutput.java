@@ -19,7 +19,7 @@ public class PatientDTOOutput {
 	@Schema(example = "1980-05-15T00:00:00Z")
 	private LocalDate birthday;
 	
-	@Schema(example = "Masculino")
+	@Schema(example = "Masculine")
 	private String gender;
 
 	@Schema(example = "marcos@email.com")

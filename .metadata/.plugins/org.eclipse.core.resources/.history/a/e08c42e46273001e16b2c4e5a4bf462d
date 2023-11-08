@@ -1,4 +1,0 @@
-package com.clinica.cadastro.domain.dto.output;
-
-public record DoctorFeign(Long id, String name, String specialty) {
-}

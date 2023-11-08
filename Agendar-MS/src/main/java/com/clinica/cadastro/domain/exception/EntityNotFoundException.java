@@ -6,10 +6,8 @@ public class EntityNotFoundException extends BusinessException {
 
 	public EntityNotFoundException(String message) {
 		super(message);
-
 	}
 
 	public EntityNotFoundException() {
-		// TODO Auto-generated constructor stub
 	}
 }

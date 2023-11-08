@@ -11,10 +11,10 @@ public class ProcedureDTOOutput {
 	@Schema(example = "1")
 	private Long id;
 	
-	@Schema(example = "RPG")
+	@Schema(example = "Lymphatic drainage")
 	private String name;
 	
-	@Schema(example = "Reeducação Postural Global (RPG)")
+	@Schema(example = "Lymphatic drainage in specific muscles")
 	private String description;
 	
 	@Schema(example = "120.00")

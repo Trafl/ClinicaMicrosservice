@@ -17,16 +17,16 @@ public class SpringDocConfig {
 	public OpenAPI openAPI() {
 		return new OpenAPI()
 				.info(new Info()
-						.title("MedicoDB-MS")
+						.title("DoctorDB-MS")
 						.version("v1")
-						.description("Microsservice responsavel pelo banco de dados dos medicos"))
+						.description("Microservice responsible for the doctors' database"))
 						.components(new Components()
 			                    .addSchemas("ProblemDetail", new Schema<ProblemDetail>()
 			                            .type("object")
 			                            .addProperty("type", new StringSchema().example("https://clinicas.com/errors/entity-not-found"))
-			                            .addProperty("title", new StringSchema().example("Paciente não registrado"))
+			                            .addProperty("title", new StringSchema().example("Unregistered doctor"))
 			                            .addProperty("status", new StringSchema().example(404))
-			                            .addProperty("detail", new StringSchema().example("Medico de id 5 não foi encontrado"))
+			                            .addProperty("detail", new StringSchema().example("Doctor id 5 was not found"))
 			                            .addProperty("timestamp", new StringSchema().example("2023-10-16T19:32:54.253417400Z"))
 										));			
 	}
