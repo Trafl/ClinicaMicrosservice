@@ -1,6 +1,6 @@
 package com.clinica.cadastro.domain.model;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import com.clinica.cadastro.domain.model.feign.Doctor;
 import com.clinica.cadastro.domain.model.feign.Patient;
@@ -34,13 +34,13 @@ public class MedicalAppointment {
 	@Embedded
 	private Procedure procedure;
 	
-	private OffsetDateTime date;
+	private LocalDateTime date;
 	
-	private OffsetDateTime createdDate = OffsetDateTime.now();
+	private LocalDateTime createdDate = LocalDateTime.now();
 	
-	private OffsetDateTime finishedAppointment;
+	private LocalDateTime finishedAppointment;
 	
-	private OffsetDateTime cancelAppointment;
+	private LocalDateTime cancelAppointment;
 	
 	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status = AppointmentStatus.CREATED;
@@ -48,12 +48,12 @@ public class MedicalAppointment {
 	public void finishAppointment() {
 		if(status.equals(AppointmentStatus.CREATED)) {
 			this.status = AppointmentStatus.FINISHED;
-			this.finishedAppointment = OffsetDateTime.now();
+			this.finishedAppointment = LocalDateTime.now();
 		}
 	}
 	
 	public void canceledAppointment() {
 		this.status = AppointmentStatus.CANCELED;
-		this.cancelAppointment = OffsetDateTime.now();	
+		this.cancelAppointment = LocalDateTime.now();	
 	}
 }

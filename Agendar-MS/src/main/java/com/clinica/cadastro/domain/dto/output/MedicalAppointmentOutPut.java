@@ -1,6 +1,6 @@
 package com.clinica.cadastro.domain.dto.output;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import com.clinica.cadastro.domain.model.AppointmentStatus;
 
@@ -19,7 +19,7 @@ public class MedicalAppointmentOutPut {
 	private ProcedureDTOOutput procedure;
 	
 	@Schema(example = "2023-10-27T17:39:58.695Z")
-	private OffsetDateTime date;
+	private LocalDateTime date;
 	
 	@Schema(example = "CREATED")
 	private AppointmentStatus status;

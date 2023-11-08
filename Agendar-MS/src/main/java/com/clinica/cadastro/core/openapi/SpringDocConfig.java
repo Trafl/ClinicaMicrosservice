@@ -16,16 +16,16 @@ public class SpringDocConfig {
 	public OpenAPI openAPI() {
 		return new OpenAPI()
 				.info(new Info()
-						.title("Agendar-MS")
+						.title("Schedule-MS")
 						.version("v1")
-						.description("Microsservice responsavel pelo agendamento de consultas")
+						.description("Microservice responsible for scheduling appointments")
 						).components(new Components()
 			                    .addSchemas("ProblemDetail", new Schema<ProblemDetail>()
 			                            .type("object")
 			                            .addProperty("type", new StringSchema().example("https://clinicas.com/errors/entity-not-found"))
-			                            .addProperty("title", new StringSchema().example("Consulta não registrada"))
+			                            .addProperty("title", new StringSchema().example("Unregistered medical appointment"))
 			                            .addProperty("status", new StringSchema().example(404))
-			                            .addProperty("detail", new StringSchema().example("Consulta de id 5 não foi encontrado"))
+			                            .addProperty("detail", new StringSchema().example("Medical appointment for id 5 was not found"))
 			                            .addProperty("timestamp", new StringSchema().example("2023-10-16T19:32:54.253417400Z"))
 										));			
 	}

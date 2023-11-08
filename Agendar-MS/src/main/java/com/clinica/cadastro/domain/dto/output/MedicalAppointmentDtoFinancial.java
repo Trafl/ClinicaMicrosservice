@@ -1,7 +1,7 @@
 package com.clinica.cadastro.domain.dto.output;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,9 +20,9 @@ public class MedicalAppointmentDtoFinancial {
 	
 	private BigDecimal value;
 	
-	private OffsetDateTime createdDate;
+	private LocalDateTime createdDate;
 	
-	private OffsetDateTime finishedAppointment;
+	private LocalDateTime finishedAppointment;
 	
 	
 }

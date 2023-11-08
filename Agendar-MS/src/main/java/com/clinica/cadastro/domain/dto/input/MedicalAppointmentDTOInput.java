@@ -1,6 +1,6 @@
 package com.clinica.cadastro.domain.dto.input;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -25,6 +25,6 @@ public class MedicalAppointmentDTOInput {
 	
 	@NotNull
 	@Schema(example = "2023-10-27T17:39:58.695Z")
-	private OffsetDateTime date;
+	private LocalDateTime date;
 	
 }
