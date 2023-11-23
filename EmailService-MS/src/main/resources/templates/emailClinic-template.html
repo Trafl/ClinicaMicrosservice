@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Consulta</title>
+    
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        header {
+            background: #ffffff;
+            color: #333;
+            padding: 1em 0;
+        }
+
+        header::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        h1 {
+            float: left;
+            margin: 0;
+        }
+
+        nav {
+            float: right;
+            margin-top: 10px;
+        }
+
+        nav a {
+            margin: 0 5px;
+            padding: 5px 10px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .main {
+            padding: 1em 0;
+        }
+
+        .main-content {
+            width: 60%;
+            float: left;
+            margin-top: 10px;
+        }
+
+        .main-content h2 {
+            color: #333;
+        }
+
+        .main-content p {
+            font-size: 1.1em;
+            line-height: 1.6em;
+            color: #666;
+        }
+
+        .sidebar {
+            width: 35%;
+            float: left;
+            margin-top: 10px;
+            background: #e6e6e6;
+            padding: 1em;
+        }
+
+        .sidebar img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        footer {
+            padding: 1em 0;
+            background: #ffffff;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>Clinica</h1>
+            </div>
+        </header>
+
+        <div class="main">
+            <div class="main-content">
+                <h2>Confirmação de Consulta</h2>
+                <p>Olá ${emailDto.getPatient_name()},</p>
+                <p>Sua consulta marcada para ${emailDto.getConvertDate()} foi confirmada. Aguardamos ansiosamente por sua visita.</p>
+                <p>Em caso de dúvidas ou se precisar reagendar, entre em contato conosco o mais rápido possível.</p>
+            </div>
+
+            <div class="sidebar">
+                <img src="https://via.placeholder.com/150" alt="Logo da Clínica">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Clínica. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>

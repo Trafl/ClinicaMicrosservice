@@ -67,4 +67,7 @@
 		<item key="GenerateJavadoc" value="false"/>
 		<item key="AccessModifier" value="2"/>
 	</section>
+	<section name="NewRecordWizardPage">
+		<item key="create_unimplemented" value="false"/>
+	</section>
 </section>

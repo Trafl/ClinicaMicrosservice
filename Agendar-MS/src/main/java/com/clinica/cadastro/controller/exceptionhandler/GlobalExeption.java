@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.kafka.common.errors.SerializationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -87,4 +88,14 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 		return problem;
 	}
 	
+	@ExceptionHandler(SerializationException.class)
+	ProblemDetail handlerSerializationException(SerializationException e) {
+
+		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+				
+		problem.setTitle("Erro ao serializar");
+		problem.setType(URI.create("https://clinicas.com/errors/internal-error"));
+		problem.setProperty("timestamp", Instant.now());
+		return problem;
+	}
 }

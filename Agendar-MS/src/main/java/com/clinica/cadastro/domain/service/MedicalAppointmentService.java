@@ -8,11 +8,11 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.clinica.cadastro.controller.modelMapper.AppointmentMapper;
+import com.clinica.cadastro.domain.dto.emailservice.EmailDto;
 import com.clinica.cadastro.domain.dto.feign.DoctorFeign;
 import com.clinica.cadastro.domain.dto.feign.PatienteFeign;
 import com.clinica.cadastro.domain.dto.feign.ProcedureFeign;
 import com.clinica.cadastro.domain.dto.input.MedicalAppointmentDTOInput;
-import com.clinica.cadastro.domain.dto.output.MedicalAppointmentDtoFinancial;
 import com.clinica.cadastro.domain.exception.EntityNotFoundException;
 import com.clinica.cadastro.domain.model.AppointmentStatus;
 import com.clinica.cadastro.domain.model.MedicalAppointment;
@@ -23,6 +23,7 @@ import com.clinica.cadastro.domain.repository.AppointmentRepository;
 import com.clinica.cadastro.domain.service.feign.DoctorService;
 import com.clinica.cadastro.domain.service.feign.PatientService;
 import com.clinica.cadastro.domain.service.feign.ProcedureService;
+import com.clinica.cadastro.domain.service.kafka.KafkaServiceToEmail;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,8 @@ public class MedicalAppointmentService {
 	private final PatientService patientService;
 	
 	private final DoctorService doctorService;
-		
-	private final KafkaTemplate<String, MedicalAppointmentDtoFinancial> kafkaTemplate;
+	
+	private final KafkaServiceToEmail serviceToEmail;
 	
 	private final AppointmentRepository appointmentRepository;
 	
@@ -88,8 +89,23 @@ public class MedicalAppointmentService {
 	public MedicalAppointment createAppointment(MedicalAppointmentDTOInput appointmentDto ) {
 		MedicalAppointment appointment = extractData(appointmentDto);		
 		
+		var emailDto = emailDtoBuilder(appointment);
+		
+		serviceToEmail.sendMessage("agendar-to-emailService", emailDto);
+		
 		return appointmentRepository.save(appointment);
 	}
+
+	private EmailDto emailDtoBuilder(MedicalAppointment appointment) {
+		    return  EmailDto.builder()
+		    		.patient_email(appointment.getPatient().getPatient_email())
+					.patient_name(appointment.getPatient().getPatient_name())
+					.doctor_name(appointment.getDoctor().getDoctor_name())
+					.date(appointment.getDate())
+					.build();
+	}
+
+	
 
 	private MedicalAppointment extractData(MedicalAppointmentDTOInput appointmentDto) {
 		
@@ -164,9 +180,7 @@ public class MedicalAppointmentService {
 		var appointment = findAppointmentById(appointmentId);
 		appointment.finishAppointment();
 		
-		var DtoFinancial = appointmentMapper.toDTOFinancial(appointment);
-		
-		kafkaTemplate.send("agendamento-to-financeiro", DtoFinancial);
+//		var DtoFinancial = appointmentMapper.toDTOFinancial(appointment);
 		
 		return appointment;
 				

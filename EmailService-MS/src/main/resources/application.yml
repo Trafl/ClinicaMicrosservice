@@ -1,0 +1,29 @@
+spring:
+     
+  application:
+    name: email-ms
+   
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${USER_EMAIL}
+    password: ${USER_PASSWORD}
+   
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+server:
+  port: 0
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true

@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: gateway-service
+    
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true    
+          
+      routes:
+      - id: CADASTRO-DB-MS
+        uri: lb://CADASTRO-DB-MS
+        predicates:
+        - Path=/consultas/**
+ 
+      - id: MEDICOS-DB-MS
+        uri: lb://MEDICOS-DB-MS
+        predicates:
+        - Path=/medicos/**        
+          
+      - id: PACIENTES-DB-MS
+        uri: lb://PACIENTES-DB-MS
+        predicates:
+        - Path=/pacientes/**
+        
+      - id: PROCEDIMENTOS-DB-MS
+        uri: lb://PROCEDIMENTOS-DB-MS
+        predicates:
+        - Path=/procedimentos/**        
+        
+        
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
