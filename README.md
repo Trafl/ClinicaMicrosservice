@@ -17,7 +17,7 @@ Welcome to the medical practice management microservice. This microservice was d
 
 ## Documentation
 Each microservice has its own documentation in the Swagger standard for a better understanding of each End-point.
-Access "http://localhost:8081/" and open the Eureka graphical interface to find out which port each application is running on.
+Access "http://localhost:8761/" and open the Eureka graphical interface to find out which port each application is running on.
 After that, replace the connected port in http://localhost:"youPort" and add "/swagger-ui/index.html#/".
 
 ## Architecture
@@ -40,3 +40,6 @@ calculate both and return an expense report.
  ### Messaging Services:
  - Apache Kafka: Asynchronous messaging system to communicate between microservices.
  - Spring Cloud OpenFeign: Used to make synchronous calls within the project to query data services.
+
+### Service
+- Email service: Dedicated service sending emails to customers, can be implemented with Amazon's SES or Google's SMTP direct configuration in the application properties
