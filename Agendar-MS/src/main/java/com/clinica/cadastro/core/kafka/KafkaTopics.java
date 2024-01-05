@@ -11,10 +11,19 @@ public class KafkaTopics {
 	@Bean
 	public NewTopic toEmailTopic() {
 	    return TopicBuilder.name("agendar-to-emailService")
-	            .partitions(10)
-	            .replicas(3)
+	            .partitions(4)
+	            .replicas(1)
 	            .compact()
 	            .build();
 	}
 
+	@Bean
+	public NewTopic toPatientEvolutionTopic() {
+	    return TopicBuilder.name("agendar-to-patient-evolution")
+	            .partitions(4)
+	            .replicas(1)
+	            .compact()
+	            .build();
+	}
+	
 }

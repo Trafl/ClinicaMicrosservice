@@ -31,6 +31,7 @@ public class Listener {
 
 		service.sendEmail(message);
 
+		System.out.println("Chegou aqui");
 	}
 
 }

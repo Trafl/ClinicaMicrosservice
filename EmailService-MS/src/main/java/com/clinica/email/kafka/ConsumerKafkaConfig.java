@@ -21,7 +21,6 @@ public class ConsumerKafkaConfig {
 
 	  @Value(value = "${spring.kafka.bootstrap-servers:localhost:9092}")
 	    private String bootstrapAddress;
-
 	  
 	  @Bean
 	    public ConsumerFactory<String, Object > consumerFactory() {
@@ -49,5 +48,4 @@ public class ConsumerKafkaConfig {
 	        factory.setRecordMessageConverter(new JsonMessageConverter());
 	        return factory;
 	    }
-
 }

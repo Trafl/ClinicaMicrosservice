@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.clinica.medicos.domain.exception.BusinessException;
 import com.clinica.medicos.domain.exception.EntityNotFoundException;
 
-
 @RestControllerAdvice
 public class GlobalExeption extends ResponseEntityExceptionHandler {
 

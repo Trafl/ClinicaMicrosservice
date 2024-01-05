@@ -1,0 +1,23 @@
+spring:
+     
+  application:
+    name: patient-evolution-ms
+  
+  data:
+    mongodb:
+      auto-index-creation: true
+      host: localhost
+      database: evolution
+
+
+server:
+  port: 0
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+    

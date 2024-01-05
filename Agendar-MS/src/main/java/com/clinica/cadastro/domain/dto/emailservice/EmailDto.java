@@ -1,4 +1,4 @@
-package com.clinica.cadastro.domain.dto.emailservice;
+package com.clinica.cadastro.domain.dto.emailService;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

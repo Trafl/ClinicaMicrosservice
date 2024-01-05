@@ -10,8 +10,8 @@ spring:
           lower-case-service-id: true    
           
       routes:
-      - id: CADASTRO-DB-MS
-        uri: lb://CADASTRO-DB-MS
+      - id: AGENDAR-MS
+        uri: lb://AGENDAR-MS
         predicates:
         - Path=/consultas/**
  
@@ -30,6 +30,10 @@ spring:
         predicates:
         - Path=/procedimentos/**        
         
+      - id: EVOLUCAO-PACIENTES-MS
+        uri: lb://EVOLUCAO-PACIENTES-MS
+        predicates:
+        - Path=/prontuarios/** 
         
 server:
   port: 8080

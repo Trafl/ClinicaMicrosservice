@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.clinica.medicos.domain.dto.DoctorDTOInput;
 import com.clinica.medicos.domain.dto.DoctorDTOOutput;
-import com.clinica.medicos.domain.dto.DoctorKafkaDTOOutput;
 import com.clinica.medicos.domain.model.Doctor;
 
 import lombok.RequiredArgsConstructor;
@@ -24,10 +23,6 @@ public class DoctorMapper {
 	
 	public DoctorDTOOutput toDTO (Doctor doctor) {
 		return mapper.map(doctor, DoctorDTOOutput.class);
-	}
-	
-	public DoctorKafkaDTOOutput toDTOKafka (Doctor doctor) {
-		return mapper.map(doctor, DoctorKafkaDTOOutput.class);
 	}
 	
 	public void copyToDomain(DoctorDTOInput doctorInput, Doctor doctor) {
