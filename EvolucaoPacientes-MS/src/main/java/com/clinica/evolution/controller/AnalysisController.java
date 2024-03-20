@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,13 +30,21 @@ public class AnalysisController {
 	
 	private final AnalysisMapper mapper;
 	
-	// Adicionar a busca com paramentros Medico e Paciente
+	// Futuramente usar o contexto do spring security para sempre usar o id/nome do medico automaticamente nas buscas 
 	@GetMapping("/{name}")
 	public ResponseEntity<List<AnalysisDTO>> getAllAnalysisByName(@PathVariable String name){
 		var list = analysisService.getAnalysisByDoctorOrPatientName(name);
 		var listDTO = mapper.toAnalysisDTOCollection(list);
 		return ResponseEntity.ok(listDTO);
 		
+	}
+	
+	//Vai filtrar o nome do paciente junto com o id do medico logado, contexto do security 
+	@GetMapping("/procurar")
+	public ResponseEntity<List<AnalysisDTO>> getAnalysisByPatientName(@RequestParam String patientName){
+		var list = analysisService.findByPatientName(patientName);
+		var listDTO = mapper.toAnalysisDTOCollection(list);
+		return ResponseEntity.ok(listDTO);
 	}
 
 	@PostMapping("/{id}")

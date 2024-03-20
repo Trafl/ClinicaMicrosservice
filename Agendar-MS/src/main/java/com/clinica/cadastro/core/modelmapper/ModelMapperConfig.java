@@ -19,7 +19,7 @@ import com.clinica.cadastro.domain.model.feign.Procedure;
 public class ModelMapperConfig {
 
 	@Bean
-	public ModelMapper modelMapper() {
+	ModelMapper modelMapper() {
 		
 		var modelMapper = new ModelMapper();
 		

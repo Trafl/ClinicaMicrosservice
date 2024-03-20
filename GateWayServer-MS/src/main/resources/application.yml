@@ -20,8 +20,8 @@ spring:
         predicates:
         - Path=/medicos/**        
           
-      - id: PACIENTES-DB-MS
-        uri: lb://PACIENTES-DB-MS
+      - id: PACIENTE-DB-MS
+        uri: lb://PACIENTE-DB-MS
         predicates:
         - Path=/pacientes/**
         

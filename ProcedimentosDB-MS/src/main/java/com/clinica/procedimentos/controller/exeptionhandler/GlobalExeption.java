@@ -1,6 +1,5 @@
 package com.clinica.procedimentos.controller.exeptionhandler;
 
-import java.net.URI;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,6 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
             ProblemDetail problem = ProblemDetail.forStatus(HttpStatusCode.valueOf(400));
-            problem.setType(URI.create("https://clinicas.com/errors/argument-not-valid"));
             problem.setTitle("Erro na validação dos campos informados");
             problem.setDetail("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.");
             problem.setProperty("timestamp", Instant.now());
@@ -58,7 +56,6 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
 		
 		problem.setTitle("Procedimento não registrado");
-		problem.setType(URI.create("https://clinicas.com/errors/entity-not-found"));
 		problem.setProperty("timestamp", Instant.now());
 		return problem;
 				
@@ -69,7 +66,6 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
 		
 		problem.setTitle("Violação de regra de negócio.");
-		problem.setType(URI.create("https://clinicas.com/errors/business-error"));
 		problem.setProperty("timestamp", Instant.now());
 		return problem;
 		

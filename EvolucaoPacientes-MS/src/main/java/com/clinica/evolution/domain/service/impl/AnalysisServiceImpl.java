@@ -52,4 +52,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 	public List<Evolution> findEvolutionsByName(String name) {
 		return analysisRepository.findEvolutionsByName(name);
 	}
+
+	public List<Analysis> findByPatientName(String patientName) {
+		return analysisRepository.findByPatientName(patientName);
+	}
 }

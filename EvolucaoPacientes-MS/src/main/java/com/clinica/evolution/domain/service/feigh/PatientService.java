@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.clinica.evolution.domain.model.Patient;
 
-@FeignClient(name = "pacientes-db-ms")
+@FeignClient(name = "paciente-db-ms")
 public interface PatientService {
 
 	@GetMapping("/pacientes/{patientId}")

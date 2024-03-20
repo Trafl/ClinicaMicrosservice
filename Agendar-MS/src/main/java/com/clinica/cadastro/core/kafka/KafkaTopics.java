@@ -9,7 +9,7 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaTopics {
 
 	@Bean
-	public NewTopic toEmailTopic() {
+	NewTopic toEmailTopic() {
 	    return TopicBuilder.name("agendar-to-emailService")
 	            .partitions(4)
 	            .replicas(1)
@@ -18,7 +18,7 @@ public class KafkaTopics {
 	}
 
 	@Bean
-	public NewTopic toPatientEvolutionTopic() {
+	NewTopic toPatientEvolutionTopic() {
 	    return TopicBuilder.name("agendar-to-patient-evolution")
 	            .partitions(4)
 	            .replicas(1)

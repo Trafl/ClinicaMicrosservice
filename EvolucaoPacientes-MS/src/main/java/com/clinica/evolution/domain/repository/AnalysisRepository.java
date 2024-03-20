@@ -15,4 +15,7 @@ public interface AnalysisRepository extends MongoRepository<Analysis, String> {
 	
 	@Query("{$text: {$search: ?0}}, {evolutions: 1}")
 	List<Evolution> findEvolutionsByName(String name);
+	
+	@Query("{'patient.name':{ $regex: ?0, $options: 'i'} }")
+	List<Analysis> findByPatientName(String patientName);
 }

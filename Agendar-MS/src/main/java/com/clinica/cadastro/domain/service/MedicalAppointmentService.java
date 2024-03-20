@@ -16,7 +16,7 @@ public interface MedicalAppointmentService {
 	
 	public MedicalAppointment findAppointmentById(Long appointmentId);
 	
-	public void deleteUserById(Long appointmentId);
+	public void deleteAppointmentById(Long appointmentId);
 	
 	public MedicalAppointment createAppointment(MedicalAppointmentDTOInput appointmentDto );
 	

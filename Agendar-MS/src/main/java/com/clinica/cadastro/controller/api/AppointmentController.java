@@ -2,6 +2,8 @@ package com.clinica.cadastro.controller.api;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +35,14 @@ public class AppointmentController implements AppointmentControllerSwagger {
 	
 	final private AppointmentMapper mapper;
 	
+	private static final Logger logg = LoggerFactory.getLogger(AppointmentController.class);
+	
 	@GetMapping()
 	public ResponseEntity<List<MedicalAppointmentOutPut>> getAllAppointment(){
 		var appointments = medicalAppointmentService.findAll();
 		var appointmentsDto = mapper.toDtoCollection(appointments);
+		
+		logg.info("Requisição GET no EndPoint '/consultas'");
 		return ResponseEntity.ok(appointmentsDto);
 	}
 	
@@ -44,6 +50,8 @@ public class AppointmentController implements AppointmentControllerSwagger {
 	public ResponseEntity<List<MedicalAppointmentOutPut>> getFinishedAppointment(){
 		var appointments = medicalAppointmentService.findFinished();
 		var appointmentsDto = mapper.toDtoCollection(appointments);
+		
+		logg.info("Requisição GET no EndPoint '/consultas/finalizadas'");
 		return ResponseEntity.ok(appointmentsDto);
 	}
 	
@@ -51,6 +59,8 @@ public class AppointmentController implements AppointmentControllerSwagger {
 	public ResponseEntity<List<MedicalAppointmentOutPut>> getCancelAppointment(){
 		var appointments = medicalAppointmentService.findCancel();
 		var appointmentsDto = mapper.toDtoCollection(appointments);
+		
+		logg.info("Requisição GET no EndPoint '/consultas/canceladas'");
 		return ResponseEntity.ok(appointmentsDto);
 	}
 	
@@ -59,6 +69,8 @@ public class AppointmentController implements AppointmentControllerSwagger {
 	public ResponseEntity<MedicalAppointmentOutPut> getAppointmentById(@PathVariable Long appointmentId){
 		var appointment = medicalAppointmentService.findAppointmentById(appointmentId);
 		var appointmentDto = mapper.toDTO(appointment);
+		
+		logg.info("Requisição GET no EndPoint '/consultas/" + appointmentId + "', retorno de objeto de mesmo id");
 		return ResponseEntity.ok(appointmentDto);
 	}
 	
@@ -66,6 +78,8 @@ public class AppointmentController implements AppointmentControllerSwagger {
 	public ResponseEntity<MedicalAppointmentOutPut> createAppointment(@Valid @RequestBody MedicalAppointmentDTOInput appointmentDto){
 		MedicalAppointment appointment =  medicalAppointmentService.createAppointment(appointmentDto);
 		MedicalAppointmentOutPut appointmentOut = mapper.toDTO(appointment);
+		
+		logg.info("Requisição POST no EndPoint '/consultas', Criado objeto MedicalAppointment");
 		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(appointmentOut);
 	}
 	
@@ -73,11 +87,13 @@ public class AppointmentController implements AppointmentControllerSwagger {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void  cancelAppointment(@PathVariable Long appointmentId ){
 		medicalAppointmentService.cancelAppointment(appointmentId);
+		logg.info("Requisição PUT no EndPoint '/consultas/" + appointmentId + "/cancelar', cancela consulta de id =" +appointmentId);
 	}
 	
 	@PutMapping("/{appointmentId}/finalizar")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void finishAppointment(@PathVariable Long appointmentId ){
 		medicalAppointmentService.finishAppointment(appointmentId);
+		logg.info("Requisição PUT no EndPoint '/consultas/" + appointmentId + "/finalizar', finalizar consulta de id =" +appointmentId);
 	}
 }

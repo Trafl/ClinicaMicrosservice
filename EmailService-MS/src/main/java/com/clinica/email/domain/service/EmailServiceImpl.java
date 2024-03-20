@@ -1,5 +1,7 @@
 package com.clinica.email.domain.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,14 @@ public class EmailServiceImpl implements EmailService {
 	
 	private final EmailProperties properties;
 	
+	private final static Logger logg = LoggerFactory.getLogger(EmailServiceImpl.class);
+	
 	public void sendEmail(Message message) {	
 		try {
 			MimeMessage mimeMessage = createMimeMessage(message);
 			
 			mailSender.send(mimeMessage);
+			logg.info("Email enviado para " + message.getAddressee());
 		
 		} catch (MessagingException e) {
 			e.printStackTrace();
@@ -57,6 +62,7 @@ public class EmailServiceImpl implements EmailService {
 			return FreeMarkerTemplateUtils.processTemplateIntoString(template, message.getVariables());
 		
 		} catch (Exception e) {
+			logg.error("Unable to create an email template. ");
 			throw new MailException("Unable to create an email template.", e);
 		}
 	}

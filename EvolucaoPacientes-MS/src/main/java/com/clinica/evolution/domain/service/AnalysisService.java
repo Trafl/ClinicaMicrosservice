@@ -18,4 +18,6 @@ public interface AnalysisService {
 	public List<Evolution> addEvolutionInAnalysisById(String id, Evolution evolution);
 	
 	public List<Evolution> findEvolutionsByName(String name);
+	
+	List<Analysis> findByPatientName(String doctorName);
 }

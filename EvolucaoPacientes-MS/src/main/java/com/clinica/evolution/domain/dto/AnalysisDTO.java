@@ -5,11 +5,13 @@ import java.util.List;
 
 import com.clinica.evolution.domain.model.Evolution;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class AnalysisDTO {
 
 	private String id;
@@ -22,6 +24,10 @@ public class AnalysisDTO {
 	
 	private LocalDateTime date;
 	
-	private List<Evolution> evolutions; 
+	private List<Evolution> evolutions;
 
+	public AnalysisDTO() {} 
+	
 }
+
+

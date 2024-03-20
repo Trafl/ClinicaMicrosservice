@@ -21,7 +21,7 @@ public class KafkaProducerConfig {
     private String bootstrapAddress;
 	
 	@Bean
-	public ProducerFactory<String, Object> producerAppointment() {
+	ProducerFactory<String, Object> producerAppointment() {
 		
 		Map<String, Object> configProps = new HashMap<>();
         
@@ -41,7 +41,7 @@ public class KafkaProducerConfig {
 	}
 	
 	@Bean
-	public KafkaTemplate<String, Object> kafkaTemplate(){
+	KafkaTemplate<String, Object> kafkaTemplate(){
 		var template = new KafkaTemplate<>(producerAppointment());
 		template.setProducerListener(new KafkaProducerListenerConfig());
 		return template;

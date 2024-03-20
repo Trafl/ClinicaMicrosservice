@@ -11,6 +11,6 @@ import lombok.Setter;
 @Component
 public class EmailProperties {
 
-	@Value("ivopivoteste@gmail.com")
+	@Value("${mail.username}")
 	private String sender;
 }

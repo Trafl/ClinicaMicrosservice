@@ -23,7 +23,9 @@ import com.clinica.procedimentos.domain.service.ProcedureService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RestController
 @RequestMapping("/procedimentos")
 @RequiredArgsConstructor
@@ -35,6 +37,7 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	
 	@GetMapping
 	public ResponseEntity<List<ProcedureDTOOutput>> findAllProcedures(){
+		log.info("Requisição GET feita no EndPoint '/procedimentos' para consultar lista com todos o objetos Procedure presentes no banco de dados");
 		List<Procedure> procedureList = procedureService.findAll();
 		List<ProcedureDTOOutput> procedureDtoList = procedureMapper.toDTOCollection(procedureList);
 		
@@ -43,6 +46,7 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	
 	@GetMapping("/{procedureId}")
 	public ResponseEntity<ProcedureDTOOutput> findProcedureById(@PathVariable Long procedureId){
+		log.info("Requisição GET feita no EndPoint '/procedimentos/{id}' para retornar objeto Procedure de Id= " + procedureId);
 		Procedure procedure = procedureService.findById(procedureId);
 		ProcedureDTOOutput procedureDto = procedureMapper.toDTO(procedure);
 		
@@ -52,6 +56,7 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<ProcedureDTOOutput> createProcedure(@RequestBody @Valid ProcedureDTOInput dtoInput){
+		log.info("Requisição POST feita no EndPoint '/procedimentos' para criar objeto Procedure para ser persistido no bando de dados");
 		Procedure procedure = procedureMapper.toEntity(dtoInput);
 		procedure = procedureService.createProcedure(procedure);
 
@@ -61,6 +66,7 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	
 	@PutMapping("/{procedureId}")
 	public ResponseEntity<ProcedureDTOOutput> updateProcedure(@PathVariable Long procedureId, @RequestBody @Valid ProcedureDTOInput dtoInput){
+		log.info("Requisição PUT feita no EndPoint '/procedimentos/{id}' para Atualizar objeto Procedure de Id= " + procedureId);
 		Procedure procedureInDb = procedureService.findById(procedureId);
 		procedureMapper.copyToDomain(dtoInput, procedureInDb);
 		
@@ -74,6 +80,7 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	@DeleteMapping("/{procedureId}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void deleteProcedureById(@PathVariable Long procedureId){
+		log.info("Requisição DELETE feita no EndPoint '/procedimentos/{id}' para deletar objeto Procedure de Id= " + procedureId);
 		procedureService.deleteProcedureById(procedureId);
 	}
 	

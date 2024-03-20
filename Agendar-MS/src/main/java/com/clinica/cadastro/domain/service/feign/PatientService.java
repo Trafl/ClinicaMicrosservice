@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.clinica.cadastro.domain.dto.feign.PatienteFeign;
 
-@FeignClient(name = "pacientes-db-ms")
+@FeignClient(name = "paciente-db-ms")
 public interface PatientService {
 
 	@GetMapping("/pacientes/{patientId}")
