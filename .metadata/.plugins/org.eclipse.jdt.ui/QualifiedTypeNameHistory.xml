@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="com.clinica.cadastro.controller.api.AppointmentController"/>
     <fullyQualifiedTypeName name="com.clinica.cadastro.domain.service.feign.DoctorService"/>
     <fullyQualifiedTypeName name="com.clinica.cadastro.domain.service.impl.MedicalAppointmentServiceImpl"/>
     <fullyQualifiedTypeName name="com.clinica.email.domain.service.EmailServiceImpl"/>
@@ -26,7 +25,6 @@
     <fullyQualifiedTypeName name="com.clinica.procedimentos.domain.exception.EntityNotFoundException"/>
     <fullyQualifiedTypeName name="org.mockito.ArgumentCaptor"/>
     <fullyQualifiedTypeName name="org.mockito.Captor"/>
-    <fullyQualifiedTypeName name="java.util.Optional"/>
     <fullyQualifiedTypeName name="org.springframework.boot.test.context.SpringBootTest"/>
     <fullyQualifiedTypeName name="org.springframework.boot.test.context.SpringBootTest.WebEnvironment"/>
     <fullyQualifiedTypeName name="org.testcontainers.containers.GenericContainer"/>
@@ -44,7 +42,6 @@
     <fullyQualifiedTypeName name="io.restassured.RestAssured"/>
     <fullyQualifiedTypeName name="org.springframework.context.annotation.Profile"/>
     <fullyQualifiedTypeName name="org.springframework.test.context.ActiveProfiles"/>
-    <fullyQualifiedTypeName name="org.junit.jupiter.api.Nested"/>
     <fullyQualifiedTypeName name="io.restassured.http.ContentType"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.TestMethodOrder"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.MethodOrderer"/>
@@ -55,9 +52,12 @@
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="org.assertj.core.util.Arrays"/>
-    <fullyQualifiedTypeName name="com.clinica.procedimentos.domain.model.Procedure"/>
     <fullyQualifiedTypeName name="java.math.BigDecimal"/>
     <fullyQualifiedTypeName name="org.springframework.web.servlet.resource.HttpResource"/>
     <fullyQualifiedTypeName name="com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpResponse"/>
     <fullyQualifiedTypeName name="java.net.http.HttpResponse"/>
+    <fullyQualifiedTypeName name="org.junit.jupiter.api.Nested"/>
+    <fullyQualifiedTypeName name="org.junit.jupiter.api.DisplayName"/>
+    <fullyQualifiedTypeName name="java.util.Optional"/>
+    <fullyQualifiedTypeName name="com.clinica.procedimentos.domain.model.Procedure"/>
 </qualifiedTypeNameHistroy>

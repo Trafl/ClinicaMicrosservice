@@ -23,5 +23,14 @@ public class ProcedureDTOInput {
 	@PositiveOrZero
 	@Schema(example = "120.00")
 	private BigDecimal value;
+
+	public ProcedureDTOInput(@NotBlank String name, @NotBlank String description,
+			@NotNull @PositiveOrZero BigDecimal value) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.value = value;
+	}
+	
 	
 }

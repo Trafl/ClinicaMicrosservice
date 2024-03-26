@@ -22,7 +22,8 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 
-import com.clinica.procedimentos.domain.model.Procedure;
+import com.clinica.procedimentos.domain.dto.ProcedureDTOInput;
+import com.clinica.procedimentos.domain.dto.ProcedureDTOOutput;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -46,7 +47,7 @@ class ProcedureControllerTest {
 
 	private static RequestSpecification specification;
 	private static ObjectMapper objectMapper;
-	private static Procedure procedure;
+	private static ProcedureDTOInput procedureDtoInput;
 
 	@DynamicPropertySource
 	static void configureProperties(DynamicPropertyRegistry registry) {
@@ -58,7 +59,7 @@ class ProcedureControllerTest {
 	@BeforeAll
 	static void beforeAll() {
 		mysql.start();
-		procedure = new Procedure("Limpeza de pele", "Procedimento de limpeza de pele", new BigDecimal(200));
+		procedureDtoInput = new ProcedureDTOInput("Limpeza de pele", "Procedimento de limpeza de pele", new BigDecimal(200));
 	}
 
 	@AfterAll
@@ -74,11 +75,11 @@ class ProcedureControllerTest {
 	
 	@Test
 	@Order(1)
-	@DisplayName("Given Procedure json object When POST CreateProcedure should return Procedure object and HTTPStatusCode code 201")
-	void givenProcedureJsonObject_WhenPOST_CreateProcedure_ShouldReturnProcedureObjectAndHTTPStatusCode201()throws JsonMappingException, JsonProcessingException {
+	@DisplayName("Given ProcedureDTOInput json object When POST CreateProcedure should return ProcedureDTOOutput and HTTPStatusCode code 201")
+	void givenProcedureJsonObject_WhenPOST_CreateProcedure_ShouldReturnProcedureDTOOutputAndHTTPStatusCode201()throws JsonMappingException, JsonProcessingException {
 		
 		var content = given().spec(specification)
-				.body(procedure)
+				.body(procedureDtoInput)
 				.when()
 					.post()
 				.then()
@@ -87,20 +88,21 @@ class ProcedureControllerTest {
 						.body()
 						.asString();
 
-		Procedure returnProcedure = objectMapper.readValue(content, Procedure.class);
-
+		ProcedureDTOOutput returnProcedure = objectMapper.readValue(content, ProcedureDTOOutput.class);
+		
 		assertNotNull(returnProcedure);
-		assertTrue(returnProcedure.getId() > 0);
-		assertEquals(procedure.getName(), returnProcedure.getName());
-		assertEquals(procedure.getDescription(), returnProcedure.getDescription());
-		assertEquals(procedure.getValue(), returnProcedure.getValue());
+		assertEquals(1L, returnProcedure.getId());
+		assertEquals(procedureDtoInput.getName(), returnProcedure.getName());
+		assertEquals(procedureDtoInput.getDescription(), returnProcedure.getDescription());
+		assertEquals(procedureDtoInput.getValue(), returnProcedure.getValue());
 	}
 
 	@Test
 	@Order(2)
-	@DisplayName("Given incomplete json of Procedure when POST CreateProcedure should return HTTPStatusCode 400")
+	@DisplayName("Given incomplete json of ProcedureDTOInput when POST CreateProcedure should return HTTPStatusCode 400")
 	void givenIncompleteJsonOfProcedure_WhenPost_CreateProcedure_ShouldReturnHTTPStatusCode402() throws JsonMappingException, JsonProcessingException {
-			var incompleteProcedure = new Procedure();
+			
+		var incompleteProcedure = new ProcedureDTOInput("", "", new  BigDecimal(-1));
 			
 			given().spec(specification)
 				.body(incompleteProcedure)
@@ -112,26 +114,26 @@ class ProcedureControllerTest {
 		
 	@Test
 	@Order(3)
-	@DisplayName("When GET FindById should return Procedure object and HTTPStatusCode 200")
+	@DisplayName("When GET FindById should return ProcedureDTOOutput object and HTTPStatusCode 200")
 	void whenGET_FindById_ShouldReturnProcedureObjectAndHTTPStatusCode200() throws JsonMappingException, JsonProcessingException {
 			
 		var content = given().spec(specification)
-					.pathParam("procedureId", 1L)
+					.pathParam("procedureDtoInputId", 1L)
 				.when()
-					.get("/{procedureId}")
+					.get("/{procedureDtoInputId}")
 				.then()
 					.statusCode(200)
 						.extract()
 							.body()
 							.asString();
 
-		Procedure returnProcedure = objectMapper.readValue(content, Procedure.class);
+		ProcedureDTOOutput returnProcedure = objectMapper.readValue(content, ProcedureDTOOutput.class);
 
 		assertNotNull(returnProcedure);
 		assertTrue(returnProcedure.getId() > 0);
-		assertEquals(procedure.getName(), returnProcedure.getName());
-		assertEquals(procedure.getDescription(), returnProcedure.getDescription());
-		assertEquals(procedure.getValue().intValue(), returnProcedure.getValue().intValue());
+		assertEquals(procedureDtoInput.getName(), returnProcedure.getName());
+		assertEquals(procedureDtoInput.getDescription(), returnProcedure.getDescription());
+		assertEquals(procedureDtoInput.getValue().intValue(), returnProcedure.getValue().intValue());
 	}
 	
 	@Test
@@ -148,10 +150,10 @@ class ProcedureControllerTest {
 	}
 	@Test
 	@Order(5)
-	@DisplayName("When GET FindByAll should return list of Procedure and HTTPStatusCode 200")
+	@DisplayName("When GET FindByAll should return list of ProcedureDTOOutput and HTTPStatusCode 200")
 	void whenGET_FindByAll_ShouldReturnListOfProcedureAndHTTPStatus200() throws JsonMappingException, JsonProcessingException {
 		
-		var anotherProcedure = new Procedure("Massagem corporal", "Massagem por todo o corpo", new BigDecimal(150));
+		var anotherProcedure = new ProcedureDTOInput("Massagem corporal", "Massagem por todo o corpo", new BigDecimal(150));
 		
 		given().spec(specification)
 		.body(anotherProcedure)
@@ -168,49 +170,49 @@ class ProcedureControllerTest {
 						.asString();
 		
 		
-		Procedure[] procedures = objectMapper.readValue(content, Procedure[].class);
-		var list =  Arrays.asList(procedures);
+		ProcedureDTOOutput[] procedureDtoInputs = objectMapper.readValue(content, ProcedureDTOOutput[].class);
+		var list =  Arrays.asList(procedureDtoInputs);
 		
 		assertNotNull(list);
 		assertEquals(2, list.size());
 		
-		Procedure procedure1 = (Procedure) list.get(0);
+		ProcedureDTOOutput procedureDtoOutput1 = (ProcedureDTOOutput) list.get(0);
 		
-		assertNotNull(procedure1);
-		assertTrue(procedure1.getId() > 0);
-		assertEquals(procedure.getName(), procedure1.getName());
-		assertEquals(procedure.getDescription(), procedure1.getDescription());
-		assertEquals(procedure.getValue().intValue(), procedure1.getValue().intValue());
+		assertNotNull(procedureDtoOutput1);
+		assertTrue(procedureDtoOutput1.getId() > 0);
+		assertEquals(procedureDtoInput.getName(), procedureDtoOutput1.getName());
+		assertEquals(procedureDtoInput.getDescription(), procedureDtoOutput1.getDescription());
+		assertEquals(procedureDtoInput.getValue().intValue(), procedureDtoOutput1.getValue().intValue());
 		
-		Procedure procedure2 = (Procedure) list.get(1);
+		ProcedureDTOOutput procedureDtoOutput2 = (ProcedureDTOOutput) list.get(1);
 		
-		assertNotNull(procedure2);
-		assertTrue(procedure2.getId() > 0);
-		assertEquals(anotherProcedure.getName(), procedure2.getName());
-		assertEquals(anotherProcedure.getDescription(), procedure2.getDescription());
-		assertEquals(anotherProcedure.getValue().intValue(), procedure2.getValue().intValue());
+		assertNotNull(procedureDtoOutput2);
+		assertTrue(procedureDtoOutput2.getId() > 0);
+		assertEquals(anotherProcedure.getName(), procedureDtoOutput2.getName());
+		assertEquals(anotherProcedure.getDescription(), procedureDtoOutput2.getDescription());
+		assertEquals(anotherProcedure.getValue().intValue(), procedureDtoOutput2.getValue().intValue());
 		
 	}
 	
 	@Test
 	@Order(6)
-	@DisplayName("Given Procedure object and id when PUT update should return updated Procedure and HTTPStatusCode 200")
+	@DisplayName("Given ProcedureDTOInput and id when PUT update should return updated ProcedureDTOOutput and HTTPStatusCode 200")
 	void givenProcedureObjectAndId_WhenPUT_update_ShouldReturnProcedureUpdatedAndHTTPStatus200() throws JsonMappingException, JsonProcessingException {
 		
-		var updateProcedure = new Procedure("Remoção de calos", "Procedimento para retirada de calos", new BigDecimal(350));	
+		var updateProcedure = new ProcedureDTOInput("Remoção de calos", "Procedimento para retirada de calos", new BigDecimal(350));	
 		
 		var content = given().spec(specification)
-					.pathParam("procedureId", 1L)
+					.pathParam("procedureDtoInputId", 1L)
 					.body(updateProcedure)
 				.when()
-					.put("/{procedureId}")
+					.put("/{procedureDtoInputId}")
 				.then()
 					.statusCode(200)
 						.extract()
 							.body()
 							.asString();
 
-		Procedure returnProcedure = objectMapper.readValue(content, Procedure.class);
+		ProcedureDTOOutput returnProcedure = objectMapper.readValue(content, ProcedureDTOOutput.class);
 
 		assertNotNull(returnProcedure);
 		assertEquals(1L, returnProcedure.getId());
@@ -225,9 +227,9 @@ class ProcedureControllerTest {
 	void givenId_When_DELETE_ShouldReturnHTTPStatus204() throws JsonMappingException, JsonProcessingException {
 		
 		given().spec(specification)
-				.pathParam("procedureId", 2L)
+				.pathParam("procedureDtoInputId", 2L)
 				.when()
-					.delete("/{procedureId}")
+					.delete("/{procedureDtoInputId}")
 				.then()
 					.statusCode(204);
 	}
@@ -238,9 +240,9 @@ class ProcedureControllerTest {
 	void givenInexistId_When_DELETE_ShouldReturnHTTPStatus404() throws JsonMappingException, JsonProcessingException {
 		
 		given().spec(specification)
-			.pathParam("procedureId", 2L)
+			.pathParam("procedureDtoInputId", 2L)
 		.when()
-			.delete("/{procedureId}")
+			.delete("/{procedureDtoInputId}")
 		.then()
 			.statusCode(404);
 	}
