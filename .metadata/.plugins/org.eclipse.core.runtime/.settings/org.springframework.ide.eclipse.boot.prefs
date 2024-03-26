@@ -12,6 +12,7 @@ org.springframework.ide.eclipse.boot.wizard.PopularityTracker.kafka=5
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.lombok=8
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.mail=1
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.mysql=5
+org.springframework.ide.eclipse.boot.wizard.PopularityTracker.testcontainers=1
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.validation=7
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.web=6
 org.springframework.ide.eclipse.boot.wizard.PopularityTracker.webflux=1

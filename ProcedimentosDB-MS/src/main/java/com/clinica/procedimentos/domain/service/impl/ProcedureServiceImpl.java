@@ -33,7 +33,7 @@ public class ProcedureServiceImpl implements ProcedureService {
 	}
 	
 	@Transactional
-	public Procedure createProcedure(Procedure procedure) {
+	public Procedure saveProcedure(Procedure procedure) {
 		log.info("[ProcedureServiceImpl] executando metodo createProcedure()");
 		return repository.save(procedure);
 	}

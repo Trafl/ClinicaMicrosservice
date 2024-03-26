@@ -10,7 +10,7 @@ public interface ProcedureService {
 	
 	public List<Procedure> findAll();
 	
-	public Procedure createProcedure(Procedure procedure);
+	public Procedure saveProcedure(Procedure procedure);
 		
 	public void deleteProcedureById(Long procedureId);
 }

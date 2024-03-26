@@ -54,14 +54,13 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	}
 	
 	@PostMapping
-	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<ProcedureDTOOutput> createProcedure(@RequestBody @Valid ProcedureDTOInput dtoInput){
 		log.info("Requisição POST feita no EndPoint '/procedimentos' para criar objeto Procedure para ser persistido no bando de dados");
 		Procedure procedure = procedureMapper.toEntity(dtoInput);
-		procedure = procedureService.createProcedure(procedure);
+		procedure = procedureService.saveProcedure(procedure);
 
 		ProcedureDTOOutput ProcedureDto = procedureMapper.toDTO(procedure);
-		return ResponseEntity.ok().body(ProcedureDto);
+		return ResponseEntity.status(201).body(ProcedureDto);
 	}
 	
 	@PutMapping("/{procedureId}")
@@ -70,7 +69,7 @@ public class ProcedureController implements ProcedureControllerSwagger {
 		Procedure procedureInDb = procedureService.findById(procedureId);
 		procedureMapper.copyToDomain(dtoInput, procedureInDb);
 		
-		procedureInDb = procedureService.createProcedure(procedureInDb);
+		procedureInDb = procedureService.saveProcedure(procedureInDb);
 		ProcedureDTOOutput ProcedureDto = procedureMapper.toDTO(procedureInDb);
 		
 		

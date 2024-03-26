@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,7 +59,9 @@ class ProcedureServiceImplTest {
 	class findById{
 		
 		@Test
+		@DisplayName("Given Procedure id when FindById return Procedure object")
 		void givenProcedureId_WhenFindById_ReturnProcedureObject() {
+			
 			given(repository.findById(anyLong())).willReturn(Optional.of(procedure));
 			
 			var newProcedure = service.findById(anyLong());
@@ -72,7 +75,9 @@ class ProcedureServiceImplTest {
 		}
 		
 		@Test
-		void givenArgumentCaptor_WhenFindById_ReturnProcedureObject() {
+		@DisplayName("Given id and ArgumentCaptor when FindById Return same argument")
+		void givenIdAndArgumentCaptor_WhenFindById_ReturnSameArgument() {
+			
 			given(repository.findById(idCaptor.capture())).willReturn(Optional.of(procedure));
 			
 			var outProcedure = service.findById(procedure.getId());
@@ -84,11 +89,13 @@ class ProcedureServiceImplTest {
 		}
 		
 		@Test
-		void givenProcedureInexistId_WhenFindById_ThenThrowEntityNotFoundException() {
+		@DisplayName("Given inexist Procedure id when FindById should throw EntityNotFoundException")
+		void givenInexistProcedureId_When_FindById_ShouldThrowEntityNotFoundException() {
 			
 			var id = 1L;
 			
-			given(repository.findById(id)).willThrow(new EntityNotFoundException(String.format("Procedimento de id %s não foi encontrado", id)));
+			Optional.of(Procedure.class);
+			given(repository.findById(id)).willReturn(Optional.empty());
 			
 			var message = assertThrows(EntityNotFoundException.class,
 					()-> {service.findById(id);},
@@ -103,6 +110,7 @@ class ProcedureServiceImplTest {
 	class findAll{
 		
 		@Test
+		@DisplayName("When FindAll return list of Procedure object")
 		void whenFindAll_ReturnListOfProcedureObject() {
 			List<Procedure> list = new ArrayList<>();
 			var procedure1 = new Procedure();
@@ -125,10 +133,12 @@ class ProcedureServiceImplTest {
 	class createProcedure{
 		
 		@Test
-		void givenProcedureObject_WhenCreateProcedure_ThenReturnProcedureObject() {
+		@DisplayName("Given Procedure object  when CreateProcedure should return ProcedureObject")
+		void givenProcedureObject_WhenCreateProcedure_ShouldReturnProcedureObject() {
+			
 			given(repository.save(any(Procedure.class))).willReturn(procedure);
 			
-			var createdProcedure = service.createProcedure(procedure);
+			var createdProcedure = service.saveProcedure(procedure);
 			
 			assertNotNull(createdProcedure);
 			assertEquals(procedure.getId(), createdProcedure.getId());
@@ -138,7 +148,8 @@ class ProcedureServiceImplTest {
 		}
 		
 		@Test
-		void givenArgumenteCaptor_WhenCreateProcedure_ThenReturnProcedureObject() {
+		@DisplayName("Given Procedure object and ArgumenteCaptor when CreateProcedure should return Procedure object")
+		void givenProcedureObjectAndArgumenteCaptor_WhenCreateProcedure_ShouldReturnSameProcedureObject() {
 			
 			given(repository.save(procedureCaptor.capture())).willReturn(procedure);
 			
@@ -148,7 +159,7 @@ class ProcedureServiceImplTest {
 			input.setDescription("procedimento");
 			input.setValue(new BigDecimal(200));
 			
-			var output = service.createProcedure(input);
+			var output = service.saveProcedure(input);
 			var captor = procedureCaptor.getValue();
 			
 			assertNotNull(output);
@@ -163,6 +174,7 @@ class ProcedureServiceImplTest {
 	class deleteProcedureById{
 		
 		@Test
+		@DisplayName("Given Procedure id when Delete ProcedureById should delete Procedure")
 		void givenProcedureId_WhenDeleteProcedureById_ShouldDeleteProcedure(){
 			
 			given(repository.findById(anyLong())).willReturn(Optional.of(procedure));
@@ -175,10 +187,11 @@ class ProcedureServiceImplTest {
 		}
 		
 		@Test
+		@DisplayName("Given inexist Procedure id when Delete ProcedureById should throw EntityNotFoundException")
 		void givenInexistProcedureId_WhenDeleteProcedureById_ShouldDeleteProcedure(){
 			
-			given(repository.findById(anyLong())).willThrow(
-					new EntityNotFoundException(String.format("Procedimento de id %s não foi encontrado", procedure.getId())));
+			Optional.of(Procedure.class);
+			given(repository.findById(anyLong())).willReturn(Optional.empty());
 			
 			var message = assertThrows(EntityNotFoundException.class,
 					() -> {

@@ -23,5 +23,15 @@ public class Procedure {
 	private String description;
 	
 	private BigDecimal value;
+
+	public Procedure() {
+		super();
+	}
 	
+	public Procedure(String name, String description, BigDecimal value) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.value = value;
+	}
 }
