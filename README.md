@@ -14,6 +14,9 @@ Welcome to the medical practice management microservice. This microservice was d
 - Spring Netflix Eureka
 - Spring Cloud OpenFeign
 - Apache Kafka
+- JUnit 5
+- RestAssured
+- TestContainers
 
 ## Documentation
 Each microservice has its own documentation in the Swagger standard for a better understanding of each End-point.
