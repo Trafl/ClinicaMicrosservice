@@ -27,4 +27,13 @@ public class Patient {
 	private String email;
 	
 	private String phone;
+
+	public Patient(String name, LocalDate birthday, String gender, String email, String phone) {
+		this.name = name;
+		this.birthday = birthday;
+		this.gender = gender;
+		this.email = email;
+		this.phone = phone;
+	}
+	
 }

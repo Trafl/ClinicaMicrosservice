@@ -66,12 +66,13 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	@PutMapping("/{procedureId}")
 	public ResponseEntity<ProcedureDTOOutput> updateProcedure(@PathVariable Long procedureId, @RequestBody @Valid ProcedureDTOInput dtoInput){
 		log.info("Requisição PUT feita no EndPoint '/procedimentos/{id}' para Atualizar objeto Procedure de Id= " + procedureId);
+		
 		Procedure procedureInDb = procedureService.findById(procedureId);
+		
 		procedureMapper.copyToDomain(dtoInput, procedureInDb);
 		
 		procedureInDb = procedureService.saveProcedure(procedureInDb);
 		ProcedureDTOOutput ProcedureDto = procedureMapper.toDTO(procedureInDb);
-		
 		
 		return ResponseEntity.ok(ProcedureDto);
 	}

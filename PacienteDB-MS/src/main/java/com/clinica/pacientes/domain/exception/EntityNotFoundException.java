@@ -1,6 +1,6 @@
 package com.clinica.pacientes.domain.exception;
 
-public class EntityNotFoundException extends RuntimeException {
+public class EntityNotFoundException extends BusinessException {
 
 	private static final long serialVersionUID = 1L;
 
