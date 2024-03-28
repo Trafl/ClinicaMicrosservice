@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.clinica.pacientes.domain.exception.BusinessException;
 import com.clinica.pacientes.domain.exception.EntityNotFoundException;
+import com.clinica.pacientes.domain.exception.InformationInUseException;
 
 
 @RestControllerAdvice
@@ -52,7 +53,7 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)
-	ProblemDetail handlerhttpMessageNotReadableException(EntityNotFoundException e) {
+	ProblemDetail handlerEntityNotFoundException(EntityNotFoundException e) {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
 		
 		problem.setTitle("Paciente não registrado");
@@ -62,7 +63,18 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(BusinessException.class)
-	ProblemDetail handlerhttpMessageNotReadableException(BusinessException e) {
+	ProblemDetail handlerBusinessException(BusinessException e) {
+		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+		
+		problem.setTitle("Violação de regra de negócio.");
+		problem.setProperty("timestamp", Instant.now());
+		return problem;
+		
+		
+	}
+	
+	@ExceptionHandler(InformationInUseException.class)
+	ProblemDetail handlerInformationInUseException(InformationInUseException e) {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
 		
 		problem.setTitle("Violação de regra de negócio.");
