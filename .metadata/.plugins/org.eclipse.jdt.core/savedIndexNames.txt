@@ -216,7 +216,6 @@ INDEX VERSION 1.134+C:\WorkSpacesGit\ClinicaMs\.metadata\.plugins\org.eclipse.jd
 3543349693.index
 1365601519.index
 3283128467.index
-171539931.index
 359527673.index
 405966718.index
 2019997652.index
@@ -536,7 +535,6 @@ INDEX VERSION 1.134+C:\WorkSpacesGit\ClinicaMs\.metadata\.plugins\org.eclipse.jd
 2988515477.index
 1977938284.index
 1781928493.index
-1865797976.index
 2016908001.index
 807138113.index
 1046613959.index

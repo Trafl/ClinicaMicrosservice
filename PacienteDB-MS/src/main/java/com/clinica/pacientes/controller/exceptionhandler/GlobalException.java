@@ -22,7 +22,7 @@ import com.clinica.pacientes.domain.exception.InformationInUseException;
 
 
 @RestControllerAdvice
-public class GlobalExeption extends ResponseEntityExceptionHandler {
+public class GlobalException extends ResponseEntityExceptionHandler {
 
 	@Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
