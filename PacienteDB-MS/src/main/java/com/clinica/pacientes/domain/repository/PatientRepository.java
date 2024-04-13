@@ -6,4 +6,8 @@ import com.clinica.pacientes.domain.model.Patient;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
+	boolean existsByEmail(String email);
+	
+	boolean existsByPhone(String phone);
+	
 }

@@ -10,7 +10,7 @@ public interface PatientService {
 	
 	public List<Patient> findAll();
 	
-	public Patient savePatient(Patient patient);
-		
-	public void deletePatientById(Long patientId);				
+	public void deletePatientById(Long patientId);	
+	
+	Patient checkInformationAndSave(Patient patient);
 }

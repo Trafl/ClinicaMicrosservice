@@ -54,25 +54,27 @@ public class PatientController implements PatientControllerSwagger {
 	}
 	
 	@PostMapping
-	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<PatientDTOOutput> createPatient(@RequestBody @Valid PatientDTOInput dtoInput){
 		log.info("Requisição POST feita no EndPoint '/pacientes' para criar objeto Patient para ser persistido no bando de dados");
+		
 		Patient patient = patientMapper.toEntity(dtoInput);
-		patient = patientService.savePatient(patient);
-
+		patient = patientService.checkInformationAndSave(patient);
 		PatientDTOOutput PatientDto = patientMapper.toDTO(patient);
-		return ResponseEntity.ok().body(PatientDto);
+		
+		return ResponseEntity.status(201).body(PatientDto);
 	}
 	
 	@PutMapping("/{patientId}")
 	public ResponseEntity<PatientDTOOutput> updatePatient(@PathVariable Long patientId, @RequestBody @Valid PatientDTOInput dtoInput){
-		log.info("Requisição PUT feita no EndPoint '/pacientes/{id}' para retornar objeto Patient de Id= " + patientId);
+		log.info("Requisição PUT feita no EndPoint '/pacientes/{id}' para atualizar objeto Patient de Id= " + patientId);
+		
 		Patient patientInDb = patientService.findById(patientId);
+		
 		patientMapper.copyToDomain(dtoInput, patientInDb);
 		
-		patientInDb = patientService.savePatient(patientInDb);
-		PatientDTOOutput patientDto = patientMapper.toDTO(patientInDb);
+		patientInDb = patientService.checkInformationAndSave(patientInDb);
 		
+		PatientDTOOutput patientDto = patientMapper.toDTO(patientInDb);
 		
 		return ResponseEntity.ok(patientDto);
 	}

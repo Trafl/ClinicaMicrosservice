@@ -26,7 +26,6 @@ public class ProcedureDTOInput {
 
 	public ProcedureDTOInput(@NotBlank String name, @NotBlank String description,
 			@NotNull @PositiveOrZero BigDecimal value) {
-		super();
 		this.name = name;
 		this.description = description;
 		this.value = value;

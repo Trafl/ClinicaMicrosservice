@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="org.testcontainers.containers.GenericContainer"/>
-    <fullyQualifiedTypeName name="org.testcontainers.utility.DockerImageName"/>
-    <fullyQualifiedTypeName name="org.springframework.test.context.DynamicPropertyRegistry"/>
-    <fullyQualifiedTypeName name="org.testcontainers.containers.MySQLContainer"/>
-    <fullyQualifiedTypeName name="java.lang.Integer"/>
-    <fullyQualifiedTypeName name="org.springframework.boot.test.web.server.LocalServerPort"/>
-    <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeAll"/>
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
     <fullyQualifiedTypeName name="io.restassured.specification.RequestSpecification"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
     <fullyQualifiedTypeName name="com.clinica.procedimentos.domain.repository.ProcedureRepository"/>
-    <fullyQualifiedTypeName name="io.restassured.RestAssured"/>
     <fullyQualifiedTypeName name="org.springframework.context.annotation.Profile"/>
     <fullyQualifiedTypeName name="org.springframework.test.context.ActiveProfiles"/>
     <fullyQualifiedTypeName name="io.restassured.http.ContentType"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.TestMethodOrder"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.MethodOrderer"/>
-    <fullyQualifiedTypeName name="org.junit.jupiter.api.Order"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.ClassOrderer.OrderAnnotation"/>
     <fullyQualifiedTypeName name="org.testcontainers.shaded.com.fasterxml.jackson.databind.DeserializationFeature"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.DeserializationFeature"/>
@@ -45,19 +36,28 @@
     <fullyQualifiedTypeName name="org.apache.catalina.startup.ClassLoaderFactory.Repository"/>
     <fullyQualifiedTypeName name="org.springframework.context.support.StaticApplicationContext"/>
     <fullyQualifiedTypeName name="org.mockito.BDDMockito"/>
-    <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeEach"/>
     <fullyQualifiedTypeName name="org.joda.time.LocalDate"/>
-    <fullyQualifiedTypeName name="java.time.LocalDate"/>
     <fullyQualifiedTypeName name="com.clinica.pacientes.domain.exception.BusinessException"/>
     <fullyQualifiedTypeName name="org.mockito.ArgumentCaptor"/>
     <fullyQualifiedTypeName name="org.mockito.Captor"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="com.clinica.pacientes.domain.exception.EntityNotFoundException"/>
     <fullyQualifiedTypeName name="com.clinica.pacientes.domain.exception.EmailInUseException"/>
-    <fullyQualifiedTypeName name="com.clinica.pacientes.domain.model.Patient"/>
     <fullyQualifiedTypeName name="com.clinica.pacientes.domain.exception.InformationInUseException"/>
     <fullyQualifiedTypeName name="java.util.Optional"/>
+    <fullyQualifiedTypeName name="org.mockito.Mock"/>
+    <fullyQualifiedTypeName name="org.springframework.boot.SpringBootConfiguration"/>
+    <fullyQualifiedTypeName name="org.springframework.boot.test.context.SpringBootTest"/>
+    <fullyQualifiedTypeName name="org.springframework.boot.test.web.server.LocalServerPort"/>
+    <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeEach"/>
+    <fullyQualifiedTypeName name="io.restassured.RestAssured"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.Test"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.DisplayName"/>
-    <fullyQualifiedTypeName name="org.mockito.Mock"/>
+    <fullyQualifiedTypeName name="org.junit.jupiter.api.Order"/>
+    <fullyQualifiedTypeName name="com.clinica.pacientes.domain.dto.PatientDTOOutput"/>
+    <fullyQualifiedTypeName name="com.clinica.pacientes.domain.dto.PatientDTOInput"/>
+    <fullyQualifiedTypeName name="java.time.LocalDate"/>
+    <fullyQualifiedTypeName name="com.clinica.pacientes.domain.model.Patient"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.UniqueConstraint"/>
+    <fullyQualifiedTypeName name="java.sql.SQLIntegrityConstraintViolationException"/>
 </qualifiedTypeNameHistroy>

@@ -2,10 +2,11 @@ package com.clinica.pacientes.domain.service.impl;
 
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.clinica.pacientes.domain.exception.InformationInUseException;
 import com.clinica.pacientes.domain.exception.EntityNotFoundException;
+import com.clinica.pacientes.domain.exception.InformationInUseException;
 import com.clinica.pacientes.domain.model.Patient;
 import com.clinica.pacientes.domain.repository.PatientRepository;
 import com.clinica.pacientes.domain.service.PatientService;
@@ -37,31 +38,27 @@ public class PatientServiceImpl implements PatientService {
 	public Patient savePatient(Patient patient) {
 		log.info("[PatientServiceImpl] executando metodo savePatient()");
 		
-		checkInformation(patient);
-		
-		return repository.save(patient);
+		try {
+			 return repository.save(patient);
+			 
+		} catch (DataIntegrityViolationException e) {
+			throw new InformationInUseException("Email ou numero de telefone já esta cadastrado no sistema");
+		}
 	}
 	
-	void checkInformation(Patient patient) {
+	public Patient checkInformationAndSave(Patient patient) {
+		log.info("[PatientServiceImpl] executando metodo checkInformationAndSave()");
 		
-		var list = repository.findAll();
+		var isEmailExist = repository.existsByEmail(patient.getEmail());
+		var isPhoneExist = repository.existsByPhone(patient.getPhone());
 		
-		log.info("[PatientServiceImpl] executando metodo checkInformation()");
+		if(isEmailExist) throw new InformationInUseException("Email: " + patient.getEmail() + " já esta cadastrado no sistema");
+		log.info("[PatientServiceImpl] checkInformationAndSave(), Email checado");
 		
-		boolean emailInUse = list.stream().anyMatch(patientInDB -> patientInDB.getEmail().equals(patient.getEmail()));
-		boolean phoneInUse = list.stream().anyMatch(patientInDB -> patientInDB.getPhone().equals(patient.getPhone()));
+		if(isPhoneExist) throw new InformationInUseException("Telefone: " + patient.getPhone() + " já esta cadastrado no sistema");
+		log.info("[PatientServiceImpl] checkInformationAndSave(), Numero de telefone checado");
 		
-		if (emailInUse) {
-			log.info("[PatientServiceImpl] InformationInUseException email : " + patient.getEmail());
-			throw new InformationInUseException("Paciente já existe com este email: " + patient.getEmail());
-		}
-		
-		if (phoneInUse) {
-			log.info("[PatientServiceImpl] InformationInUseException telefone : " + patient.getPhone());
-			throw new InformationInUseException("Paciente já existe com este numero de telefone: " + patient.getPhone());
-		}
-		
-		log.info("[PatientServiceImpl] O metodo checkInformation() não lançou exception");
+		return savePatient(patient);
 	}
 
 		

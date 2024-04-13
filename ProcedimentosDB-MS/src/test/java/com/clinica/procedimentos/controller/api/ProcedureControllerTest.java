@@ -115,7 +115,7 @@ class ProcedureControllerTest {
 	@Test
 	@Order(3)
 	@DisplayName("When GET FindById should return ProcedureDTOOutput object and HTTPStatusCode 200")
-	void whenGET_FindById_ShouldReturnProcedureObjectAndHTTPStatusCode200() throws JsonMappingException, JsonProcessingException {
+	void whenGET_FindById_ShouldReturnProcedureDTOOutputAndHTTPStatusCode200() throws JsonMappingException, JsonProcessingException {
 			
 		var content = given().spec(specification)
 					.pathParam("procedureDtoInputId", 1L)
@@ -148,6 +148,7 @@ class ProcedureControllerTest {
 				.then()
 					.statusCode(404);
 	}
+	
 	@Test
 	@Order(5)
 	@DisplayName("When GET FindByAll should return list of ProcedureDTOOutput and HTTPStatusCode 200")

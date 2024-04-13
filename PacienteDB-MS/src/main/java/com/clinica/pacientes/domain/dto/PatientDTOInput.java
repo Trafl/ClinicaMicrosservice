@@ -33,4 +33,15 @@ public class PatientDTOInput {
 	@NotBlank
 	@Schema(example = "02499999-9999")
 	private String phone;
+
+	public PatientDTOInput(@NotBlank String name, @NotNull LocalDate birthday, @NotBlank String gender,
+			@NotBlank @Email String email, @NotBlank String phone) {
+		this.name = name;
+		this.birthday = birthday;
+		this.gender = gender;
+		this.email = email;
+		this.phone = phone;
+	}
+	
+	
 }

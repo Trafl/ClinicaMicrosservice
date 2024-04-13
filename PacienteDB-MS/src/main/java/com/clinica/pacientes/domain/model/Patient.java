@@ -7,11 +7,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "pacient")
+@Table(name = "pacient", uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "phone"})})
 public class Patient {
 
 	@Id
@@ -23,11 +24,13 @@ public class Patient {
 	private LocalDate birthday;
 	
 	private String gender;
-
+	
 	private String email;
 	
 	private String phone;
 
+	public Patient() {}
+	
 	public Patient(String name, LocalDate birthday, String gender, String email, String phone) {
 		this.name = name;
 		this.birthday = birthday;
@@ -35,5 +38,4 @@ public class Patient {
 		this.email = email;
 		this.phone = phone;
 	}
-	
 }
