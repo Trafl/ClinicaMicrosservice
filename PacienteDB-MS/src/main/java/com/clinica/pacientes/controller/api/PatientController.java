@@ -2,6 +2,10 @@ package com.clinica.pacientes.controller.api;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,12 +40,16 @@ public class PatientController implements PatientControllerSwagger {
 	final private PatientMapper patientMapper;
 	
 	@GetMapping
-	public ResponseEntity<List<PatientDTOOutput>> findAllPatients(){
+	public ResponseEntity<Page<PatientDTOOutput>> findAllPatients(@PageableDefault(size = 10, page = 0) Pageable pageable){
 		log.info("Requisição GET feita no EndPoint '/pacientes' para consultar lista com todos o objetos Patient presentes no banco de dados");
-		List<Patient> patientList = patientService.findAll();
-		List<PatientDTOOutput> patientDtoList = patientMapper.toDTOCollection(patientList);
 		
-		return ResponseEntity.ok(patientDtoList);
+		Page<Patient> patientPage = patientService.findAll(pageable);
+		
+		List<PatientDTOOutput> patientDtoList = patientMapper.toDTOCollection(patientPage.getContent());
+		
+		Page<PatientDTOOutput> patientDtoPage = new PageImpl<>(patientDtoList, pageable, patientPage.getContent().size());
+		
+		return ResponseEntity.ok(patientDtoPage);
 	}
 	
 	@GetMapping("/{patientId}")

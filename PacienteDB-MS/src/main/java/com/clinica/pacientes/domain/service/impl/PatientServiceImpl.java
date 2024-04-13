@@ -1,8 +1,8 @@
 package com.clinica.pacientes.domain.service.impl;
 
-import java.util.List;
-
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.clinica.pacientes.domain.exception.EntityNotFoundException;
@@ -29,9 +29,9 @@ public class PatientServiceImpl implements PatientService {
 						String.format("Paciente de id %s não foi encontrado", patientId)));
 	}
 	
-	public List<Patient> findAll(){
+	public Page<Patient> findAll(Pageable pageble){
 		log.info("[PatientServiceImpl] executando metodo findAll()");
-		return repository.findAll();
+		return repository.findAll(pageble);
 	}
 	
 	@Transactional

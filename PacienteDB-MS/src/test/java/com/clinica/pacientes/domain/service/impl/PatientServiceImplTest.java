@@ -27,6 +27,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import com.clinica.pacientes.domain.exception.EntityNotFoundException;
 import com.clinica.pacientes.domain.exception.InformationInUseException;
@@ -113,13 +116,21 @@ class PatientServiceImplTest {
 		void when_FindAll_ShouldReturnListOfPatients() {
 			
 			var patient2 = new Patient("Maria", LocalDate.of(1990, 11, 2), "Female", "maria@email.com", "88888-8888");
-			given(repository.findAll()).willReturn(List.of(patient,patient2));
+			var patientList = List.of(patient,patient2);
 			
-			var list = service.findAll();
+			Page<Patient> content = new PageImpl<>(patientList); 
+
+			Pageable pageable = Pageable.ofSize(10).withPage(0);
 			
-			assertEquals(2, list.size());
+			given(repository.findAll(pageable)).willReturn(content);
 			
-			var firstPatient = list.get(0);
+			var page = service.findAll(pageable);
+			
+			var pageList = page.toList();
+			
+			assertEquals(2, pageList.size());
+			
+			var firstPatient = pageList.get(0);
 			
 			assertEquals("Pedro ivo", firstPatient.getName());
 			assertEquals(date, firstPatient.getBirthday());
@@ -127,7 +138,7 @@ class PatientServiceImplTest {
 			assertEquals("email@email.com", firstPatient.getEmail());
 			assertEquals("99999-9999", firstPatient.getPhone());
 			
-			var secondPatient = list.get(1);
+			var secondPatient = pageList.get(1);
 			
 			assertEquals("Maria", secondPatient.getName());
 			assertEquals(LocalDate.of(1990, 11, 2), secondPatient.getBirthday());

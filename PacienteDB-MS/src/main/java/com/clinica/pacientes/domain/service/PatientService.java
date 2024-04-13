@@ -1,6 +1,7 @@
 package com.clinica.pacientes.domain.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.clinica.pacientes.domain.model.Patient;
 
@@ -8,7 +9,7 @@ public interface PatientService {
 
 	public Patient findById(Long patientId);
 	
-	public List<Patient> findAll();
+	public Page<Patient> findAll(Pageable pageable);
 	
 	public void deletePatientById(Long patientId);	
 	

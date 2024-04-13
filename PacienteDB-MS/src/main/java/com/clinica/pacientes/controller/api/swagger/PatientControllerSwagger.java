@@ -1,7 +1,7 @@
 package com.clinica.pacientes.controller.api.swagger;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import com.clinica.pacientes.domain.dto.PatientDTOInput;
@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface PatientControllerSwagger {
 
 	@Operation(summary = "List patients", description = "Lists patients registered in the database.")
-	public ResponseEntity<List<PatientDTOOutput>> findAllPatients();
+	public ResponseEntity<Page<PatientDTOOutput>> findAllPatients(Pageable pageble);
 	
 	 @Operation(summary = "Search a patient by ID", description = "Searches for a patient registered in the database.",
 			 responses = {
