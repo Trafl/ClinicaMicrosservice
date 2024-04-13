@@ -12,5 +12,5 @@ public interface PatientService {
 	
 	public void deletePatientById(Long patientId);	
 	
-	Patient checkInformationAndSave(Patient patient);
+	public Patient checkInformationAndSave(Patient patient);
 }

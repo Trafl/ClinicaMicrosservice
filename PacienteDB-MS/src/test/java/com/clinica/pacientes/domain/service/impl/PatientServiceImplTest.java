@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -25,6 +26,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.clinica.pacientes.domain.exception.EntityNotFoundException;
 import com.clinica.pacientes.domain.exception.InformationInUseException;
@@ -110,8 +112,7 @@ class PatientServiceImplTest {
 		@DisplayName("When FindAll should return list of Patients")
 		void when_FindAll_ShouldReturnListOfPatients() {
 			
-			LocalDate mariaDate = LocalDate.of(1990, 11, 2);
-			var patient2 = new Patient("Maria", mariaDate, "Female", "maria@email.com", "88888-8888");
+			var patient2 = new Patient("Maria", LocalDate.of(1990, 11, 2), "Female", "maria@email.com", "88888-8888");
 			given(repository.findAll()).willReturn(List.of(patient,patient2));
 			
 			var list = service.findAll();
@@ -129,7 +130,7 @@ class PatientServiceImplTest {
 			var secondPatient = list.get(1);
 			
 			assertEquals("Maria", secondPatient.getName());
-			assertEquals(mariaDate, secondPatient.getBirthday());
+			assertEquals(LocalDate.of(1990, 11, 2), secondPatient.getBirthday());
 			assertEquals("Female", secondPatient.getGender());
 			assertEquals("maria@email.com", secondPatient.getEmail());
 			assertEquals("88888-8888", secondPatient.getPhone());
@@ -140,7 +141,7 @@ class PatientServiceImplTest {
 	}
 
 	@Nested
-	class SavePatient{
+	class SavePatient {
 		
 		@Test
 		@DisplayName("Given Patient object when SavePatient should return Patient")
@@ -180,45 +181,24 @@ class PatientServiceImplTest {
 			assertEquals(capturePatient.getEmail(), returnPatient.getEmail());
 			
 		}
-		
 		@Test
-		@DisplayName("Given Patient object with Email in use when SavePatient should throw InformationInUseException")
-		void givenPatientObjectWithEmailInUse_When_SavePatient_ShouldThrowInformationInUseException() {
+		@DisplayName("Given Patient with email or phone in use when SavePatient should throw InformationInUseException")
+		void givenPatientWithEmailOrPhoneInUse_When_SavePatient_ShouldThrowInformationInUseException() {
+			given(repository.save(any(Patient.class))).willThrow(DataIntegrityViolationException.class);
 			
-			LocalDate mariaDate = LocalDate.of(1990, 11, 2);
-			var patient2 = new Patient("Maria", mariaDate, "Female", "email@email.com", "88888-8888");
-			
-			var list = List.of(patient);
-			
-			given(repository.findAll()).willReturn(list);
 			var content = assertThrows(InformationInUseException.class, 
-					() ->{service.savePatient(patient2);},
-					()-> "Exception InformationInUseException not throw ");
+					() -> {
+						service.savePatient(patient);},
+					()-> "Exception InformationInUseException not throw");
 			
-			assertEquals("Paciente já existe com este email: email@email.com", content.getMessage());
+			var exceptionMessage = "Email ou numero de telefone já esta cadastrado no sistema";
+			
+			assertEquals(exceptionMessage, content.getMessage());
 		}
-		
-		@Test
-		@DisplayName("Given Patient object with phone in use when SavePatient should throw InformationInUseException")
-		void givenPatientObjectWithPhoneInUse_When_SavePatient_ShouldThrowInformationInUseException() {
-			
-			LocalDate mariaDate = LocalDate.of(1990, 11, 2);
-			var patient2 = new Patient("Maria", mariaDate, "Female", "maria@email.com", "99999-9999");
-			
-			var list = List.of(patient);
-			
-			given(repository.findAll()).willReturn(list);
-			var content = assertThrows(InformationInUseException.class, 
-					() ->{service.savePatient(patient2);},
-					()-> "Exception InformationInUseException not throw ");
-			
-			assertEquals("Paciente já existe com este numero de telefone: 99999-9999", content.getMessage());
-		}
-
 	}
 
 	@Nested
-	class DeletePatientById{
+	class DeletePatientById {
 
 		@Test
 		@DisplayName("Given Patient id when DeletePatientById should delete Patient")
@@ -249,4 +229,42 @@ class PatientServiceImplTest {
 		}
 	}
 
+	@Nested
+	class checkInformationAndSave {
+		
+		@Test
+		@DisplayName("Given Patient object with email in use when SavePatient should throw InformationInUseException")
+		void givenPatientObjectWithEmailInUse_When_SavePatient_ShouldThrowInformationInUseException() {
+			
+			var newPatient = new Patient("Maria", LocalDate.of(1990, 11, 2), "Female", "email@email.com", "88888-8888");
+			
+			given(repository.existsByEmail(anyString())).willReturn(true);
+			given(repository.existsByPhone(anyString())).willReturn(false);
+			
+			var content = assertThrows(InformationInUseException.class, 
+					() ->{service.checkInformationAndSave(newPatient);},
+					
+					()-> "Exception InformationInUseException not throw");
+			
+			assertEquals("Email: " + newPatient.getEmail() + " já esta cadastrado no sistema", content.getMessage());
+		}
+		
+		@Test
+		@DisplayName("Given Patient object with phone in use when SavePatient should throw InformationInUseException")
+		void givenPatientObjectWithPhoneInUse_When_SavePatient_ShouldThrowInformationInUseException() {
+			
+			var newPatient = new Patient("Maria", LocalDate.of(1990, 11, 2), "Female", "email@email.com", "88888-8888");
+			
+			given(repository.existsByEmail(anyString())).willReturn(false);
+			given(repository.existsByPhone(anyString())).willReturn(true);
+			
+			var content = assertThrows(InformationInUseException.class, 
+					() ->{service.checkInformationAndSave(newPatient);},
+					
+					()-> "Exception InformationInUseException not throw");
+			
+			assertEquals("Telefone: " + newPatient.getPhone() + " já esta cadastrado no sistema", content.getMessage());
+		}
+		
+	}
 }
