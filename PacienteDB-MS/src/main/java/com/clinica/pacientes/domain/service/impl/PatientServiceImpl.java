@@ -52,10 +52,16 @@ public class PatientServiceImpl implements PatientService {
 		var isEmailExist = repository.existsByEmail(patient.getEmail());
 		var isPhoneExist = repository.existsByPhone(patient.getPhone());
 		
-		if(isEmailExist) throw new InformationInUseException("Email: " + patient.getEmail() + " já esta cadastrado no sistema");
+		if(isEmailExist) {
+			log.info("[PatientServiceImpl] InformationInUseException email já cadastrado");
+			throw new InformationInUseException("Email: " + patient.getEmail() + " já esta cadastrado no sistema");
+		}
 		log.info("[PatientServiceImpl] checkInformationAndSave(), Email checado");
 		
-		if(isPhoneExist) throw new InformationInUseException("Telefone: " + patient.getPhone() + " já esta cadastrado no sistema");
+		if(isPhoneExist) {
+			log.info("[PatientServiceImpl] InformationInUseException numero de telefone já cadastrado");
+			throw new InformationInUseException("Telefone: " + patient.getPhone() + " já esta cadastrado no sistema");
+		}
 		log.info("[PatientServiceImpl] checkInformationAndSave(), Numero de telefone checado");
 		
 		return savePatient(patient);

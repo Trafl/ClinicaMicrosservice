@@ -1,7 +1,7 @@
 package com.clinica.procedimentos.controller.api.swagger;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import com.clinica.procedimentos.domain.dto.ProcedureDTOInput;
@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface ProcedureControllerSwagger {
 
 	@Operation(summary = "List the procedures", description = "Lists the procedures registered in the database.")
-	public ResponseEntity<List<ProcedureDTOOutput>> findAllProcedures();
+	public ResponseEntity<Page<ProcedureDTOOutput>> findAllProcedures(Pageable pageable);
 	
 
 	 @Operation(summary = "Search for a procedure by ID", description = "Searches for a procedure registered in the database.",

@@ -26,7 +26,6 @@ import com.clinica.pacientes.core.jackson.PageDeserializer;
 import com.clinica.pacientes.domain.dto.PatientDTOInput;
 import com.clinica.pacientes.domain.dto.PatientDTOOutput;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -209,7 +208,7 @@ class PatientControllerTest {
 					.body()
 						.asString();
 		
-		Page<PatientDTOOutput> pageOfPatients = objectMapper.readValue(content, new TypeReference<Page<PatientDTOOutput>>(){});
+		var pageOfPatients = objectMapper.readValue(content, Page.class);
 		
 		var list = pageOfPatients.getContent();
 		
@@ -334,7 +333,7 @@ class PatientControllerTest {
 
 		objectMapper = new ObjectMapper();
 		objectMapper.registerModule(new JavaTimeModule());
-		objectMapper.registerModule(new SimpleModule().addDeserializer(Page.class, new PageDeserializer()));
+		objectMapper.registerModule(new SimpleModule().addDeserializer(Page.class, new PageDeserializer<>()));
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
 	}

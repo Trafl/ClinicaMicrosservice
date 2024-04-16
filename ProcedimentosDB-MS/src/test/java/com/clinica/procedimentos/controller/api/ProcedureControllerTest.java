@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
 
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,16 +17,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 
+import com.clinica.procedimentos.core.jackson.PageDeserializer;
 import com.clinica.procedimentos.domain.dto.ProcedureDTOInput;
 import com.clinica.procedimentos.domain.dto.ProcedureDTOOutput;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -171,8 +173,9 @@ class ProcedureControllerTest {
 						.asString();
 		
 		
-		ProcedureDTOOutput[] procedureDtoInputs = objectMapper.readValue(content, ProcedureDTOOutput[].class);
-		var list =  Arrays.asList(procedureDtoInputs);
+		var procedureDtoInputs = objectMapper.readValue(content, Page.class);
+		
+		var list =  procedureDtoInputs.getContent();
 		
 		assertNotNull(list);
 		assertEquals(2, list.size());
@@ -256,6 +259,7 @@ class ProcedureControllerTest {
 					.addFilter(new ResponseLoggingFilter(LogDetail.ALL)).build();
 
 		objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new SimpleModule().addDeserializer(Page.class, new PageDeserializer<>()));
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
 	}

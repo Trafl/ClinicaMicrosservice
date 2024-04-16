@@ -1,7 +1,7 @@
 package com.clinica.procedimentos.domain.service.impl;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.clinica.procedimentos.domain.exception.EntityNotFoundException;
@@ -27,9 +27,9 @@ public class ProcedureServiceImpl implements ProcedureService {
 						String.format("Procedimento de id %s não foi encontrado", procedureId)));
 	}
 	
-	public List<Procedure> findAll(){
+	public Page<Procedure> findAll(Pageable pageable){
 		log.info("[ProcedureServiceImpl] executando metodo findAll()");
-		return repository.findAll();
+		return repository.findAll(pageable);
 	}
 	
 	@Transactional

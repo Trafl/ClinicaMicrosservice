@@ -2,6 +2,10 @@ package com.clinica.procedimentos.controller.api;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,12 +40,14 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	final private ProcedureMapper procedureMapper;
 	
 	@GetMapping
-	public ResponseEntity<List<ProcedureDTOOutput>> findAllProcedures(){
+	public ResponseEntity<Page<ProcedureDTOOutput>> findAllProcedures(@PageableDefault(size = 10) Pageable pageable){
 		log.info("Requisição GET feita no EndPoint '/procedimentos' para consultar lista com todos o objetos Procedure presentes no banco de dados");
-		List<Procedure> procedureList = procedureService.findAll();
-		List<ProcedureDTOOutput> procedureDtoList = procedureMapper.toDTOCollection(procedureList);
+		Page<Procedure> procedureList = procedureService.findAll(pageable);
 		
-		return ResponseEntity.ok(procedureDtoList);
+		List<ProcedureDTOOutput> procedureDtoList = procedureMapper.toDTOCollection(procedureList.getContent());
+		PageImpl<ProcedureDTOOutput> procedureDtoPage = new PageImpl<>(procedureDtoList, pageable, procedureList.getSize());
+		
+		return ResponseEntity.ok(procedureDtoPage);
 	}
 	
 	@GetMapping("/{procedureId}")

@@ -23,7 +23,6 @@ public class PageSerializer extends JsonSerializer<Page<?>> {
 		gen.writeNumberField("totalPage", page.getTotalPages());
 		gen.writeNumberField("number", page.getNumber());
 		
-		
 		gen.writeEndObject();
 		
 	}

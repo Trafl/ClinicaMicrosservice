@@ -40,7 +40,7 @@ public class PatientController implements PatientControllerSwagger {
 	final private PatientMapper patientMapper;
 	
 	@GetMapping
-	public ResponseEntity<Page<PatientDTOOutput>> findAllPatients(@PageableDefault(size = 10, page = 0) Pageable pageable){
+	public ResponseEntity<Page<PatientDTOOutput>> findAllPatients(@PageableDefault(size = 10) Pageable pageable){
 		log.info("Requisição GET feita no EndPoint '/pacientes' para consultar lista com todos o objetos Patient presentes no banco de dados");
 		
 		Page<Patient> patientPage = patientService.findAll(pageable);
