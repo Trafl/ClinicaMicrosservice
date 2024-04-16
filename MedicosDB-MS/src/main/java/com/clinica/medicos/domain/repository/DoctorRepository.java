@@ -6,4 +6,5 @@ import com.clinica.medicos.domain.model.Doctor;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long>{
 
+	boolean existsByCrm(String crm);
 }

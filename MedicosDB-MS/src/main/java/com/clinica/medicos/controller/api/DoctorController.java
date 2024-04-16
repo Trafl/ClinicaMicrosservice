@@ -2,6 +2,10 @@ package com.clinica.medicos.controller.api;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,12 +40,16 @@ public class DoctorController implements DoctorControllerSwagger {
 	final private DoctorMapper doctorMapper;
 	
 	@GetMapping
-	public ResponseEntity<List<DoctorDTOOutput>> findAllDoctors(){
+	public ResponseEntity<Page<DoctorDTOOutput>> findAllDoctors(@PageableDefault(size = 10) Pageable pageable){
 		log.info("Requisição GET feita no EndPoint '/medicos' para consultar lista com todos o objetos Doctor presentes no banco de dados");
-		List<Doctor> doctorList = doctorService.findAll();
-		List<DoctorDTOOutput> doctorDtoList = doctorMapper.toDTOCollection(doctorList);
 		
-		return ResponseEntity.ok(doctorDtoList);
+		Page<Doctor> doctorPage = doctorService.findAll(pageable);
+		
+		List<DoctorDTOOutput> doctorDtoList = doctorMapper.toDTOCollection(doctorPage.getContent());
+		
+		PageImpl<DoctorDTOOutput> doctorDTOPage = new PageImpl<>(doctorDtoList, pageable, doctorPage.getSize());
+		
+		return ResponseEntity.ok(doctorDTOPage);
 	}
 	
 	@GetMapping("/{doctorId}")
@@ -70,9 +78,11 @@ public class DoctorController implements DoctorControllerSwagger {
 		log.info("Requisição PUT feita no EndPoint '/medicos/{id}' para atualizar o objeto Doctor de Id= " + doctorId);
 		
 		Doctor doctorInDb = doctorService.findById(doctorId);
+		
 		doctorMapper.copyToDomain(dtoInput, doctorInDb);
 		
-		doctorInDb = doctorService.saveDoctor(doctorInDb);
+		doctorInDb = doctorService.checkInformationAndSave(doctorInDb);
+		
 		DoctorDTOOutput doctorDto = doctorMapper.toDTO(doctorInDb);
 		
 		return ResponseEntity.ok(doctorDto);

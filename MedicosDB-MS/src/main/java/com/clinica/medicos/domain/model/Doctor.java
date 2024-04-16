@@ -5,11 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "doctor")
+@Table(name = "doctor", uniqueConstraints = {@UniqueConstraint(columnNames = "crm")})
 public class Doctor {
 
 	@Id
@@ -25,5 +26,14 @@ public class Doctor {
 	private String crm;
 	
 	private String specialty;
-	
+
+	public Doctor() {}
+
+	public Doctor(String email, String name, String cpf, String crm, String specialty) {
+		this.email = email;
+		this.name = name;
+		this.cpf = cpf;
+		this.crm = crm;
+		this.specialty = specialty;
+	}
 }

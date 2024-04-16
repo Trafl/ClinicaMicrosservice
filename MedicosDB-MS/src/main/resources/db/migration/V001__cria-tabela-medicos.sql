@@ -3,6 +3,6 @@ CREATE TABLE doctor (
     email VARCHAR(255) NOT NULL,
     name VARCHAR(255),
     cpf VARCHAR(14) NOT NULL,
-    crm VARCHAR(255) NOT NULL,
+    crm VARCHAR(255) UNIQUE NOT NULL,
     specialty VARCHAR(255) NOT NULL
 );

@@ -1,10 +1,12 @@
 package com.clinica.medicos.domain.service.impl;
 
-import java.util.List;
-
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.clinica.medicos.domain.exception.EntityNotFoundException;
+import com.clinica.medicos.domain.exception.InformationInUseException;
 import com.clinica.medicos.domain.model.Doctor;
 import com.clinica.medicos.domain.repository.DoctorRepository;
 import com.clinica.medicos.domain.service.DoctorService;
@@ -27,17 +29,36 @@ public class DoctorServiceImpl implements DoctorService{
 						String.format("Medico de id %s não foi encontrado", doctorId)));
 	}
 	
-	public List<Doctor> findAll(){
+	public Page<Doctor> findAll(Pageable pageable){
 		log.info("[DoctorServiceImpl] executando metodo findAll()");
-		return repository.findAll();
+		return repository.findAll(pageable);
 	}
 	
 	@Transactional
 	public Doctor saveDoctor(Doctor doctor) {
 		log.info("[DoctorServiceImpl] executando metodo saveDoctor()");
-		return repository.save(doctor);
+		try {
+			return repository.save(doctor);
+		} catch (DataIntegrityViolationException e) {
+			log.info("[DoctorServiceImpl] InformationInUseException numero de CRM já cadastrado");
+			throw new InformationInUseException("CRM: " + doctor.getCrm() + " já esta cadastrado no sistema");
+		}
 	}
 		
+	public Doctor checkInformationAndSave(Doctor doctor) {
+		log.info("[DoctorServiceImpl] executando metodo checkInformationAndSave()");
+
+		var isCrmExist = repository.existsByCrm(doctor.getCrm());
+
+		if(isCrmExist) {
+			log.info("[DoctorServiceImpl] InformationInUseException numero de CRM já cadastrado");
+			throw new InformationInUseException("CRM: " + doctor.getCrm() + " já esta cadastrado no sistema");
+		}
+		log.info("[DoctorServiceImpl] checkInformationAndSave(), Numero de CRM checado");
+		
+		return saveDoctor(doctor);
+	}
+	
 	@Transactional
 	public void deleteDoctorById(Long doctorId) {
 		log.info("[DoctorServiceImpl] executando metodo deleteDoctorById() com id= " + doctorId);
