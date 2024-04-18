@@ -19,4 +19,5 @@ public class DoctorDTOOutput {
 	
 	@Schema(example = "Physiotherapist")
 	private String specialty;
+	
 }

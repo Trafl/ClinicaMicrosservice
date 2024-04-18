@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DoctorDTOInput {
-	
+
 	@NotBlank
 	@Schema(example = "Leonard Silva")
 	private String name;
@@ -35,4 +35,13 @@ public class DoctorDTOInput {
 	@NotBlank
 	@Schema(example = "Physiotherapist")
 	private String specialty;
+
+	public DoctorDTOInput(@NotBlank String name, @NotBlank @Email String email, @NotBlank @CPF String cpf,
+			@NotBlank @Size(min = 1, max = 13) String crm, @NotBlank String specialty) {
+		this.name = name;
+		this.email = email;
+		this.cpf = cpf;
+		this.crm = crm;
+		this.specialty = specialty;
+	}
 }

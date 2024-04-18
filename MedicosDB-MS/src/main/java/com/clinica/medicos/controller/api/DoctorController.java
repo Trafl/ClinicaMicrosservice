@@ -62,7 +62,6 @@ public class DoctorController implements DoctorControllerSwagger {
 	}
 	
 	@PostMapping
-	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<DoctorDTOOutput> createDoctor(@RequestBody @Valid DoctorDTOInput dtoInput){
 		log.info("Requisição POST feita no EndPoint '/medicos', para criar objeto Doctor para ser persistido no banco");
 		Doctor doctor = doctorMapper.toEntity(dtoInput);
@@ -70,7 +69,7 @@ public class DoctorController implements DoctorControllerSwagger {
 
 		DoctorDTOOutput doctorDto = doctorMapper.toDTO(doctor);
 		
-		return ResponseEntity.ok().body(doctorDto);
+		return ResponseEntity.status(201).body(doctorDto);
 	}
 	
 	@PutMapping("/{doctorId}")

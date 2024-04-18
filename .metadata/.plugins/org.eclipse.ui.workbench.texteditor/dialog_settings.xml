@@ -4,21 +4,34 @@
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="patientDtoOutput1"/>
+		<item key="selection" value="anotherDoctor"/>
 		<item key="wrap" value="true"/>
 		<item key="incremental" value="false"/>
 		<list key="findhistory">
+			<item value="anotherPatient"/>
+			<item value="updatePatient"/>
+			<item value="returnPatient"/>
+			<item value="PatientDTOInput"/>
+			<item value="DoctorDTOInput"/>
+			<item value="PatientDTOOutput"/>
+			<item value="patientDtoInput"/>
+			<item value="&#x09;private DoctorDTOInput patientDtoInput;"/>
+			<item value="patient"/>
 			<item value="procedureDtoOutput1"/>
 			<item value="procedure"/>
 			<item value="doc"/>
 			<item value="PatientList"/>
 			<item value="Doctor"/>
 			<item value="PatientId"/>
-			<item value="User"/>
-			<item value="ProcedureMapper"/>
-			<item value="handlerExceptionResolver"/>
 		</list>
 		<list key="replacehistory">
+			<item value="anotherDoctor"/>
+			<item value="updateDoctor"/>
+			<item value="returnDoctor"/>
+			<item value="DoctorDTOInput"/>
+			<item value="DoctorDTOOutput"/>
+			<item value="doctorDtoInput"/>
+			<item value="doctor"/>
 			<item value="patientDtoOutput1"/>
 			<item value="procedureDtoInput"/>
 			<item value="pat"/>
@@ -27,7 +40,6 @@
 			<item value="patientId"/>
 			<item value="Doctor"/>
 			<item value="ProcedureMapper"/>
-			<item value="Procedure"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
