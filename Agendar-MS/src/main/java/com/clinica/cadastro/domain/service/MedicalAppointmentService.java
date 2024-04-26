@@ -1,6 +1,7 @@
 package com.clinica.cadastro.domain.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.clinica.cadastro.domain.dto.input.MedicalAppointmentDTOInput;
 import com.clinica.cadastro.domain.dto.patientEvolutionService.PatientEvolutionDto;
@@ -8,11 +9,13 @@ import com.clinica.cadastro.domain.model.MedicalAppointment;
 
 public interface MedicalAppointmentService {
 
-	public List<MedicalAppointment> findAll();
+	public Page<MedicalAppointment> findAll(Pageable pageable);
 	
-	public List<MedicalAppointment> findFinished();
+	public Page<MedicalAppointment> findCreated(Pageable pageable);
 	
-	public List<MedicalAppointment> findCancel();
+	public Page<MedicalAppointment> findFinished(Pageable pageable);
+	
+	public Page<MedicalAppointment> findCancel(Pageable pageable);
 	
 	public MedicalAppointment findAppointmentById(Long appointmentId);
 	

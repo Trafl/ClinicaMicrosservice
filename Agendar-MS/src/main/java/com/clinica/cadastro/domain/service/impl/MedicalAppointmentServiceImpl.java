@@ -1,14 +1,10 @@
 package com.clinica.cadastro.domain.service.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.clinica.cadastro.controller.modelMapper.AppointmentMapper;
 import com.clinica.cadastro.domain.dto.emailService.EmailDto;
 import com.clinica.cadastro.domain.dto.feign.DoctorFeign;
 import com.clinica.cadastro.domain.dto.feign.PatienteFeign;
@@ -30,12 +26,12 @@ import com.clinica.cadastro.domain.service.kafka.KafkaProducerService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class MedicalAppointmentServiceImpl implements MedicalAppointmentService {
-	
-	private final AppointmentMapper appointmentMapper;
 	
 	private final ProcedureService procedureService;
 	
@@ -47,35 +43,34 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 	
 	private final AppointmentRepository appointmentRepository;
 		
-	private static final Logger logg = LoggerFactory.getLogger(MedicalAppointmentServiceImpl.class);
-	
-	public List<MedicalAppointment> findAll() {
-		logg.info("Executando findAll() na class MedicalAppointmentServiceImpl");
-		return appointmentRepository.findAll();
+	public Page<MedicalAppointment> findAll(Pageable pageable) {
+		log.info("Executando findAll() em MedicalAppointmentServiceImpl");
+		return appointmentRepository.findAll(pageable);
 	}
 	
-	public List<MedicalAppointment> findFinished() {
-		List<MedicalAppointment> appointments = appointmentRepository.findAll();
+	public Page<MedicalAppointment> findCreated(Pageable pageable) {
+		log.info("Executando findCreated() em MedicalAppointmentServiceImpl");
+		Page<MedicalAppointment> finalized = appointmentRepository.findByStatus(AppointmentStatus.CREATED, pageable);
 		
-		List<MedicalAppointment> finalized = appointments.stream()
-				.filter(appointment -> appointment.getStatus() == AppointmentStatus.FINISHED).collect(Collectors.toList());
-		
-		logg.info("Executando findFinished() na class MedicalAppointmentServiceImpl");
 		return finalized;
 	}
 	
-	public List<MedicalAppointment> findCancel() {
-		List<MedicalAppointment> appointments = appointmentRepository.findAll();
-	
-		List<MedicalAppointment> canceled = appointments.stream()
-				.filter(appointment -> appointment.getStatus() == AppointmentStatus.CANCELED).collect(Collectors.toList());
+	public Page<MedicalAppointment> findFinished(Pageable pageable) {
+		log.info("Executando findFinished() em MedicalAppointmentServiceImpl");
+		Page<MedicalAppointment> finalized = appointmentRepository.findByStatus(AppointmentStatus.FINISHED, pageable);
 		
-		logg.info("Executando findCancel() na class MedicalAppointmentServiceImpl");
+		return finalized;
+	}
+	
+	public Page<MedicalAppointment> findCancel(Pageable pageable) {
+		log.info("Executando findCancel() em MedicalAppointmentServiceImpl");
+		Page<MedicalAppointment> canceled = appointmentRepository.findByStatus(AppointmentStatus.CANCELED, pageable);
+
 		return canceled;
 	}
 	
 	public MedicalAppointment findAppointmentById(Long appointmentId) {
-		logg.info("Executando findAppointmentById() na class MedicalAppointmentServiceImpl id=" + appointmentId);
+		log.info("Executando findAppointmentById() em MedicalAppointmentServiceImpl id=" + appointmentId);
 		return appointmentRepository.findById(appointmentId)
 				.orElseThrow(() -> new EntityNotFoundException(
 						String.format("Consulta de id %s não foi encontrado", appointmentId)));
@@ -84,12 +79,12 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 	@Transactional
 	public void deleteAppointmentById(Long appointmentId) {
 		try {
-			logg.info("Executando deleteAppointmentById() na class MedicalAppointmentServiceImpl id= " + appointmentId);
+			log.info("Executando deleteAppointmentById() na class MedicalAppointmentServiceImpl id= " + appointmentId);
 			appointmentRepository.deleteById(appointmentId);
 			appointmentRepository.flush();
 			
 		}catch(EmptyResultDataAccessException e) {
-			logg.error("ERROR ao executar deleteAppointmentById() em objeto de id= " + appointmentId);
+			log.info("Falha ao executar deleteAppointmentById() em objeto de id= " + appointmentId + " não foi encontrado");
 			throw new EntityNotFoundException(
 					String.format("Consulta de id %s não foi encontrado.", appointmentId));
 		 }
@@ -107,7 +102,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 		kafkaSendToEmailService(appointment);
 		
 		
-		logg.info("Executando createAppointment() na class MedicalAppointmentServiceImpl");
+		log.info("Executando createAppointment() na class MedicalAppointmentServiceImpl");
 		return appointment;
 	}
 	
@@ -124,7 +119,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 		
 		MedicalAppointment appointment = fillData(appointmentDto, doctor, patient, procedure);
 		
-		logg.info("Executando extractData() na class MedicalAppointmentServiceImpl");
+		log.info("Executando extractData() na class MedicalAppointmentServiceImpl");
 		return appointment;
 	}
 	
@@ -136,7 +131,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 		doctor.setDoctor_name(doctorF.getName());
 		doctor.setDoctor_specialty(doctorF.getSpecialty());
 		
-		logg.info("Executando extractDoctor() na class MedicalAppointmentServiceImpl");
+		log.info("Executando extractDoctor() na class MedicalAppointmentServiceImpl");
 		return doctor;
 	}
 	
@@ -149,7 +144,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 		patient.setPatient_email(patientF.getEmail());
 		patient.setPatient_phone(patientF.getPhone());
 		
-		logg.info("Executando extractPatient() na class MedicalAppointmentServiceImpl");
+		log.info("Executando extractPatient() na class MedicalAppointmentServiceImpl");
 		return patient;
 	}
 	
@@ -162,7 +157,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 		procedure.setProcedure_value(procedureF.getValue());	
 		
 		
-		logg.info("Executando extractProcedure() na class MedicalAppointmentServiceImpl");
+		log.info("Executando extractProcedure() na class MedicalAppointmentServiceImpl");
 		return procedure;
 	}
 	
@@ -179,7 +174,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 	
 	private void kafkaSendToEvolutionService(MedicalAppointment appointment) {
 		var evolutuion= evolutionDtoBuilder(appointment);
-		logg.info("Enviando informações para o serviço de Evolução pela Kafka, objto de id= " + evolutuion.getId());
+		log.info("Enviando informações para o serviço de Evolução pela Kafka, objto de id= " + evolutuion.getId());
 		kafkaProducerService.sendMessage("agendar-to-patient-evolution", evolutuion, appointment.getPatient().getPatient_name());
 	}
 	
@@ -195,7 +190,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 
 	private void kafkaSendToEmailService(MedicalAppointment appointment) {
 		var email= emailDtoBuilder(appointment);
-		logg.info("Enviando informações para o serviço de Email pelo Kafka, email do paciente = " + email.getPatient_email()
+		log.info("Enviando informações para o serviço de Email pelo Kafka, email do paciente = " + email.getPatient_email()
 		+ " nome do medico= " + email.getDoctor_name());
 		kafkaProducerService.sendMessage("agendar-to-emailService", email, appointment.getPatient().getPatient_name());
 	}
@@ -213,22 +208,24 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 	
 	@Transactional
 	public MedicalAppointment cancelAppointment(Long appointmentId) {
+		log.info("Executando cancelAppointment() na class MedicalAppointmentServiceImpl");
+	
 		var appointment = findAppointmentById(appointmentId);
 		appointment.canceledAppointment();
 		
-		logg.info("Executando cancelAppointment() na class MedicalAppointmentServiceImpl");
 		return appointment;
 				
 	}
 	
 	@Transactional
 	public MedicalAppointment finishAppointment(Long appointmentId) {
+		log.info("Executando finishAppointment() na class MedicalAppointmentServiceImpl");
+
 		var appointment = findAppointmentById(appointmentId);
 		appointment.finishAppointment();
 		
 //		var DtoFinancial = appointmentMapper.toDTOFinancial(appointment);
 		
-		logg.info("Executando finishAppointment() na class MedicalAppointmentServiceImpl");
 		return appointment;
 				
 	}

@@ -1,7 +1,7 @@
 package com.clinica.cadastro.controller.api.swagger;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import com.clinica.cadastro.domain.dto.input.MedicalAppointmentDTOInput;
@@ -17,13 +17,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface AppointmentControllerSwagger {
 
 	@Operation(summary = "List all medical appointments", description = "Lists all medical appointments registered in the database.")
-	public ResponseEntity<List<MedicalAppointmentOutPut>> getAllAppointment();
+	public ResponseEntity<Page<MedicalAppointmentOutPut>> getAllAppointment(Pageable pageable);
+
+	@Operation(summary = "List all medical appointments", description = "Lists all medical appointments scheduled in the database.")
+	public ResponseEntity<Page<MedicalAppointmentOutPut>> getScheduledAppointment(Pageable pageable);
 	
 	@Operation(summary = "List completed medical appointments", description = "Lists completed medical appointments recorded in the database.")
-	public ResponseEntity<List<MedicalAppointmentOutPut>> getFinishedAppointment();
+	public ResponseEntity<Page<MedicalAppointmentOutPut>> getFinishedAppointment(Pageable pageable);
 	
 	@Operation(summary = "List canceled medical appointments", description = "Lists canceled medical appointments registered in the database.")
-	public ResponseEntity<List<MedicalAppointmentOutPut>> getCancelAppointment();
+	public ResponseEntity<Page<MedicalAppointmentOutPut>> getCancelAppointment(Pageable pageable);
 	
 	@Operation(summary = "Search for a medical appointment by ID", description = "Search for a medical appointment registered in the database.",
 			 responses = {

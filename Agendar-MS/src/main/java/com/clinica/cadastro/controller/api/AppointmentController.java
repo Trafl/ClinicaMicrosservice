@@ -1,9 +1,9 @@
 package com.clinica.cadastro.controller.api;
 
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,9 @@ import com.clinica.cadastro.domain.service.MedicalAppointmentService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RestController
 @RequestMapping("/consultas")
 @RequiredArgsConstructor
@@ -35,65 +37,89 @@ public class AppointmentController implements AppointmentControllerSwagger {
 	
 	final private AppointmentMapper mapper;
 	
-	private static final Logger logg = LoggerFactory.getLogger(AppointmentController.class);
-	
 	@GetMapping()
-	public ResponseEntity<List<MedicalAppointmentOutPut>> getAllAppointment(){
-		var appointments = medicalAppointmentService.findAll();
-		var appointmentsDto = mapper.toDtoCollection(appointments);
+	public ResponseEntity<Page<MedicalAppointmentOutPut>> getAllAppointment(@PageableDefault(size = 10) Pageable pageable){
+		log.info("Requisição GET no EndPoint '/consultas'");
+
+		var appointments = medicalAppointmentService.findAll(pageable);
 		
-		logg.info("Requisição GET no EndPoint '/consultas'");
-		return ResponseEntity.ok(appointmentsDto);
+		var appointmentsDto = mapper.toDtoCollection(appointments.getContent());
+		
+		PageImpl<MedicalAppointmentOutPut> allAppointmentPage = new PageImpl<>(appointmentsDto, pageable, appointmentsDto.size());
+		
+		return ResponseEntity.ok(allAppointmentPage);
 	}
 	
-	@GetMapping("/finalizadas")
-	public ResponseEntity<List<MedicalAppointmentOutPut>> getFinishedAppointment(){
-		var appointments = medicalAppointmentService.findFinished();
-		var appointmentsDto = mapper.toDtoCollection(appointments);
+	@GetMapping("/agendadas")
+	public ResponseEntity<Page<MedicalAppointmentOutPut>> getScheduledAppointment(@PageableDefault(size = 10) Pageable pageable){
+		log.info("Requisição GET no EndPoint '/consultas/agendadas'");
 		
-		logg.info("Requisição GET no EndPoint '/consultas/finalizadas'");
-		return ResponseEntity.ok(appointmentsDto);
+		var appointments = medicalAppointmentService.findCreated(pageable);
+		
+		var appointmentsDto = mapper.toDtoCollection(appointments.getContent());
+		
+		PageImpl<MedicalAppointmentOutPut> ScheduledAppointment = new PageImpl<>(appointmentsDto, pageable, appointmentsDto.size());
+		
+		return ResponseEntity.ok(ScheduledAppointment);
+	}
+	@GetMapping("/finalizadas")
+	public ResponseEntity<Page<MedicalAppointmentOutPut>> getFinishedAppointment(@PageableDefault(size = 10) Pageable pageable){
+		log.info("Requisição GET no EndPoint '/consultas/finalizadas'");
+
+		var appointments = medicalAppointmentService.findFinished(pageable);
+		
+		var appointmentsDto = mapper.toDtoCollection(appointments.getContent());
+		
+		PageImpl<MedicalAppointmentOutPut> finishedAppointmentPage = new PageImpl<>(appointmentsDto, pageable, appointmentsDto.size());
+		
+		return ResponseEntity.ok(finishedAppointmentPage);
 	}
 	
 	@GetMapping("/canceladas")
-	public ResponseEntity<List<MedicalAppointmentOutPut>> getCancelAppointment(){
-		var appointments = medicalAppointmentService.findCancel();
-		var appointmentsDto = mapper.toDtoCollection(appointments);
+	public ResponseEntity<Page<MedicalAppointmentOutPut>> getCancelAppointment(@PageableDefault(size = 10) Pageable pageable){
+		log.info("Requisição GET no EndPoint '/consultas/canceladas'");
+
+		var appointments = medicalAppointmentService.findCancel(pageable);
 		
-		logg.info("Requisição GET no EndPoint '/consultas/canceladas'");
-		return ResponseEntity.ok(appointmentsDto);
+		var appointmentsDto = mapper.toDtoCollection(appointments.getContent());
+		
+		PageImpl<MedicalAppointmentOutPut> canceledAppointmentPage = new PageImpl<>(appointmentsDto, pageable, appointmentsDto.size());
+		
+		return ResponseEntity.ok(canceledAppointmentPage);
 	}
 	
 	
 	@GetMapping("/{appointmentId}")
 	public ResponseEntity<MedicalAppointmentOutPut> getAppointmentById(@PathVariable Long appointmentId){
+		log.info("Requisição GET no EndPoint '/consultas/" + appointmentId );
+
 		var appointment = medicalAppointmentService.findAppointmentById(appointmentId);
 		var appointmentDto = mapper.toDTO(appointment);
 		
-		logg.info("Requisição GET no EndPoint '/consultas/" + appointmentId + "', retorno de objeto de mesmo id");
 		return ResponseEntity.ok(appointmentDto);
 	}
 	
 	@PostMapping
 	public ResponseEntity<MedicalAppointmentOutPut> createAppointment(@Valid @RequestBody MedicalAppointmentDTOInput appointmentDto){
+		log.info("Requisição POST no EndPoint '/consultas'");
+		
 		MedicalAppointment appointment =  medicalAppointmentService.createAppointment(appointmentDto);
 		MedicalAppointmentOutPut appointmentOut = mapper.toDTO(appointment);
 		
-		logg.info("Requisição POST no EndPoint '/consultas', Criado objeto MedicalAppointment");
 		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(appointmentOut);
 	}
 	
 	@PutMapping("/{appointmentId}/cancelar")
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	@ResponseStatus(code = HttpStatus.OK)
 	public void  cancelAppointment(@PathVariable Long appointmentId ){
+		log.info("Requisição PUT no EndPoint '/consultas/" + appointmentId + "/cancelar'");
 		medicalAppointmentService.cancelAppointment(appointmentId);
-		logg.info("Requisição PUT no EndPoint '/consultas/" + appointmentId + "/cancelar', cancela consulta de id =" +appointmentId);
 	}
 	
 	@PutMapping("/{appointmentId}/finalizar")
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	@ResponseStatus(code = HttpStatus.OK)
 	public void finishAppointment(@PathVariable Long appointmentId ){
+		log.info("Requisição PUT no EndPoint '/consultas/" + appointmentId + "/finalizar'");
 		medicalAppointmentService.finishAppointment(appointmentId);
-		logg.info("Requisição PUT no EndPoint '/consultas/" + appointmentId + "/finalizar', finalizar consulta de id =" +appointmentId);
 	}
 }

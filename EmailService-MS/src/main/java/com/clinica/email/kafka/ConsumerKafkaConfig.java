@@ -23,7 +23,7 @@ public class ConsumerKafkaConfig {
 	    private String bootstrapAddress;
 	  
 	  @Bean
-	    public ConsumerFactory<String, Object > consumerFactory() {
+	     ConsumerFactory<String, Object > consumerFactory() {
 	        Map<String, Object> props = new HashMap<>();
 	        props.put(
 	                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -39,7 +39,7 @@ public class ConsumerKafkaConfig {
 	    }
 	  
 	  @Bean
-	    public ConcurrentKafkaListenerContainerFactory<String, Object>
+	     ConcurrentKafkaListenerContainerFactory<String, Object>
 	        kafkaListenerContainerFactory() {
 
 	        ConcurrentKafkaListenerContainerFactory<String, Object> factory =

@@ -1,4 +1,4 @@
-package com.clinica.evolution.controller;
+package com.clinica.evolution.controller.api;
 
 import java.util.List;
 

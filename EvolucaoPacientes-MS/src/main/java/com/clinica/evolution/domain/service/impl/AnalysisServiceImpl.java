@@ -21,7 +21,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 	
 	@Transactional
 	public Analysis save(Analysis analysis) {
-		return analysisRepository.insert(analysis);
+		return analysisRepository.save(analysis);
 		
 	}
 	
