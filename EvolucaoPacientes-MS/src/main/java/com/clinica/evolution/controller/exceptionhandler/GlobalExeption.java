@@ -60,7 +60,6 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 		problem.setType(URI.create("https://clinicas.com/errors/entity-not-found"));
 		problem.setProperty("timestamp", Instant.now());
 		return problem;
-				
 	}
 	
 	@ExceptionHandler(BusinessException.class)
@@ -71,7 +70,6 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 		problem.setType(URI.create("https://clinicas.com/errors/business-error"));
 		problem.setProperty("timestamp", Instant.now());
 		return problem;
-		
-		
 	}
+	
 }

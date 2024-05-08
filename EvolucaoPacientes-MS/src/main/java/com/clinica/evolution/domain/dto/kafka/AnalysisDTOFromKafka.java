@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class AnalysisDTOFromKafka {
 
-private Long id;
+	private Long id;
 	
 	private Long doctor_id;
 	

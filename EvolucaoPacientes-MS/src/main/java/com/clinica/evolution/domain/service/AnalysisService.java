@@ -2,6 +2,9 @@ package com.clinica.evolution.domain.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.clinica.evolution.domain.model.Analysis;
 import com.clinica.evolution.domain.model.Evolution;
 
@@ -9,15 +12,11 @@ public interface AnalysisService {
 
 	public Analysis save(Analysis analysis);
 	
-	public Analysis getOneAnalysisById(String id);
+	public Analysis getOneAnalysisByIdAndDoctorId(String analysisId, Long doctorId);
 	
-	public List<Analysis> getAllAnalysis();
+	public Page<Analysis> findAnalysisByDoctorId(Long doctorId, Pageable pageable);
 	
-	public List<Analysis> getAnalysisByDoctorOrPatientName(String name);
+	public List<Evolution> addEvolutionInAnalysisById(String id, Long doctorId, Evolution evolution);
 	
-	public List<Evolution> addEvolutionInAnalysisById(String id, Evolution evolution);
-	
-	public List<Evolution> findEvolutionsByName(String name);
-	
-	List<Analysis> findByPatientName(String doctorName);
+	public Page<Analysis> findAnalysisByPatientNameAndDoctorId(String patientName, Long doctorId, Pageable pageable);
 }

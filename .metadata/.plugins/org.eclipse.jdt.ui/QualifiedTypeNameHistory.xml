@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="com.clinica.pacientes.domain.exception.BusinessException"/>
-    <fullyQualifiedTypeName name="org.mockito.ArgumentCaptor"/>
-    <fullyQualifiedTypeName name="org.mockito.Captor"/>
-    <fullyQualifiedTypeName name="com.clinica.pacientes.domain.exception.EntityNotFoundException"/>
-    <fullyQualifiedTypeName name="com.clinica.pacientes.domain.exception.EmailInUseException"/>
-    <fullyQualifiedTypeName name="com.clinica.pacientes.domain.exception.InformationInUseException"/>
-    <fullyQualifiedTypeName name="java.util.Optional"/>
-    <fullyQualifiedTypeName name="org.mockito.Mock"/>
-    <fullyQualifiedTypeName name="org.springframework.boot.SpringBootConfiguration"/>
-    <fullyQualifiedTypeName name="org.springframework.boot.test.context.SpringBootTest"/>
-    <fullyQualifiedTypeName name="org.springframework.boot.test.web.server.LocalServerPort"/>
-    <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeEach"/>
     <fullyQualifiedTypeName name="io.restassured.RestAssured"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.Order"/>
     <fullyQualifiedTypeName name="com.clinica.pacientes.domain.dto.PatientDTOInput"/>
@@ -35,23 +23,18 @@
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="com.clinica.pacientes.domain.dto.PatientDTOOutput"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.deser.std.StdDeserializer"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.core.type.TypeReference"/>
     <fullyQualifiedTypeName name="com.clinica.pacientes.core.jackson.PageDeserializer2"/>
     <fullyQualifiedTypeName name="com.clinica.procedimentos.domain.dto.ProcedureDTOOutput"/>
     <fullyQualifiedTypeName name="com.clinica.procedimentos.domain.model.Procedure"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.module.SimpleModule"/>
     <fullyQualifiedTypeName name="com.clinica.procedimentos.core.jackson.PageDeserializer"/>
-    <fullyQualifiedTypeName name="org.springframework.data.domain.Pageable"/>
-    <fullyQualifiedTypeName name="org.springframework.data.domain.PageImpl"/>
     <fullyQualifiedTypeName name="org.hibernate.validator.constraints.UniqueElements"/>
     <fullyQualifiedTypeName name="jakarta.persistence.UniqueConstraint"/>
     <fullyQualifiedTypeName name="org.springframework.dao.DataIntegrityViolationException"/>
     <fullyQualifiedTypeName name="com.clinica.medicos.domain.exception.InformationInUseException"/>
     <fullyQualifiedTypeName name="org.springframework.boot.jackson.JsonComponent"/>
     <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.JsonSerializer"/>
-    <fullyQualifiedTypeName name="org.springframework.data.domain.Page"/>
-    <fullyQualifiedTypeName name="org.springframework.data.web.PageableDefault"/>
     <fullyQualifiedTypeName name="com.clinica.medicos.domain.repository.DoctorRepository"/>
     <fullyQualifiedTypeName name="com.clinica.medicos.domain.exception.EntityNotFoundException"/>
     <fullyQualifiedTypeName name="com.clinica.medicos.domain.model.Doctor"/>
@@ -60,4 +43,21 @@
     <fullyQualifiedTypeName name="com.clinica.medicos.domain.dto.DoctorDTOOutput"/>
     <fullyQualifiedTypeName name="com.clinica.medicos.core.jackson.PageDeserializer"/>
     <fullyQualifiedTypeName name="com.clinica.medicos.domain.dto.DoctorDTOInput"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="com.clinica.cadastro.domain.model.MedicalAppointment"/>
+    <fullyQualifiedTypeName name="com.clinica.cadastro.domain.model.AppointmentStatus"/>
+    <fullyQualifiedTypeName name="lombok.extern.log4j.Log4j"/>
+    <fullyQualifiedTypeName name="org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort"/>
+    <fullyQualifiedTypeName name="org.springframework.data.domain.PageImpl"/>
+    <fullyQualifiedTypeName name="org.springframework.data.domain.Page"/>
+    <fullyQualifiedTypeName name="org.springframework.data.domain.Pageable"/>
+    <fullyQualifiedTypeName name="org.springframework.data.mongodb.repository.Query"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.ExceptionHandler"/>
+    <fullyQualifiedTypeName name="org.springframework.dao.IncorrectResultSizeDataAccessException"/>
+    <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
+    <fullyQualifiedTypeName name="com.clinica.evolution.domain.dto.AnalysisDTO"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PutMapping"/>
+    <fullyQualifiedTypeName name="org.springframework.data.web.PageableDefault"/>
+    <fullyQualifiedTypeName name="lombok.extern.log4j.Log4j2"/>
 </qualifiedTypeNameHistroy>
