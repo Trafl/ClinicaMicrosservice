@@ -9,6 +9,7 @@ Welcome to the medical practice management microservice. This microservice was d
 - Flyway
 - Lombok
 - MySQL
+- MongoDB
 - SpringDoc
 - Spring Gateway
 - Spring Netflix Eureka
