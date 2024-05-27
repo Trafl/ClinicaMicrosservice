@@ -27,9 +27,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import com.clinica.pacientes.domain.exception.EntityNotFoundException;
 import com.clinica.pacientes.domain.exception.InformationInUseException;
@@ -90,7 +87,7 @@ class PatientServiceImplTest {
 					() -> {service.findById(1L);},
 					() -> "EntityNotFoundException not throw ");
 			
-			assertEquals("Paciente de id 1 não foi encontrado", content.getMessage());
+			assertEquals("Patient with id 1 was not found", content.getMessage());
 		}
 		
 		@Test
@@ -118,19 +115,13 @@ class PatientServiceImplTest {
 			var patient2 = new Patient("Maria", LocalDate.of(1990, 11, 2), "Female", "maria@email.com", "88888-8888");
 			var patientList = List.of(patient,patient2);
 			
-			Page<Patient> content = new PageImpl<>(patientList); 
-
-			Pageable pageable = Pageable.ofSize(10).withPage(0);
+			given(repository.findAll()).willReturn(patientList);
 			
-			given(repository.findAll(pageable)).willReturn(content);
+			var list = service.findAll();
 			
-			var page = service.findAll(pageable);
+			assertEquals(2, list.size());
 			
-			var pageList = page.toList();
-			
-			assertEquals(2, pageList.size());
-			
-			var firstPatient = pageList.get(0);
+			var firstPatient = list.get(0);
 			
 			assertEquals("Pedro ivo", firstPatient.getName());
 			assertEquals(date, firstPatient.getBirthday());
@@ -138,14 +129,13 @@ class PatientServiceImplTest {
 			assertEquals("email@email.com", firstPatient.getEmail());
 			assertEquals("99999-9999", firstPatient.getPhone());
 			
-			var secondPatient = pageList.get(1);
+			var secondPatient = list.get(1);
 			
 			assertEquals("Maria", secondPatient.getName());
 			assertEquals(LocalDate.of(1990, 11, 2), secondPatient.getBirthday());
 			assertEquals("Female", secondPatient.getGender());
 			assertEquals("maria@email.com", secondPatient.getEmail());
 			assertEquals("88888-8888", secondPatient.getPhone());
-			
 			
 		}
 	
@@ -202,7 +192,7 @@ class PatientServiceImplTest {
 						service.savePatient(patient);},
 					()-> "Exception InformationInUseException not throw");
 			
-			var exceptionMessage = "Email ou numero de telefone já esta cadastrado no sistema";
+			var exceptionMessage = "Email or phone number is already registered in the system";
 			
 			assertEquals(exceptionMessage, content.getMessage());
 		}
@@ -235,7 +225,7 @@ class PatientServiceImplTest {
 			
 			verify(repository, never()).deleteById(anyLong());
 			
-			assertEquals("Paciente de id 1 não foi encontrado", content.getMessage());
+			assertEquals("Patient with id 1 was not found", content.getMessage());
 			
 		}
 	}
@@ -257,7 +247,7 @@ class PatientServiceImplTest {
 					
 					()-> "Exception InformationInUseException not throw");
 			
-			assertEquals("Email: " + newPatient.getEmail() + " já esta cadastrado no sistema", content.getMessage());
+			assertEquals("Email: " + newPatient.getEmail() + " is already registered in the system", content.getMessage());
 		}
 		
 		@Test
@@ -274,7 +264,7 @@ class PatientServiceImplTest {
 					
 					()-> "Exception InformationInUseException not throw");
 			
-			assertEquals("Telefone: " + newPatient.getPhone() + " já esta cadastrado no sistema", content.getMessage());
+			assertEquals("Phone number: " + newPatient.getPhone() + " is already registered in the system", content.getMessage());
 		}
 		
 	}

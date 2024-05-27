@@ -1,8 +1,9 @@
 package com.clinica.pacientes.domain.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.clinica.pacientes.domain.exception.EntityNotFoundException;
@@ -21,58 +22,57 @@ import lombok.extern.log4j.Log4j2;
 public class PatientServiceImpl implements PatientService {
 
 	final private PatientRepository repository;
+	String timestamp = LocalDateTime.now().toString();
 	
 	public Patient findById(Long patientId) {
-		log.info("[PatientServiceImpl] executando metodo findById() com id= " + patientId);
+		log.info("[{}] - [PatientServiceImpl] Executing method findById with Patient id: {}", timestamp, patientId);
 		return repository.findById(patientId)
 				.orElseThrow(() -> new EntityNotFoundException(
-						String.format("Paciente de id %s não foi encontrado", patientId)));
+						String.format("Patient with id %s was not found", patientId)));
 	}
 	
-	public Page<Patient> findAll(Pageable pageble){
-		log.info("[PatientServiceImpl] executando metodo findAll()");
-		return repository.findAll(pageble);
+	public List<Patient> findAll(){
+		log.info("[{}] - [PatientServiceImpl] Executing method findById", timestamp);
+		return repository.findAll();
 	}
 	
 	@Transactional
 	public Patient savePatient(Patient patient) {
-		log.info("[PatientServiceImpl] executando metodo savePatient()");
+		log.info("[{}] - [PatientServiceImpl] Executing method savePatient with Patient: {}", timestamp, patient);
 		
 		try {
 			 return repository.save(patient);
 			 
 		} catch (DataIntegrityViolationException e) {
-			throw new InformationInUseException("Email ou numero de telefone já esta cadastrado no sistema");
+			log.error("[{}] - [PatientServiceImpl] InformationInUseException Email or phone number is already registered in the system", timestamp);
+			throw new InformationInUseException("Email or phone number is already registered in the system");
 		}
 	}
 	
 	public Patient checkInformationAndSave(Patient patient) {
-		log.info("[PatientServiceImpl] executando metodo checkInformationAndSave()");
+		log.info("[{}] - [PatientServiceImpl] Executing method checkInformationAndSave with Patient: {}", timestamp, patient);
 		
 		var isEmailExist = repository.existsByEmail(patient.getEmail());
 		var isPhoneExist = repository.existsByPhone(patient.getPhone());
 		
 		if(isEmailExist) {
-			log.info("[PatientServiceImpl] InformationInUseException email já cadastrado");
-			throw new InformationInUseException("Email: " + patient.getEmail() + " já esta cadastrado no sistema");
+			log.info("[{}] - [PatientServiceImpl] InformationInUseException email: {} already registered", timestamp, patient.getEmail());
+			throw new InformationInUseException("Email: " + patient.getEmail() + " is already registered in the system");
 		}
-		log.info("[PatientServiceImpl] checkInformationAndSave(), Email checado");
 		
 		if(isPhoneExist) {
-			log.info("[PatientServiceImpl] InformationInUseException numero de telefone já cadastrado");
-			throw new InformationInUseException("Telefone: " + patient.getPhone() + " já esta cadastrado no sistema");
+			log.info("[{}] - [PatientServiceImpl] InformationInUseException phone number: {} already registered", timestamp, patient.getPhone());
+			throw new InformationInUseException("Phone number: " + patient.getPhone() + " is already registered in the system");
 		}
-		log.info("[PatientServiceImpl] checkInformationAndSave(), Numero de telefone checado");
-		
 		return savePatient(patient);
 	}
 
-		
 	@Transactional
 	public void deletePatientById(Long patientId) {
-		log.info("[PatientServiceImpl] executando metodo deletePatientById() com id= " + patientId);
+		log.info("[{}] - [PatientServiceImpl]Executing method deletePatientById with Patient id: {}", timestamp, patientId);
 		findById(patientId);
 		repository.deleteById(patientId);
 		repository.flush();
+		log.info("[{}] - [PatientServiceImpl]Patient with id {} was deleted", timestamp, patientId);
 	}				
 }

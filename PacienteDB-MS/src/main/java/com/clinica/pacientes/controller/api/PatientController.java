@@ -1,5 +1,6 @@
 package com.clinica.pacientes.controller.api;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import com.clinica.pacientes.domain.dto.PatientDTOOutput;
 import com.clinica.pacientes.domain.model.Patient;
 import com.clinica.pacientes.domain.service.PatientService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -39,22 +41,24 @@ public class PatientController implements PatientControllerSwagger {
 	
 	final private PatientMapper patientMapper;
 	
+	String timestamp = LocalDateTime.now().toString();
+	
 	@GetMapping
-	public ResponseEntity<Page<PatientDTOOutput>> findAllPatients(@PageableDefault(size = 10) Pageable pageable){
-		log.info("Requisição GET feita no EndPoint '/pacientes' para consultar lista com todos o objetos Patient presentes no banco de dados");
+	public ResponseEntity<Page<PatientDTOOutput>> findAllPatients(@PageableDefault Pageable pageable, HttpServletRequest request){
+		log.info("[{}] - [PatientController] IP: {}, Request: GET, EndPoint: '/pacientes'", timestamp, request.getRemoteAddr());	
 		
-		Page<Patient> patientPage = patientService.findAll(pageable);
+		List<Patient> patientPage = patientService.findAll();
 		
-		List<PatientDTOOutput> patientDtoList = patientMapper.toDTOCollection(patientPage.getContent());
+		List<PatientDTOOutput> patientDtoList = patientMapper.toDTOCollection(patientPage);
 		
-		Page<PatientDTOOutput> patientDtoPage = new PageImpl<>(patientDtoList, pageable, patientPage.getContent().size());
+		Page<PatientDTOOutput> patientDtoPage = new PageImpl<>(patientDtoList, pageable, patientDtoList.size());
 		
 		return ResponseEntity.ok(patientDtoPage);
 	}
 	
 	@GetMapping("/{patientId}")
-	public ResponseEntity<PatientDTOOutput> findPatientById(@PathVariable Long patientId){
-		log.info("Requisição GET feita no EndPoint '/pacientes/{id}' para retornar objeto Patient de Id= " + patientId);
+	public ResponseEntity<PatientDTOOutput> findPatientById(@PathVariable Long patientId, HttpServletRequest request){
+		log.info("[{}] - [PatientController] IP: {}, Request: GET, EndPoint: '/pacientes/{}', Patient Id: {}", timestamp, request.getRemoteAddr(), patientId, patientId);
 		Patient patient = patientService.findById(patientId);
 		PatientDTOOutput patientDto = patientMapper.toDTO(patient);
 		
@@ -62,8 +66,8 @@ public class PatientController implements PatientControllerSwagger {
 	}
 	
 	@PostMapping
-	public ResponseEntity<PatientDTOOutput> createPatient(@RequestBody @Valid PatientDTOInput dtoInput){
-		log.info("Requisição POST feita no EndPoint '/pacientes' para criar objeto Patient para ser persistido no bando de dados");
+	public ResponseEntity<PatientDTOOutput> createPatient(@RequestBody @Valid PatientDTOInput dtoInput, HttpServletRequest request){
+		log.info("[{}] - [PatientController] IP: {}, Request: POST, EndPoint: '/pacientes'", timestamp, request.getRemoteAddr());
 		
 		Patient patient = patientMapper.toEntity(dtoInput);
 		patient = patientService.checkInformationAndSave(patient);
@@ -73,9 +77,8 @@ public class PatientController implements PatientControllerSwagger {
 	}
 	
 	@PutMapping("/{patientId}")
-	public ResponseEntity<PatientDTOOutput> updatePatient(@PathVariable Long patientId, @RequestBody @Valid PatientDTOInput dtoInput){
-		log.info("Requisição PUT feita no EndPoint '/pacientes/{id}' para atualizar objeto Patient de Id= " + patientId);
-		
+	public ResponseEntity<PatientDTOOutput> updatePatient(@PathVariable Long patientId, @RequestBody @Valid PatientDTOInput dtoInput, HttpServletRequest request){
+		log.info("[{}] - [PatientController] IP: {}, Request: PUT, EndPoint: '/pacientes/{}', Patient Id: {}", timestamp, request.getRemoteAddr(), patientId, patientId);		
 		Patient patientInDb = patientService.findById(patientId);
 		
 		patientMapper.copyToDomain(dtoInput, patientInDb);
@@ -89,8 +92,8 @@ public class PatientController implements PatientControllerSwagger {
 	
 	@DeleteMapping("/{patientId}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void deletePatientById(@PathVariable Long patientId){
-		log.info("Requisição DELETE feita no EndPoint '/pacientes/{id}' para deletar objeto Patient de Id= " + patientId);
+	public void deletePatientById(@PathVariable Long patientId, HttpServletRequest request){
+		log.info("[{}] - [PatientController] IP: {}, Request: DELETE, EndPoint: '/pacientes/{}', Patient Id: {}", timestamp, request.getRemoteAddr(), patientId, patientId);		
 		patientService.deletePatientById(patientId);
 	}
 	

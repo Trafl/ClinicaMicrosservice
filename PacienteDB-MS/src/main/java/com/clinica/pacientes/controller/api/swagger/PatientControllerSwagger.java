@@ -12,12 +12,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Tag(name = "Patients", description = "Patient Manager")
 public interface PatientControllerSwagger {
 
 	@Operation(summary = "List patients", description = "Lists patients registered in the database.")
-	public ResponseEntity<Page<PatientDTOOutput>> findAllPatients(Pageable pageble);
+	public ResponseEntity<Page<PatientDTOOutput>> findAllPatients(Pageable pageble, HttpServletRequest request);
 	
 	 @Operation(summary = "Search a patient by ID", description = "Searches for a patient registered in the database.",
 			 responses = {
@@ -29,14 +30,14 @@ public interface PatientControllerSwagger {
 				 	 @ApiResponse(responseCode = "404", description = "Patient not found",
 				 	 content = @Content(schema = @Schema(ref = "ProblemDetail")))
 			})
-	public ResponseEntity<PatientDTOOutput> findPatientById(Long patientId);
+	public ResponseEntity<PatientDTOOutput> findPatientById(Long patientId, HttpServletRequest request);
 	
 	 @Operation(summary = "Register a patient", description = "Registers a patient in the database.",
 				responses = {
 						@ApiResponse(responseCode = "400", description = "Error validating the fields entered",
 							 	  content = @Content(schema = @Schema(ref = "ProblemDetail")))
 				})
-	public ResponseEntity<PatientDTOOutput> createPatient(PatientDTOInput dtoInput);
+	public ResponseEntity<PatientDTOOutput> createPatient(PatientDTOInput dtoInput, HttpServletRequest request);
 	
 	 @Operation(summary = "Update a patient", description = "Updates a patient in the database.",
 			 responses = {
@@ -48,7 +49,7 @@ public interface PatientControllerSwagger {
 				 	  @ApiResponse(responseCode = "404", description = "Patient not found",
 				 	  content = @Content(schema = @Schema(ref = "ProblemDetail")))
 		})
-	public ResponseEntity<PatientDTOOutput> updatePatient(Long patientId, PatientDTOInput dtoInput);
+	public ResponseEntity<PatientDTOOutput> updatePatient(Long patientId, PatientDTOInput dtoInput, HttpServletRequest request);
 	
 	 @Operation(summary = "Deletes a patient", description = "Deletes a patient from the database.",
 			 responses = {
@@ -63,5 +64,5 @@ public interface PatientControllerSwagger {
 				 	 @ApiResponse(responseCode = "500", description = "Internal system error",
 				 	  content = @Content(schema = @Schema(ref = "ProblemDetail")))
 					})
-	public void deletePatientById(Long patientId);
+	public void deletePatientById(Long patientId, HttpServletRequest request);
 }
