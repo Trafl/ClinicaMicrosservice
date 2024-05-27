@@ -27,57 +27,57 @@ public class DoctorServiceImpl implements DoctorService{
 	
 	public Doctor findById(Long doctorId) {
 		
-		log.info("[{}] - [DoctorServiceImpl] - Executando método findById() para o Id: {}", timestamp, doctorId);
+		log.info("[{}] - [DoctorServiceImpl] - Executing method findById() with Id: {}", timestamp, doctorId);
 		
 		var doctorInDb = repository.findById(doctorId)
 				.orElseThrow(() -> new EntityNotFoundException(
-						String.format("Doutor de id %s não foi encontrado", doctorId)));
+						String.format("Doctor with id %s was not found", doctorId)));
 		
-		log.info("[{}] - [DoctorServiceImpl] - Doutor com Id: {} e CRM: {} foi encontrado", timestamp, doctorInDb.getId(), doctorInDb.getCrm());
+		log.info("[{}] - [DoctorServiceImpl] - Doctor with Id: {} and CRM: {} was found", timestamp, doctorInDb.getId(), doctorInDb.getCrm());
 		return doctorInDb;
 	}
 	
 	public List<Doctor> findAll(){
 		var listOfDoctor = repository.findAll();
-		log.info("[{}] - [DoctorServiceImpl] executando findAll()", timestamp);
+		log.info("[{}] - [DoctorServiceImpl] Executing method()", timestamp);
 		return listOfDoctor;
 	}
 	
 	@Transactional
 	public Doctor saveDoctor(Doctor doctor) {
-        log.info("[{}] - [DoctorServiceImpl] - Executando método saveDoctor() para o CRM: {}", timestamp, doctor.getCrm());
+        log.info("[{}] - [DoctorServiceImpl] -  Executing method saveDoctor() for CRM: {}", timestamp, doctor.getCrm());
         
         try {
         	var savedDoctor = repository.save(doctor);
-			log.info("[{}] - [DoctorServiceImpl] - Doutor salvo com sucesso com ID: {}", timestamp, savedDoctor.getId());
+			log.info("[{}] - [DoctorServiceImpl] - Doctor successfully saved with ID: {}", timestamp, savedDoctor.getId());
 			return savedDoctor;
 			
 		} catch (DataIntegrityViolationException e) {
-			log.error("[{}] - [DoctorServiceImpl] - InformationInUseException: CRM {} já está cadastrado", timestamp, doctor.getCrm());
+			log.error("[{}] - [DoctorServiceImpl] - InformationInUseException: CRM {} is already registered", timestamp, doctor.getCrm());
 			throw new InformationInUseException("CRM: " + doctor.getCrm() + " já esta cadastrado no sistema");
 		}
 	}
 		
 	public Doctor checkInformationAndSave(Doctor doctor) {
-		log.info("[{}] - [DoctorServiceImpl] executando metodo checkInformationAndSave() Doutor : {} ", timestamp, doctor);
+		log.info("[{}] - [DoctorServiceImpl] Executing method checkInformationAndSave() Doctor : {} ", timestamp, doctor);
 
 		var isCrmExist = repository.existsByCrm(doctor.getCrm());
 
 		if(isCrmExist) {
-			log.info("[{}] - [DoctorServiceImpl] - InformationInUseException CRM: {} já cadastrado", timestamp, doctor.getCrm());
-			throw new InformationInUseException("CRM: " + doctor.getCrm() + " já esta cadastrado no sistema");
+			log.info("[{}] - [DoctorServiceImpl] - InformationInUseException CRM: {} is already registered", timestamp, doctor.getCrm());
+			throw new InformationInUseException("CRM: " + doctor.getCrm() + " is already registered in the system");
 		}
-		log.info("[{}] - [DoctorServiceImpl] checkInformationAndSave(), Numero de CRM: {} não cadastrado", timestamp, doctor.getCrm());
+		log.info("[{}] - [DoctorServiceImpl] checkInformationAndSave(), CRM number: {} not registered", timestamp, doctor.getCrm());
 		
 		return saveDoctor(doctor);
 	}
 	
 	@Transactional
 	public void deleteDoctorById(Long doctorId) {
-		log.info("[{}] - [DoctorServiceImpl] deleteDoctorById() Doutor de Id: {} ", timestamp, doctorId);
+		log.info("[{}] - [DoctorServiceImpl] deleteDoctorById() Doctor from id: {} ", timestamp, doctorId);
 		findById(doctorId);
 		repository.deleteById(doctorId);
 		repository.flush();
-		log.info("[{}] - [DoctorServiceImpl] Doutor de Id: {} foi deletado", timestamp, doctorId);
+		log.info("[{}] - [DoctorServiceImpl] Doctor from id: {} was deleted", timestamp, doctorId);
 	}
 }

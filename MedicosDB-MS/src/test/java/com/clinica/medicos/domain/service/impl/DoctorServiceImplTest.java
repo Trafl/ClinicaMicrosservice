@@ -84,7 +84,7 @@ class DoctorServiceImplTest {
 					() -> {service.findById(1L);},
 					() -> "EntityNotFoundException not throw ");
 			
-			assertEquals("Doutor de id 1 não foi encontrado", content.getMessage());
+			assertEquals("Doctor with id 1 was not found", content.getMessage());
 		}
 		
 		@Test
@@ -222,7 +222,7 @@ class DoctorServiceImplTest {
 			
 			verify(repository, never()).deleteById(anyLong());
 			
-			assertEquals("Doutor de id 1 não foi encontrado", content.getMessage());
+			assertEquals("Doctor with id 1 was not found", content.getMessage());
 			
 		}
 	}
@@ -243,7 +243,7 @@ class DoctorServiceImplTest {
 					
 					()-> "Exception InformationInUseException not throw");
 			
-			assertEquals("CRM: " + newDoctor.getCrm() + " já esta cadastrado no sistema", content.getMessage());
+			assertEquals("CRM: " + newDoctor.getCrm() + " is already registered in the system", content.getMessage());
 		}
 		
 	}

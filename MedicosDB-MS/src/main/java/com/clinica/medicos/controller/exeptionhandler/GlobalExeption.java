@@ -20,21 +20,31 @@ import com.clinica.medicos.domain.exception.BusinessException;
 import com.clinica.medicos.domain.exception.EntityNotFoundException;
 import com.clinica.medicos.domain.exception.InformationInUseException;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @RestControllerAdvice
 public class GlobalExeption extends ResponseEntityExceptionHandler {
 
+	String timestamp = Instant.now().toString();
+	
 	@Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
             ProblemDetail problem = ProblemDetail.forStatus(HttpStatusCode.valueOf(400));
-            problem.setTitle("Erro na validação dos campos informados");
-            problem.setDetail("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.");
+            problem.setTitle("Error validating the fields entered");
+            problem.setDetail("One or more fields are invalid. Fill in correctly and try again.");
             problem.setProperty("timestamp", Instant.now());
 
             Map<String, String> errors = getErrorFields(ex);
             errors.forEach((fieldName, message) -> {
                 problem.setProperty(fieldName, message);
+            });
+            
+            log.error("[{}] - [GlobalExeption] - MethodArgumentNotValidException: Error validating the fields entered", timestamp);
+            errors.forEach((fieldName, message) -> {
+                log.error("[{}] - [GlobalExeption] - Invalid field: {} - Message: {}", timestamp, fieldName, message);
             });
             
           return new ResponseEntity<Object>(problem, status);
@@ -55,8 +65,10 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 	ProblemDetail handlerhttpMessageNotReadableException(EntityNotFoundException e) {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
 		
-		problem.setTitle("Medico não registrado");
+		problem.setTitle("Unregistered doctor");
 		problem.setProperty("timestamp", Instant.now());
+		
+		log.error("[{}] - [GlobalExeption] - EntityNotFoundException: {}", timestamp, e.getMessage());
 		return problem;
 				
 	}
@@ -65,10 +77,11 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 	ProblemDetail handlerhttpMessageNotReadableException(BusinessException e) {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
 		
-		problem.setTitle("Violação de regra de negócio.");
+		problem.setTitle("Violation of business rules.");
 		problem.setProperty("timestamp", Instant.now());
-		return problem;
 		
+		log.error("[{}] - [GlobalExeption] - BusinessException: {}", timestamp, e.getMessage());
+		return problem;
 		
 	}
 	
@@ -76,10 +89,11 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 	ProblemDetail handlerhttpInformationInUseException(InformationInUseException e) {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
 		
-		problem.setTitle("Violação de regra de negócio.");
+		problem.setTitle("Violation of business rules.");
 		problem.setProperty("timestamp", Instant.now());
-		return problem;
 		
+		log.error("[{}] - [GlobalExeption] - InformationInUseException: {}", timestamp, e.getMessage());
+		return problem;
 		
 	}
 }
