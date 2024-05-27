@@ -1,7 +1,7 @@
 package com.clinica.email.kafka;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.time.LocalDateTime;
+
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
@@ -11,19 +11,21 @@ import com.clinica.email.domain.service.EmailService;
 import com.clinica.email.domain.service.EmailService.Message;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
-public class Listener {
+public class Listener_AgendarMs {
 
 	private final EmailService service;
 	
-	private final static Logger logg = LoggerFactory.getLogger(Listener.class);
+	String timestamp = LocalDateTime.now().toString();
 
 	@KafkaListener(topics = "agendar-to-emailService", groupId = "group")
-	public void receber(@Payload EmailDto emailDto) {
+	public void listener(@Payload EmailDto emailDto) {
 
-		logg.info("Objeto EmailDto recebido do serviço Agendar-MS no topico 'agendar-to-emailService' ");
+		log.info("[{}] - [Listener_AgendarMs] Email object received from the Agendar-MS service in the topic 'agendar-to-emailService' ", timestamp);
 		
 		var subText = "Aviso de consulta marcada para " + emailDto.getPatient_name();
 		

@@ -1,7 +1,7 @@
 package com.clinica.email.domain.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.time.LocalDateTime;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,9 @@ import freemarker.template.Template;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
@@ -26,14 +28,14 @@ public class EmailServiceImpl implements EmailService {
 	
 	private final EmailProperties properties;
 	
-	private final static Logger logg = LoggerFactory.getLogger(EmailServiceImpl.class);
+	String timestamp = LocalDateTime.now().toString();
 	
 	public void sendEmail(Message message) {	
 		try {
 			MimeMessage mimeMessage = createMimeMessage(message);
 			
 			mailSender.send(mimeMessage);
-			logg.info("Email enviado para " + message.getAddressee());
+			log.info("[{}] - [EmailServiceImpl] Email sended to {} ", timestamp, message.getAddressee());
 		
 		} catch (MessagingException e) {
 			e.printStackTrace();
@@ -52,6 +54,7 @@ public class EmailServiceImpl implements EmailService {
 		helper.setSubject(message.getSubText());
 		helper.setText(body, true);
 		
+		log.info("[{}] - [EmailServiceImpl] Created MimeMessage", timestamp);
 		return mimeMessage;
 	}
 	
@@ -59,10 +62,14 @@ public class EmailServiceImpl implements EmailService {
 		try {
 			Template template = configuration.getTemplate(message.getBody());
 		
-			return FreeMarkerTemplateUtils.processTemplateIntoString(template, message.getVariables());
+			var finishedTemplate = FreeMarkerTemplateUtils.processTemplateIntoString(template, message.getVariables());
+			
+			log.info("[{}] - [EmailServiceImpl] Process Template Into String ", timestamp);
+
+			return finishedTemplate;
 		
 		} catch (Exception e) {
-			logg.error("Unable to create an email template. ");
+			log.error("[{}] - [EmailServiceImpl] Unable to create an email template", timestamp);
 			throw new MailException("Unable to create an email template.", e);
 		}
 	}
