@@ -1,5 +1,6 @@
 package com.clinica.procedimentos.controller.api;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import com.clinica.procedimentos.domain.dto.ProcedureDTOOutput;
 import com.clinica.procedimentos.domain.model.Procedure;
 import com.clinica.procedimentos.domain.service.ProcedureService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -39,20 +41,22 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	
 	final private ProcedureMapper procedureMapper;
 	
+	String timestamp = LocalDateTime.now().toString();
 	@GetMapping
-	public ResponseEntity<Page<ProcedureDTOOutput>> findAllProcedures(@PageableDefault(size = 10) Pageable pageable){
-		log.info("Requisição GET feita no EndPoint '/procedimentos' para consultar lista com todos o objetos Procedure presentes no banco de dados");
-		Page<Procedure> procedureList = procedureService.findAll(pageable);
+	public ResponseEntity<Page<ProcedureDTOOutput>> findAllProcedures(@PageableDefault Pageable pageable, HttpServletRequest request){
+		log.info("[{}] - [ProcedureController] IP: {}, Request: GET, EndPoint: '/procedimentos'", timestamp, request.getRemoteAddr());	
 		
-		List<ProcedureDTOOutput> procedureDtoList = procedureMapper.toDTOCollection(procedureList.getContent());
-		PageImpl<ProcedureDTOOutput> procedureDtoPage = new PageImpl<>(procedureDtoList, pageable, procedureList.getSize());
+		List<Procedure> procedureList = procedureService.findAll();
+		List<ProcedureDTOOutput> procedureDtoList = procedureMapper.toDTOCollection(procedureList);
+		PageImpl<ProcedureDTOOutput> procedureDtoPage = new PageImpl<>(procedureDtoList, pageable, procedureList.size());
 		
 		return ResponseEntity.ok(procedureDtoPage);
 	}
 	
 	@GetMapping("/{procedureId}")
-	public ResponseEntity<ProcedureDTOOutput> findProcedureById(@PathVariable Long procedureId){
-		log.info("Requisição GET feita no EndPoint '/procedimentos/{id}' para retornar objeto Procedure de Id= " + procedureId);
+	public ResponseEntity<ProcedureDTOOutput> findProcedureById(@PathVariable Long procedureId, HttpServletRequest request){
+		log.info("[{}] - [ProcedureController] IP: {}, Request: GET, EndPoint: '/procedimentos/{}' Procedure Id: {}", timestamp, request.getRemoteAddr(), procedureId, procedureId);
+
 		Procedure procedure = procedureService.findById(procedureId);
 		ProcedureDTOOutput procedureDto = procedureMapper.toDTO(procedure);
 		
@@ -60,23 +64,22 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProcedureDTOOutput> createProcedure(@RequestBody @Valid ProcedureDTOInput dtoInput){
-		log.info("Requisição POST feita no EndPoint '/procedimentos' para criar objeto Procedure para ser persistido no bando de dados");
+	public ResponseEntity<ProcedureDTOOutput> createProcedure(@RequestBody @Valid ProcedureDTOInput dtoInput, HttpServletRequest request){
+		log.info("[{}] - [ProcedureController] IP: {}, Request: POST, EndPoint: '/procedimentos/' ", timestamp, request.getRemoteAddr());
+		
 		Procedure procedure = procedureMapper.toEntity(dtoInput);
 		procedure = procedureService.saveProcedure(procedure);
-
 		ProcedureDTOOutput ProcedureDto = procedureMapper.toDTO(procedure);
+		
 		return ResponseEntity.status(201).body(ProcedureDto);
 	}
 	
 	@PutMapping("/{procedureId}")
-	public ResponseEntity<ProcedureDTOOutput> updateProcedure(@PathVariable Long procedureId, @RequestBody @Valid ProcedureDTOInput dtoInput){
-		log.info("Requisição PUT feita no EndPoint '/procedimentos/{id}' para Atualizar objeto Procedure de Id= " + procedureId);
+	public ResponseEntity<ProcedureDTOOutput> updateProcedure(@PathVariable Long procedureId, @RequestBody @Valid ProcedureDTOInput dtoInput, HttpServletRequest request){
+		log.info("[{}] - [ProcedureController] IP: {}, Request: PUT, EndPoint: '/procedimentos/{}' Procedure Id: {}", timestamp, request.getRemoteAddr(), procedureId, procedureId);
 		
 		Procedure procedureInDb = procedureService.findById(procedureId);
-		
 		procedureMapper.copyToDomain(dtoInput, procedureInDb);
-		
 		procedureInDb = procedureService.saveProcedure(procedureInDb);
 		ProcedureDTOOutput ProcedureDto = procedureMapper.toDTO(procedureInDb);
 		
@@ -85,8 +88,8 @@ public class ProcedureController implements ProcedureControllerSwagger {
 	
 	@DeleteMapping("/{procedureId}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void deleteProcedureById(@PathVariable Long procedureId){
-		log.info("Requisição DELETE feita no EndPoint '/procedimentos/{id}' para deletar objeto Procedure de Id= " + procedureId);
+	public void deleteProcedureById(@PathVariable Long procedureId, HttpServletRequest request){
+		log.info("[{}] - [ProcedureController] IP: {}, Request: DELETE, EndPoint: '/procedimentos/{}' Procedure Id: {}", timestamp, request.getRemoteAddr(), procedureId, procedureId);
 		procedureService.deleteProcedureById(procedureId);
 	}
 	

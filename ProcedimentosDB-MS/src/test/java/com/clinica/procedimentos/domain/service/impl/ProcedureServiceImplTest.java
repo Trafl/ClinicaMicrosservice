@@ -7,7 +7,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,9 +26,6 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import com.clinica.procedimentos.domain.exception.EntityNotFoundException;
 import com.clinica.procedimentos.domain.model.Procedure;
@@ -104,7 +103,7 @@ class ProcedureServiceImplTest {
 					()-> {service.findById(id);},
 					()-> "Exception not Throw");
 			
-			assertEquals("Procedimento de id 1 não foi encontrado", message.getMessage());
+			assertEquals("Procedure id 1 was not found", message.getMessage());
 		}
 		
 	}
@@ -123,13 +122,9 @@ class ProcedureServiceImplTest {
 			list.add(procedure1);
 			list.add(procedure2);
 			
-			Pageable pageable = Pageable.ofSize(10);
-
-			Page<Procedure> pageProcedure = new PageImpl<>(list);
+			given(repository.findAll()).willReturn(list);
 			
-			given(repository.findAll(pageable)).willReturn(pageProcedure);
-			
-			var listOfProcedure = service.findAll(pageable).toList();
+			var listOfProcedure = service.findAll();
 			
 			assertNotNull(listOfProcedure);
 			assertEquals(3, listOfProcedure.size());
@@ -208,7 +203,7 @@ class ProcedureServiceImplTest {
 			
 			verify(repository, never()).deleteById(procedure.getId());
 			
-			assertEquals("Procedimento de id 1 não foi encontrado", message.getMessage());
+			assertEquals("Procedure id 1 was not found", message.getMessage());
 		}
 		
 	}

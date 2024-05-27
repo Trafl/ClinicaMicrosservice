@@ -1,7 +1,8 @@
 package com.clinica.procedimentos.domain.service.impl;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.clinica.procedimentos.domain.exception.EntityNotFoundException;
@@ -19,30 +20,32 @@ import lombok.extern.log4j.Log4j2;
 public class ProcedureServiceImpl implements ProcedureService {
 
 	final private ProcedureRepository repository;
+	String timestamp = LocalDateTime.now().toString();
 	
 	public Procedure findById(Long procedureId) {
-		log.info("[ProcedureServiceImpl] executando metodo findById() com id= " + procedureId);
+		log.info("[{}] - [ProcedureServiceImpl] Executing method findById with Procedure id: {}", timestamp, procedureId);
 		return repository.findById(procedureId)
 				.orElseThrow(() -> new EntityNotFoundException(
-						String.format("Procedimento de id %s não foi encontrado", procedureId)));
+						String.format("Procedure id %s was not found", procedureId)));
 	}
 	
-	public Page<Procedure> findAll(Pageable pageable){
-		log.info("[ProcedureServiceImpl] executando metodo findAll()");
-		return repository.findAll(pageable);
+	public List<Procedure> findAll(){
+		log.info("[{}] - [ProcedureServiceImpl] Executing method findAll ", timestamp);
+		return repository.findAll();
 	}
 	
 	@Transactional
 	public Procedure saveProcedure(Procedure procedure) {
-		log.info("[ProcedureServiceImpl] executando metodo createProcedure()");
+		log.info("[{}] - [ProcedureServiceImpl] Executing method saveProcedure with Procedure: {}", timestamp, procedure);
 		return repository.save(procedure);
 	}
 		
 	@Transactional
 	public void deleteProcedureById(Long procedureId) {
-		log.info("[ProcedureServiceImpl] executando metodo deleteProcedureById() com id= " + procedureId);
+		log.info("[{}] - [ProcedureServiceImpl] Executing method deleteProcedureById with Procedure id: {}", timestamp, procedureId);
 		findById(procedureId);
 		repository.deleteById(procedureId);
 		repository.flush();
+		log.info("[{}] - [ProcedureServiceImpl] Procedure with id {} was deleted", timestamp, procedureId);
 	}
 }

@@ -12,12 +12,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Tag(name = "Procedures", description = "Procedure Manager")
 public interface ProcedureControllerSwagger {
 
 	@Operation(summary = "List the procedures", description = "Lists the procedures registered in the database.")
-	public ResponseEntity<Page<ProcedureDTOOutput>> findAllProcedures(Pageable pageable);
+	public ResponseEntity<Page<ProcedureDTOOutput>> findAllProcedures(Pageable pageable, HttpServletRequest request);
 	
 
 	 @Operation(summary = "Search for a procedure by ID", description = "Searches for a procedure registered in the database.",
@@ -30,7 +31,7 @@ public interface ProcedureControllerSwagger {
 				 	 @ApiResponse(responseCode = "404", description = "Procedure not found",
 				 	 content = @Content(schema = @Schema(ref = "ProblemDetail")))
 			})
-	public ResponseEntity<ProcedureDTOOutput> findProcedureById(Long procedureId);
+	public ResponseEntity<ProcedureDTOOutput> findProcedureById(Long procedureId, HttpServletRequest request);
 	
 
 	@Operation(summary = "Register a procedure", description = "Registers a procedure in the database.",
@@ -38,7 +39,7 @@ public interface ProcedureControllerSwagger {
 					@ApiResponse(responseCode = "400", description = "Error validating the fields entered",
 						 	  content = @Content(schema = @Schema(ref = "ProblemDetail")))
 			})
-	public ResponseEntity<ProcedureDTOOutput> createProcedure(ProcedureDTOInput dtoInput);
+	public ResponseEntity<ProcedureDTOOutput> createProcedure(ProcedureDTOInput dtoInput, HttpServletRequest request);
 	
 
 	@Operation(summary = "Update a procedure", description = "Updates a procedure in the database.",
@@ -51,7 +52,7 @@ public interface ProcedureControllerSwagger {
 				 	  @ApiResponse(responseCode = "404", description = "Procedure not found",
 				 	  content = @Content(schema = @Schema(ref = "ProblemDetail")))
 		})
-	public ResponseEntity<ProcedureDTOOutput> updateProcedure(Long procedureId, ProcedureDTOInput dtoInput);
+	public ResponseEntity<ProcedureDTOOutput> updateProcedure(Long procedureId, ProcedureDTOInput dtoInput, HttpServletRequest request);
 	
 	 @Operation(summary = "Deletes a procedure", description = "Deletes a procedure in the database.",
 			 responses = {
@@ -66,5 +67,5 @@ public interface ProcedureControllerSwagger {
 				 	 @ApiResponse(responseCode = "500", description = "Internal system error",
 				 	  content = @Content(schema = @Schema(ref = "ProblemDetail")))
 					})
-	public void deleteProcedureById(Long procedureId);
+	public void deleteProcedureById(Long procedureId, HttpServletRequest request);
 }
