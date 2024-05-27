@@ -45,7 +45,7 @@ public class DoctorController implements DoctorControllerSwagger {
 	
 	@GetMapping
 	public ResponseEntity<Page<DoctorDTOOutput>> findAllDoctors(@PageableDefault Pageable pageable, HttpServletRequest request){
-		log.info("[{}] - DoctorController IP: {}, Método: GET, EndPoint: '/medicos'", timestamp, request.getRemoteAddr());	
+		log.info("[{}] - [DoctorController] IP: {}, Método: GET, EndPoint: '/medicos'", timestamp, request.getRemoteAddr());	
 		
 		List<Doctor> doctorPage = doctorService.findAll();
 		
@@ -58,7 +58,7 @@ public class DoctorController implements DoctorControllerSwagger {
 	
 	@GetMapping("/{doctorId}")
 	public ResponseEntity<DoctorDTOOutput> findDoctorById(@PathVariable Long doctorId, HttpServletRequest request){
-		log.info("[{}] - DoctorController IP: {}, Método: GET, EndPoint: '/medicos/{}' DoctorId:", timestamp, request.getRemoteAddr(), doctorId, doctorId);
+		log.info("[{}] - [DoctorController] IP: {}, Método: GET, EndPoint: '/medicos/{}' DoctorId:", timestamp, request.getRemoteAddr(), doctorId, doctorId);
 		
 		Doctor doctor = doctorService.findById(doctorId);
 		DoctorDTOOutput doctorDto = doctorMapper.toDTO(doctor);
@@ -68,7 +68,7 @@ public class DoctorController implements DoctorControllerSwagger {
 	
 	@PostMapping
 	public ResponseEntity<DoctorDTOOutput> createDoctor(@RequestBody @Valid DoctorDTOInput dtoInput, HttpServletRequest request){
-		log.info("[{}] - DoctorController IP: {}, Método: POST, EndPoint: '/medicos'", timestamp, request.getRemoteAddr());
+		log.info("[{}] - [DoctorController] IP: {}, Método: POST, EndPoint: '/medicos'", timestamp, request.getRemoteAddr());
 		
 		Doctor doctor = doctorMapper.toEntity(dtoInput);
 		doctor = doctorService.saveDoctor(doctor);
@@ -80,7 +80,7 @@ public class DoctorController implements DoctorControllerSwagger {
 	
 	@PutMapping("/{doctorId}")
 	public ResponseEntity<DoctorDTOOutput> updateDoctor(@PathVariable Long doctorId, @RequestBody @Valid DoctorDTOInput dtoInput, HttpServletRequest request){
-		log.info("[{}] - DoctorController IP: {}, Método: PUT, EndPoint: '/medicos/{}' DoctorId: {}", timestamp, request.getRemoteAddr(), doctorId, doctorId);;
+		log.info("[{}] - [DoctorController] IP: {}, Método: PUT, EndPoint: '/medicos/{}' DoctorId: {}", timestamp, request.getRemoteAddr(), doctorId, doctorId);;
 		
 		Doctor doctorInDb = doctorService.findById(doctorId);
 		
@@ -96,7 +96,7 @@ public class DoctorController implements DoctorControllerSwagger {
 	@DeleteMapping("/{doctorId}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void deleteDoctorById(@PathVariable Long doctorId, HttpServletRequest request){
-		log.info("[{}] - DoctorController IP: {}, Método: DELETE, EndPoint: '/medicos/{}' DoctorId: {}", timestamp, request.getRemoteAddr(), doctorId, doctorId);
+		log.info("[{}] - [DoctorController] IP: {}, Método: DELETE, EndPoint: '/medicos/{}' DoctorId: {}", timestamp, request.getRemoteAddr(), doctorId, doctorId);
 		doctorService.deleteDoctorById(doctorId);
 		
 	}
