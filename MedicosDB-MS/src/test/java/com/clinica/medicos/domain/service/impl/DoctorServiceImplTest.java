@@ -26,9 +26,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import com.clinica.medicos.domain.exception.EntityNotFoundException;
 import com.clinica.medicos.domain.exception.InformationInUseException;
@@ -87,7 +84,7 @@ class DoctorServiceImplTest {
 					() -> {service.findById(1L);},
 					() -> "EntityNotFoundException not throw ");
 			
-			assertEquals("Medico de id 1 não foi encontrado", content.getMessage());
+			assertEquals("Doutor de id 1 não foi encontrado", content.getMessage());
 		}
 		
 		@Test
@@ -115,19 +112,14 @@ class DoctorServiceImplTest {
 			var doctor2 = new Doctor("doutora@email", "Doutora", "321.654.987-01", "CRM/RJ233311", "Physiotherapist");
 			var doctorList = List.of(doctor, doctor2);
 			
-			Page<Doctor> content = new PageImpl<>(doctorList); 
-
-			Pageable pageable = Pageable.ofSize(10).withPage(0);
+			given(repository.findAll()).willReturn(doctorList);
 			
-			given(repository.findAll(pageable)).willReturn(content);
+			var list = service.findAll();
 			
-			var page = service.findAll(pageable);
 			
-			var pageList = page.toList();
+			assertEquals(2, list.size());
 			
-			assertEquals(2, pageList.size());
-			
-			var firstDoctor = pageList.get(0);
+			var firstDoctor = list.get(0);
 			
 			assertEquals("Doutor", firstDoctor.getName());
 			assertEquals("doutor@email", firstDoctor.getEmail());
@@ -135,7 +127,7 @@ class DoctorServiceImplTest {
 			assertEquals("123.456.789-09", firstDoctor.getCpf());
 			assertEquals("Physiotherapist", firstDoctor.getSpecialty());
 			
-			var secondDoctor = pageList.get(1);
+			var secondDoctor = list.get(1);
 			
 			assertEquals("Doutora", secondDoctor.getName());
 			assertEquals("doutora@email", secondDoctor.getEmail());
@@ -230,7 +222,7 @@ class DoctorServiceImplTest {
 			
 			verify(repository, never()).deleteById(anyLong());
 			
-			assertEquals("Medico de id 1 não foi encontrado", content.getMessage());
+			assertEquals("Doutor de id 1 não foi encontrado", content.getMessage());
 			
 		}
 	}

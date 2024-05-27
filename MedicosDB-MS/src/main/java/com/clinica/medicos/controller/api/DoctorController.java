@@ -1,5 +1,6 @@
 package com.clinica.medicos.controller.api;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import com.clinica.medicos.domain.dto.DoctorDTOOutput;
 import com.clinica.medicos.domain.model.Doctor;
 import com.clinica.medicos.domain.service.DoctorService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -39,22 +41,25 @@ public class DoctorController implements DoctorControllerSwagger {
 	
 	final private DoctorMapper doctorMapper;
 	
+	String timestamp = LocalDateTime.now().toString();
+	
 	@GetMapping
-	public ResponseEntity<Page<DoctorDTOOutput>> findAllDoctors(@PageableDefault(size = 10) Pageable pageable){
-		log.info("Requisição GET feita no EndPoint '/medicos' para consultar lista com todos o objetos Doctor presentes no banco de dados");
+	public ResponseEntity<Page<DoctorDTOOutput>> findAllDoctors(@PageableDefault Pageable pageable, HttpServletRequest request){
+		log.info("[{}] - DoctorController IP: {}, Método: GET, EndPoint: '/medicos'", timestamp, request.getRemoteAddr());	
 		
-		Page<Doctor> doctorPage = doctorService.findAll(pageable);
+		List<Doctor> doctorPage = doctorService.findAll();
 		
-		List<DoctorDTOOutput> doctorDtoList = doctorMapper.toDTOCollection(doctorPage.getContent());
+		List<DoctorDTOOutput> doctorDtoList = doctorMapper.toDTOCollection(doctorPage);
 		
-		PageImpl<DoctorDTOOutput> doctorDTOPage = new PageImpl<>(doctorDtoList, pageable, doctorPage.getSize());
+		PageImpl<DoctorDTOOutput> doctorDTOPage = new PageImpl<>(doctorDtoList, pageable, doctorDtoList.size());
 		
 		return ResponseEntity.ok(doctorDTOPage);
 	}
 	
 	@GetMapping("/{doctorId}")
-	public ResponseEntity<DoctorDTOOutput> findDoctorById(@PathVariable Long doctorId){
-		log.info("Requisição GET feita no EndPoint '/medicos/{id}' para retornar objeto Doctor de Id= " + doctorId);
+	public ResponseEntity<DoctorDTOOutput> findDoctorById(@PathVariable Long doctorId, HttpServletRequest request){
+		log.info("[{}] - DoctorController IP: {}, Método: GET, EndPoint: '/medicos/{}' DoctorId:", timestamp, request.getRemoteAddr(), doctorId, doctorId);
+		
 		Doctor doctor = doctorService.findById(doctorId);
 		DoctorDTOOutput doctorDto = doctorMapper.toDTO(doctor);
 		
@@ -62,8 +67,9 @@ public class DoctorController implements DoctorControllerSwagger {
 	}
 	
 	@PostMapping
-	public ResponseEntity<DoctorDTOOutput> createDoctor(@RequestBody @Valid DoctorDTOInput dtoInput){
-		log.info("Requisição POST feita no EndPoint '/medicos', para criar objeto Doctor para ser persistido no banco");
+	public ResponseEntity<DoctorDTOOutput> createDoctor(@RequestBody @Valid DoctorDTOInput dtoInput, HttpServletRequest request){
+		log.info("[{}] - DoctorController IP: {}, Método: POST, EndPoint: '/medicos'", timestamp, request.getRemoteAddr());
+		
 		Doctor doctor = doctorMapper.toEntity(dtoInput);
 		doctor = doctorService.saveDoctor(doctor);
 
@@ -73,8 +79,8 @@ public class DoctorController implements DoctorControllerSwagger {
 	}
 	
 	@PutMapping("/{doctorId}")
-	public ResponseEntity<DoctorDTOOutput> updateDoctor(@PathVariable Long doctorId, @RequestBody @Valid DoctorDTOInput dtoInput){
-		log.info("Requisição PUT feita no EndPoint '/medicos/{id}' para atualizar o objeto Doctor de Id= " + doctorId);
+	public ResponseEntity<DoctorDTOOutput> updateDoctor(@PathVariable Long doctorId, @RequestBody @Valid DoctorDTOInput dtoInput, HttpServletRequest request){
+		log.info("[{}] - DoctorController IP: {}, Método: PUT, EndPoint: '/medicos/{}' DoctorId: {}", timestamp, request.getRemoteAddr(), doctorId, doctorId);;
 		
 		Doctor doctorInDb = doctorService.findById(doctorId);
 		
@@ -89,8 +95,8 @@ public class DoctorController implements DoctorControllerSwagger {
 	
 	@DeleteMapping("/{doctorId}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void deleteDoctorById(@PathVariable Long doctorId){
-		log.info("Requisição DELETE feita no EndPoint '/medicos/{id}' para deletar o objeto Doctor de Id= " + doctorId);
+	public void deleteDoctorById(@PathVariable Long doctorId, HttpServletRequest request){
+		log.info("[{}] - DoctorController IP: {}, Método: DELETE, EndPoint: '/medicos/{}' DoctorId: {}", timestamp, request.getRemoteAddr(), doctorId, doctorId);
 		doctorService.deleteDoctorById(doctorId);
 		
 	}
