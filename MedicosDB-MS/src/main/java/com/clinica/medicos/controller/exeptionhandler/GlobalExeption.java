@@ -62,7 +62,7 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)
-	ProblemDetail handlerhttpMessageNotReadableException(EntityNotFoundException e) {
+	ProblemDetail handlerEntityNotFoundException(EntityNotFoundException e) {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
 		
 		problem.setTitle("Unregistered doctor");
@@ -74,7 +74,7 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(BusinessException.class)
-	ProblemDetail handlerhttpMessageNotReadableException(BusinessException e) {
+	ProblemDetail handlerBusinessException(BusinessException e) {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
 		
 		problem.setTitle("Violation of business rules.");
@@ -86,7 +86,7 @@ public class GlobalExeption extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(InformationInUseException.class)
-	ProblemDetail handlerhttpInformationInUseException(InformationInUseException e) {
+	ProblemDetail handlerInformationInUseException(InformationInUseException e) {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
 		
 		problem.setTitle("Violation of business rules.");
