@@ -22,7 +22,7 @@ Welcome to the medical practice management microservice. This microservice was d
 ## Documentation
 Each microservice has its own documentation in the Swagger standard for a better understanding of each End-point.
 Access "http://localhost:8761/" and open the Eureka graphical interface to find out which port each application is running on.
-After that, replace the connected port in http://localhost:"youPort" and add "/swagger-ui/index.html#/".
+After that, replace the connected port in "http://localhost:'youPort'/swagger-ui/index.html#/".
 
 ## Architecture
  ### Gateway Services:
